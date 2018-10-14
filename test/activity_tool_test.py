@@ -19,4 +19,4 @@ db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 # ActivityTool.put(db, 1, '已付款', '2018-10-14 18:45:26', '100', '4', '1', '2018-10-14 17:07:16')
 
 # 查
-print(ActivityTool.get(db, key='游玩'))
+print(ActivityTool.get(db))

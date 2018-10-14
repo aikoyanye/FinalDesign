@@ -1,4 +1,4 @@
-import datetime
+import datetime, redis
 from tool.member_tool import MemberTool
 from tool.ship_tool import ShipTool
 
