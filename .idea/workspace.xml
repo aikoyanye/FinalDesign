@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="042e2496-f079-41ed-a7e4-3115cd9cca1e" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/activity_tool_test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/ship_tool_test.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tool/activity_tool.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tool/ship_tool.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/member_tool_test.py" afterPath="$PROJECT_DIR$/test/member_tool_test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tool/member_tool.py" afterPath="$PROJECT_DIR$/tool/member_tool.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -360,7 +354,14 @@
       <option name="project" value="LOCAL" />
       <updated>1539453061587</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="游船和活动的api">
+      <created>1539514733359</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1539514733359</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView">
@@ -402,7 +403,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="测试pymysql" />
     <MESSAGE value="会员普通api" />
-    <option name="LAST_COMMIT_MESSAGE" value="会员普通api" />
+    <MESSAGE value="游船和活动的api" />
+    <option name="LAST_COMMIT_MESSAGE" value="游船和活动的api" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
