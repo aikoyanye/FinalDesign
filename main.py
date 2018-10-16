@@ -29,8 +29,8 @@ class Application(tornado.web.Application):
 # 将db对象传入服务端，作为唯一全局变量
 # 初始化服务端，让服务端持久服务
 async def main():
-    db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
-    app = Application(db)
+    # db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
+    app = Application(None)
     app.listen(8080)
     await tornado.locks.Event().wait()
 
