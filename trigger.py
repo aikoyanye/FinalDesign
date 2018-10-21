@@ -17,7 +17,7 @@ class RedisTrigger:
         r = redis.Redis()
         activity_results = []
         for key in r.hkeys('activity'):
-            activity_results.append(r.hget('activity', key))
+            activity_results.append(json.loads(r.hget('activity', key)))
         return activity_results
 
     # 修改和添加
