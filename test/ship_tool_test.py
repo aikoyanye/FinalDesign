@@ -16,9 +16,10 @@ db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 # ShipTool.delete(db, 1)
 
 # 查
-print(ShipTool.get(db))
+# print(ShipTool.get(db))
 # print(ShipTool.get(db, id=1))
 # print(ShipTool.get(db, key='2018-10-14'))
+print(ShipTool.idle_ship(db))
 
 # 改
 # ShipTool.put(db, 1, '泰坦尼克号', '正在使用', '于18-10-14进购的一批新船，致敬泰坦尼克号', '2018-10-14 15:39:35')

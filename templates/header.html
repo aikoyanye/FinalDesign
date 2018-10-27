@@ -57,46 +57,7 @@
             </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
     </nav>
-    <div id="mid">
-        <!-- 交给react -->
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <table style="table-layout:fixed">
-                    <tr>
-                        <td style="width:33%"><h4>正在进行：</h4></td>
-                        <td style="width:33%"><h4>空闲游船：</h4></td>
-                        <td style="width:33%"><h4>过去7天游玩数据：</h4></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="panel-body">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <div id="time" />
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right" style="margin-right:20px">
-                    <h4>天气</h4>
-                </ul>
-            </div>
-        </div>
-    </div>
+    {% block main %}{% end %}
 </div>
-<script type="text/babel">
-    class Clock extends React.Component {
-      render() {
-        return (<h4>{this.props.date.toLocaleTimeString()}</h4>);
-      }
-    }
-
-function tick() {
-  ReactDOM.render(
-    <Clock date={new Date()} />,
-    document.getElementById('time')
-  );
-}
-
-setInterval(tick, 1000);
-</script>
 </body>
 </html>

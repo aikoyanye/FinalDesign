@@ -1,6 +1,7 @@
 import datetime
 
 class ShipTool:
+    # 查询，当传入id时为精确搜索，传入关键字时就为模糊搜索，不传入为全部查询，但是两个都传入就出错
     @staticmethod
     def get(db, id=None, key=None):
         cursor = db.cursor()
@@ -10,10 +11,13 @@ class ShipTool:
             sql = 'SELECT * FROM ship WHERE id = {}'.format(str(id))
         elif id == None and key != None:
             sql = 'SELECT * FROM ship WHERE CONCAT(shipname, status, descroption, created) like "%{}%"'.format(key)
+        else:
+            return 'error'
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
 
+    # 添加，传入全部数据
     @staticmethod
     def add(db, shipname, status, descroption):
         cursor = db.cursor()
@@ -29,6 +33,7 @@ class ShipTool:
             return False
         return True
 
+    # 修改，传入全部数据
     @staticmethod
     def put(db, id, shipname, status, descroption, created):
         cursor = db.cursor()
@@ -42,6 +47,7 @@ class ShipTool:
             return False
         return True
 
+    # 删除，传入id
     @staticmethod
     def delete(db, id):
         cursor = db.cursor()
@@ -53,3 +59,13 @@ class ShipTool:
             db.rollback()
             return False
         return True
+
+    # 获取空闲游船
+    @staticmethod
+    def idle_ship(db):
+        cursor = db.cursor()
+        sql = 'SELECT count(status) FROM ship WHERE status = "空闲"'
+        cursor.execute(sql)
+        count = cursor.fetchone()[0]
+        cursor.close()
+        return count

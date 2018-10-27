@@ -22,6 +22,7 @@ class ActivityTool:
             results.append(list(result)+member[1:-1]+ship[1:-1])
         return results
 
+    # 添加活动，状态、结束时间、花费、会员id和船id
     @staticmethod
     def add(db, status, endtime, cost, userId, shipId):
         cursor = db.cursor()
@@ -38,6 +39,7 @@ class ActivityTool:
             return False
         return True
 
+    # 修改活动，活动id、状态、结束时间、真实花费、会员id、船id和开始时间
     @staticmethod
     def put(db, id, status, endtime, cost, userId, shipId, created):
         cursor = db.cursor()
@@ -51,6 +53,7 @@ class ActivityTool:
             return False
         return True
 
+    # 删除活动
     @staticmethod
     def delete(db, id):
         cursor = db.cursor()
@@ -62,3 +65,24 @@ class ActivityTool:
             db.rollback()
             return False
         return True
+
+    # 获取正在进行的活动数
+    @staticmethod
+    def active_activity(db):
+        cursor = db.cursor()
+        sql = 'SELECT count(status) FROM activity WHERE status = "正在游玩"'
+        cursor.execute(sql)
+        count = cursor.fetchone()[0]
+        cursor.close()
+        return count
+
+    # 获取过去7天游玩次数，包括正在进行和未付款的全部活动
+    @staticmethod
+    def last_seven_active(db):
+        cursor = db.cursor()
+        current_date = (datetime.datetime.now()-datetime.timedelta(days=7)).strftime("%Y-%m-%d %H:%M:%S")
+        sql = 'SELECT count(created) FROM activity WHERE created > "{}"'.format(current_date)
+        cursor.execute(sql)
+        count = cursor.fetchone()[0]
+        cursor.close()
+        return count
