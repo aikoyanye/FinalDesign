@@ -14,17 +14,16 @@
 {% extends "header.html" %}
 
 {% block main %}
-
-
+<button onclick="MidInfo()" value="23333"></button>
 <div id="mid">
     <!-- 交给react -->
     <div class="panel panel-default">
         <div class="panel-heading">
             <table style="table-layout:fixed">
                 <tr>
-                    <td style="width:33%"><h4>正在进行：</h4></td>
-                    <td style="width:33%"><h4>空闲游船：</h4></td>
-                    <td style="width:33%"><h4>过去7天游玩数据：</h4></td>
+                    <td style="width:33%"><h4 id="activity">正在进行：</h4></td>
+                    <td style="width:33%"><h4 id="ship">空闲游船：</h4></td>
+                    <td style="width:33%"><h4 id="last">过去7天游玩数据：</h4></td>
                 </tr>
             </table>
         </div>
@@ -40,22 +39,27 @@
         </div>
     </div>
 </div>
-
 <script type="text/babel">
-    <!--class Clock extends React.Component {-->
-      <!--render() {-->
-        <!--return (<h4>{this.props.date.toLocaleTimeString()}</h4>);-->
-      <!--}-->
-    <!--}-->
+function MidInfo(){
+    $.ajax({
+        url: "/mid",
+        type: "POST",
+        data: {weather:"0"},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            document.getElementById("activity").innerHTML = data.activity
+            document.getElementById("ship").innerHTML = data.ship
+            document.getElementById("last").innerHTML = data.last
+            document.getElementById("time").innerHTML = data.time
+            $('#activity').val(data.activity);
+            $('#ship').val(data.ship);
+            $('#last').val(data.last);
+            $('#time').val(data.time);
+        }
+    })
+}
 
-<!--function tick() {-->
-  <!--ReactDOM.render(-->
-    <!--<Clock date={new Date()} />,-->
-    <!--document.getElementById('time')-->
-  <!--);-->
-<!--}-->
-
-<!--setInterval(tick, 1000);-->
+setInterval(MidInfo, 1000);
 </script>
 
 {% end %}

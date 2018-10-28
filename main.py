@@ -1,6 +1,7 @@
 import os, pymysql
 import tornado.web, tornado.locks, tornado.ioloop
 from handler.WelcomeHandler import WelcomeHandler
+from handler.MidHandler import MidHandler
 
 # 数据库信息
 HOST = 'localhost'
@@ -13,7 +14,8 @@ class Application(tornado.web.Application):
         self.db = db
         # api定义
         handlers = [
-            tornado.web.url(r'/', WelcomeHandler, name='welcome')
+            tornado.web.url(r'/', WelcomeHandler, name='welcome'),
+            tornado.web.url(r'/mid', MidHandler, name='mid'),
         ]
         # 服务端设置，设定好网页和静态文件存放位置，以及安全设置
         settings = dict(
@@ -29,8 +31,8 @@ class Application(tornado.web.Application):
 # 将db对象传入服务端，作为唯一全局变量
 # 初始化服务端，让服务端持久服务
 async def main():
-    # db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
-    app = Application(None)
+    db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
+    app = Application(db)
     app.listen(8080)
     await tornado.locks.Event().wait()
 
