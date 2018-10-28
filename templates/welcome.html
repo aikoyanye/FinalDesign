@@ -14,16 +14,15 @@
 {% extends "header.html" %}
 
 {% block main %}
-<button onclick="MidInfo()" value="23333"></button>
 <div id="mid">
     <!-- 交给react -->
     <div class="panel panel-default">
         <div class="panel-heading">
             <table style="table-layout:fixed">
                 <tr>
-                    <td style="width:33%"><h4><p id="activity">正在进行：</p></h4></td>
-                    <td style="width:33%"><h4><p id="ship">空闲游船：</p></h4></td>
-                    <td style="width:33%"><h4><p id="last">过去7天游玩数据：</p></h4></td>
+                    <td style="width:33%"><h4><p id="activity"></p></h4></td>
+                    <td style="width:33%"><h4><p id="ship"></p></h4></td>
+                    <td style="width:33%"><h4><p id="last"></p></h4></td>
                 </tr>
             </table>
         </div>
@@ -34,7 +33,7 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="margin-right:20px">
-                <h4>天气</h4>
+                <h4><div id="weather" /></h4>
             </ul>
         </div>
     </div>
@@ -47,14 +46,26 @@ function MidInfo(){
         data: {weather:"0"},
         success: function(arg){
             var data = jQuery.parseJSON(arg);
-            document.getElementById("activity").innerHTML = data.activity
-            document.getElementById("ship").innerHTML = data.ship
-            document.getElementById("last").innerHTML = data.last
+            document.getElementById("activity").innerHTML = "正在进行：" + data.activity
+            document.getElementById("ship").innerHTML = "空闲游船：" + data.ship
+            document.getElementById("last").innerHTML = "过去7天游玩数据：" + data.last
             document.getElementById("time").innerHTML = "当前日期和时间：" + data.time
         }
     })
 }
 
+function MidInfo1(){
+    $.ajax({
+        url: "/mid",
+        type: "POST",
+        data: {weather:"1"},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            document.getElementById("weather").innerHTML = "当前天气：" + data.weather
+        }
+    })
+}
+setInterval(MidInfo1, 10000);
 setInterval(MidInfo, 1000);
 </script>
 

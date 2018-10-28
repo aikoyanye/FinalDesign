@@ -10,7 +10,11 @@ class MidHandler(BaseHandler):
     async def post(self, *args, **kwargs):
         print(self.get_argument('weather'))
         if self.get_argument('weather') == '1':
-            pass
+            weather = SomeTool.weather()
+            data = {
+                'weather': weather
+            }
+            self.write(json.dumps(data))
         else:
             activity = ActivityTool.active_activity(self.application.db)
             ship = ShipTool.idle_ship(self.application.db)
@@ -22,5 +26,4 @@ class MidHandler(BaseHandler):
                 'last': last,
                 'time': time
             }
-            print(data)
             self.write(json.dumps(data))
