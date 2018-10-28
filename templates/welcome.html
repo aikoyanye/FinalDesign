@@ -21,16 +21,16 @@
         <div class="panel-heading">
             <table style="table-layout:fixed">
                 <tr>
-                    <td style="width:33%"><h4 id="activity">正在进行：</h4></td>
-                    <td style="width:33%"><h4 id="ship">空闲游船：</h4></td>
-                    <td style="width:33%"><h4 id="last">过去7天游玩数据：</h4></td>
+                    <td style="width:33%"><h4><p id="activity">正在进行：</p></h4></td>
+                    <td style="width:33%"><h4><p id="ship">空闲游船：</p></h4></td>
+                    <td style="width:33%"><h4><p id="last">过去7天游玩数据：</p></h4></td>
                 </tr>
             </table>
         </div>
         <div class="panel-body">
             <ul class="nav navbar-nav">
                 <li>
-                    <div id="time" />
+                    <h4><div id="time" /></h4>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" style="margin-right:20px">
@@ -50,11 +50,7 @@ function MidInfo(){
             document.getElementById("activity").innerHTML = data.activity
             document.getElementById("ship").innerHTML = data.ship
             document.getElementById("last").innerHTML = data.last
-            document.getElementById("time").innerHTML = data.time
-            $('#activity').val(data.activity);
-            $('#ship').val(data.ship);
-            $('#last').val(data.last);
-            $('#time').val(data.time);
+            document.getElementById("time").innerHTML = "当前日期和时间：" + data.time
         }
     })
 }
