@@ -4,9 +4,9 @@ from handler.WelcomeHandler import WelcomeHandler
 from handler.MidHandler import MidHandler
 
 # 数据库信息
-HOST = 'localhost'
+HOST = '120.77.153.248'
 USERNAME = 'aiko'
-PASSWORD = 'aiko1234'
+PASSWORD = 'AikoYanye1234.'
 DATABASE = 'final_design'
 
 class Application(tornado.web.Application):

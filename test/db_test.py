@@ -1,8 +1,9 @@
-import pymysql
+import pymysql, base64
 
-HOST = 'localhost'
+# 数据库信息
+HOST = '120.77.153.248'
 USERNAME = 'aiko'
-PASSWORD = 'aiko1234'
+PASSWORD = 'AikoYanye1234.'
 DATABASE = 'final_design'
 
 # 打开数据库连接
@@ -57,5 +58,7 @@ cursor = db.cursor()
 #     db.commit()
 # except:
 #     db.rollback()
+
+
 
 db.close()

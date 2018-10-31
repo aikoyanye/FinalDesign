@@ -8,7 +8,6 @@ import json
 # mid面板内容返回
 class MidHandler(BaseHandler):
     async def post(self, *args, **kwargs):
-        print(self.get_argument('weather'))
         if self.get_argument('weather') == '1':
             weather = SomeTool.weather()
             data = {
