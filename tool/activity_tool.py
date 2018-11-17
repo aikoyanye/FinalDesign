@@ -86,3 +86,24 @@ class ActivityTool:
         count = cursor.fetchone()[0]
         cursor.close()
         return count
+
+    # 获取首页activity标签的初始化信息，分两个方法实现
+    # 正在进行的活动的信息
+    @staticmethod
+    def activity_init_play(db):
+        cursor = db.cursor()
+        sql1 = 'SELECT * FROM activity WHERE status = "正在游玩"'
+        cursor.execute(sql1)
+        play = cursor.fetchall()
+        cursor.close()
+        return play
+
+    # 已完成活动的信息
+    @staticmethod
+    def activity_init_played(db):
+        cursor = db.cursor()
+        sql2 = 'SELECT * FROM activity WHERE status = "已付款"'
+        cursor.execute(sql2)
+        played = cursor.fetchall()
+        cursor.close()
+        return played

@@ -29,7 +29,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#act" data-toggle="tab" class="glyphicon glyphicon-flag">活动</a></li>
+                    <li class="active"><a onclick="MainActivityClick()" href="#act" data-toggle="tab" class="glyphicon glyphicon-flag">活动</a></li>
                     <li><a href="#mem" data-toggle="tab" class="glyphicon glyphicon-user">会员</a></li>
                     <li><a href="#shi" data-toggle="tab" class="glyphicon glyphicon-tint">游船</a></li>
                     <li><a href="#res" data-toggle="tab" class="glyphicon glyphicon-cloud-upload">预约</a></li>
@@ -63,22 +63,22 @@
     {% block main %}{% end %}
     <div id="myTabContent" class="tab-content">
         <div class="tab-pane fade in active" id="act">
-            <p>activity</p>
+            {% block activity %}{% end %}
         </div>
         <div class="tab-pane fade" id="mem">
-            <p>member</p>
+            {% block member %}{% end %}
         </div>
         <div class="tab-pane fade" id="shi">
-            <p>ship</p>
+            {% block ship %}{% end %}
         </div>
         <div class="tab-pane fade" id="res">
-            <p>reservation</p>
+            {% block reservation %}{% end %}
         </div>
         <div class="tab-pane fade" id="ad">
-            <p>ad</p>
+            {% block ad %}{% end %}
         </div>
         <div class="tab-pane fade" id="sact">
-            <p>sact</p>
+            {% block sact %}{% end %}
         </div>
     </div>
 </div>

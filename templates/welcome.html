@@ -68,6 +68,40 @@ function MidInfo1(){
 }
 setInterval(MidInfo1, 10000);
 setInterval(MidInfo, 1000);
+MainActivityClick();
 </script>
 
+{% end %}
+
+{% block activity %}
+<h2>正在进行</h2>
+<hr>
+<div id="main_activity_play">
+    <p>activity</p>
+</div>
+<h2>已结束</h2>
+<hr>
+<div id="main_activity_played">
+    <p>activity_played</p>
+</div>
+{% end %}
+
+{% block member %}
+<p>member</p>
+{% end %}
+
+{% block ship %}
+<p>ship</p>
+{% end %}
+
+{% block reservation %}
+<p>reservation</p>
+{% end %}
+
+{% block ad %}
+<p>ad</p>
+{% end %}
+
+{% block sact %}
+<p>sact</p>
 {% end %}

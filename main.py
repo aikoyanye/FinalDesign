@@ -2,6 +2,7 @@ import os, pymysql
 import tornado.web, tornado.locks, tornado.ioloop
 from handler.WelcomeHandler import WelcomeHandler
 from handler.MidHandler import MidHandler
+from handler.ActivityHandler import ActivityHandler
 
 # 数据库信息
 HOST = '120.77.153.248'
@@ -16,6 +17,7 @@ class Application(tornado.web.Application):
         handlers = [
             tornado.web.url(r'/', WelcomeHandler, name='welcome'),
             tornado.web.url(r'/mid', MidHandler, name='mid'),
+            tornado.web.url(r'/activity', ActivityHandler, name='activity'),
         ]
         # 服务端设置，设定好网页和静态文件存放位置，以及安全设置
         settings = dict(
