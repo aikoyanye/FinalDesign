@@ -13,4 +13,4 @@ class SomeTool:
     def weather():
         resp = requests.get(WEATHER_API).json()
         result = resp['results'][0]
-        return result['location']['name'] + '：' + result['now']['temperature'] + '摄氏度，' + result['now']['text']
+        return result['location']['name'] + '，' + result['now']['temperature'] + '摄氏度，' + result['now']['text']

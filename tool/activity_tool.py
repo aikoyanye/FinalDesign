@@ -92,18 +92,42 @@ class ActivityTool:
     @staticmethod
     def activity_init_play(db):
         cursor = db.cursor()
-        sql1 = 'SELECT * FROM activity WHERE status = "正在游玩"'
+        sql1 = 'SELECT id, created, userId, shipId FROM activity WHERE status = "正在游玩"'
         cursor.execute(sql1)
-        play = cursor.fetchall()
+        results = list()
+        # 外键查询对于两个以上外键以上的没用，所以自己写
+        for result in cursor.fetchall():
+            member = list(MemberTool.activity_main_play_user(db, id=result[2])[0])
+            ship = list(ShipTool.activity_main_play(db, id=result[3])[0])
+            results.append(list(result) + member + ship)
         cursor.close()
-        return play
+        return results
 
     # 已完成活动的信息
     @staticmethod
     def activity_init_played(db):
         cursor = db.cursor()
-        sql2 = 'SELECT * FROM activity WHERE status = "已付款"'
+        sql2 = 'SELECT id, created, endtime, cost, userId, shipId FROM activity WHERE status = "已付款"'
         cursor.execute(sql2)
-        played = cursor.fetchall()
+        results = list()
+        # 外键查询对于两个以上外键以上的没用，所以自己写
+        for result in cursor.fetchall():
+            member = list(MemberTool.activity_main_play_user(db, id=result[4])[0])
+            ship = list(ShipTool.activity_main_play(db, id=result[5])[0])
+            results.append(list(result) + member + ship)
         cursor.close()
-        return played
+        return results
+
+    # 结束活动
+    @staticmethod
+    def finish_activity(db, id, cost):
+        endtime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        cursor = db.cursor()
+        sql = 'UPDATE activity SET cost = "{}", status = "已付款", endtime = "{}" WHERE id = "{}"'.format(cost, endtime, id)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        return True

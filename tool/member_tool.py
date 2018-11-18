@@ -59,3 +59,12 @@ class MemberTool:
             db.rollback()
             return False
         return True
+
+    # 给activity标签页用的
+    @staticmethod
+    def activity_main_play_user(db, id):
+        cursor = db.cursor()
+        sql = 'SELECT username, phone FROM member WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()

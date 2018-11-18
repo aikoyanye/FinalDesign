@@ -69,3 +69,12 @@ class ShipTool:
         count = cursor.fetchone()[0]
         cursor.close()
         return count
+
+    # 给activity标签页用的
+    @staticmethod
+    def activity_main_play(db, id):
+        cursor = db.cursor()
+        sql = 'SELECT type FROM ship WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()

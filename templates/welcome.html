@@ -74,13 +74,19 @@ MainActivityClick();
 {% end %}
 
 {% block activity %}
-<h2>正在进行</h2>
-<hr>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>正在进行</h2>
+    </div>
+</div>
 <div id="main_activity_play">
     <p>activity</p>
 </div>
-<h2>已结束</h2>
-<hr>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>已结束</h2>
+    </div>
+</div>
 <div id="main_activity_played">
     <p>activity_played</p>
 </div>
