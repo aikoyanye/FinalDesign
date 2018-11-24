@@ -93,7 +93,22 @@ MainActivityClick();
 {% end %}
 
 {% block member %}
-<p>member</p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>正在游玩中的会员</h2>
+    </div>
+</div>
+<div id="main_member_active">
+    <p>activity member</p>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>其余会员</h2>
+    </div>
+</div>
+<div id="main_member">
+    <p>member</p>
+</div>
 {% end %}
 
 {% block ship %}
@@ -110,4 +125,19 @@ MainActivityClick();
 
 {% block sact %}
 <p>sact</p>
+{% end %}
+
+{% block check %}
+<div class="modal fade" id="check" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">确认要提交吗？</h4>
+            </div>
+            <div class="modal-body" id="check_cost"></div>
+            <div class="modal-footer" id="cost_commit"></div>
+        </div>
+    </div>
+</div>
 {% end %}

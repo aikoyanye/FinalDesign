@@ -78,3 +78,19 @@ class ShipTool:
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
+
+    # activity完成后给船出行次数+1
+    @staticmethod
+    def finish_activity_ship_time(db, id):
+        cursor = db.cursor()
+        sql = 'SELECT shipId FROM activity WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        shipId = cursor.fetchone()[0]
+        sql = 'UPDATE ship SET time = time + 1 WHERE id = {}'.format(shipId)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        return True

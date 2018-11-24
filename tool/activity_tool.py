@@ -121,6 +121,8 @@ class ActivityTool:
     # 结束活动
     @staticmethod
     def finish_activity(db, id, cost):
+        ShipTool.finish_activity_ship_time(db, id)
+        MemberTool.activity_finish_member(db, id)
         endtime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         cursor = db.cursor()
         sql = 'UPDATE activity SET cost = "{}", status = "已付款", endtime = "{}" WHERE id = "{}"'.format(cost, endtime, id)
