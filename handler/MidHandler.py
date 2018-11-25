@@ -19,10 +19,12 @@ class MidHandler(BaseHandler):
             ship = ShipTool.idle_ship(self.application.db)
             last = ActivityTool.last_seven_active(self.application.db)
             time = SomeTool.current_date()
+            brokeship = ShipTool.broke_ship(self.application.db)
             data = {
                 'activity': activity,
                 'ship': ship,
                 'last': last,
-                'time': time
+                'time': time,
+                'brokeship': brokeship
             }
             self.write(json.dumps(data))

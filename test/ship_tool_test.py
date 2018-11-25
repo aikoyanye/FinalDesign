@@ -24,4 +24,6 @@ db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 # 改
 # ShipTool.put(db, 1, '泰坦尼克号', '正在使用', '于18-10-14进购的一批新船，致敬泰坦尼克号', '2018-10-14 15:39:35')
 
-ShipTool.finish_activity_ship_time(db, 1)
+# ShipTool.finish_activity_ship_time(db, 1)
+
+print(ShipTool.broke_ship_main(db))

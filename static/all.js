@@ -3,6 +3,42 @@ function Search(){
     alert(document.getElementById("key").value);
 }
 
+// 首页mid组件初始化
+function MidInit(){
+    setInterval(MidInfo1, 10000);
+    setInterval(MidInfo, 1000);
+}
+
+// 首页mid除天气外的数据
+function MidInfo(){
+    $.ajax({
+        url: "/mid",
+        type: "POST",
+        data: {weather:"0"},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            document.getElementById("activity").innerHTML = "正在进行：" + data.activity
+            document.getElementById("ship").innerHTML = "空闲游船：" + data.ship
+            document.getElementById("last").innerHTML = "过去7天游玩数据：" + data.last
+            document.getElementById("time").innerHTML = "当前日期和时间：" + data.time
+            document.getElementById("brokeship").innerHTML = "无法使用游船：" + data.brokeship
+        }
+    })
+}
+
+// 首页mid组件天气数据
+function MidInfo1(){
+    $.ajax({
+        url: "/mid",
+        type: "POST",
+        data: {weather:"1"},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            document.getElementById("weather").innerHTML = "当前天气：" + data.weather
+        }
+    })
+}
+
 // activity标签页的刷新
 function MainActivityClick(){
     $.ajax({
@@ -82,6 +118,49 @@ function MainMemberClick(){
             div.innerHTML = ""
             for (var i=0, l=data.length; i<l; i++){
                 div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:25%"><h5>' + data[i][1] + '(' + data[i][2] + ')</h5></td><td style="width:25%"><h5>创建时间：' + data[i][4] + '</h5></td><td style="width:25%"><h5>信誉：' + data[i][3] + '</h5></td><td style="width:25%"><h5>游玩次数：'+data[i][5]+'</h5></td></tr></table></div></div>'
+            }
+        }
+    })
+}
+
+// ship标签页刷新
+function MainShipClick(){
+    $.ajax({
+        url: "/ship",
+        type: "GET",
+        data: {type: "1"},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            var div = document.getElementById("main_ship_active")
+            div.innerHTML = ""
+            for (var i=0, l=data.length; i<l; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="25%">'+data[i][1]+'</td><td width="25%">'+data[i][6]+'</td><td width="25%">引进时间：'+data[i][4]+'</td><td width="25%">上次维修时间：'+data[i][7]+'</td></tr><tr><td colspan="4">描述：'+data[i][3]+'</td></tr></table></div></div>'
+            }
+        }
+    })
+    $.ajax({
+        url: "/ship",
+        type: "GET",
+        data: {type: "2"},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            var div = document.getElementById("main_broke_ship")
+            div.innerHTML = ""
+            for (var i=0, l=data.length; i<l; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="25%">'+data[i][1]+'</td><td width="25%">'+data[i][6]+'</td><td width="25%">引进时间：'+data[i][4]+'</td><td width="25%">上次维修时间：'+data[i][7]+'</td></tr><tr><td colspan="4">描述：'+data[i][3]+'</td></tr></table></div></div>'
+            }
+        }
+    })
+    $.ajax({
+        url: "/ship",
+        type: "GET",
+        data: {type: "3"},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            var div = document.getElementById("main_idle_ship")
+            div.innerHTML = ""
+            for (var i=0, l=data.length; i<l; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="25%">'+data[i][1]+'</td><td width="25%">'+data[i][6]+'</td><td width="25%">引进时间：'+data[i][4]+'</td><td width="25%">上次维修时间：'+data[i][7]+'</td></tr><tr><td colspan="4">描述：'+data[i][3]+'</td></tr></table></div></div>'
             }
         }
     })

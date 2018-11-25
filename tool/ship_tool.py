@@ -60,11 +60,21 @@ class ShipTool:
             return False
         return True
 
-    # 获取空闲游船
+    # 获取空闲游船的数量
     @staticmethod
     def idle_ship(db):
         cursor = db.cursor()
         sql = 'SELECT count(status) FROM ship WHERE status = "空闲"'
+        cursor.execute(sql)
+        count = cursor.fetchone()[0]
+        cursor.close()
+        return count
+
+    # 获取不能使用的游船的数量
+    @staticmethod
+    def broke_ship(db):
+        cursor = db.cursor()
+        sql = 'SELECT count(status) FROM ship WHERE status != "正在使用" and status != "空闲"'
         cursor.execute(sql)
         count = cursor.fetchone()[0]
         cursor.close()
@@ -79,14 +89,14 @@ class ShipTool:
         cursor.close()
         return cursor.fetchall()
 
-    # activity完成后给船出行次数+1
+    # activity完成后给船出行次数+1，把游船状态改为空闲
     @staticmethod
     def finish_activity_ship_time(db, id):
         cursor = db.cursor()
         sql = 'SELECT shipId FROM activity WHERE id = {}'.format(id)
         cursor.execute(sql)
         shipId = cursor.fetchone()[0]
-        sql = 'UPDATE ship SET time = time + 1 WHERE id = {}'.format(shipId)
+        sql = 'UPDATE ship SET status = "空闲", time = time + 1 WHERE id = {}'.format(shipId)
         try:
             cursor.execute(sql)
             db.commit()
@@ -94,3 +104,30 @@ class ShipTool:
             db.rollback()
             return False
         return True
+
+    # 获取空闲游船
+    @staticmethod
+    def idle_ship_main(db):
+        cursor = db.cursor()
+        sql = 'SELECT * FROM ship WHERE status = "空闲"'
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()
+
+    # 获取正在使用的游船
+    @staticmethod
+    def active_ship_main(db):
+        cursor = db.cursor()
+        sql = 'SELECT * FROM ship WHERE status = "正在使用"'
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()
+
+    # 获取不能使用的游船
+    @staticmethod
+    def broke_ship_main(db):
+        cursor = db.cursor()
+        sql = 'SELECT * FROM ship WHERE status != "正在使用" and status != "空闲"'
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()

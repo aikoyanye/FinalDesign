@@ -18,11 +18,12 @@
     <!-- 交给react -->
     <div class="panel panel-default">
         <div class="panel-heading">
-            <table style="table-layout:fixed">
+            <table width="100%">
                 <tr>
-                    <td style="width:33%"><h4><p id="activity"></p></h4></td>
-                    <td style="width:33%"><h4><p id="ship"></p></h4></td>
-                    <td style="width:33%"><h4><p id="last"></p></h4></td>
+                    <td width="25%"><h4><p id="activity"></p></h4></td>
+                    <td width="25%"><h4><p id="ship"></p></h4></td>
+                    <td width="25%"><h4><p id="brokeship"></p></h4></td>
+                    <td width="25%"><h4><p id="last"></p></h4></td>
                 </tr>
             </table>
         </div>
@@ -40,34 +41,7 @@
 </div>
 
 <script type="text/babel">
-function MidInfo(){
-    $.ajax({
-        url: "/mid",
-        type: "POST",
-        data: {weather:"0"},
-        success: function(arg){
-            var data = jQuery.parseJSON(arg);
-            document.getElementById("activity").innerHTML = "正在进行：" + data.activity
-            document.getElementById("ship").innerHTML = "空闲游船：" + data.ship
-            document.getElementById("last").innerHTML = "过去7天游玩数据：" + data.last
-            document.getElementById("time").innerHTML = "当前日期和时间：" + data.time
-        }
-    })
-}
-
-function MidInfo1(){
-    $.ajax({
-        url: "/mid",
-        type: "POST",
-        data: {weather:"1"},
-        success: function(arg){
-            var data = jQuery.parseJSON(arg);
-            document.getElementById("weather").innerHTML = "当前天气：" + data.weather
-        }
-    })
-}
-setInterval(MidInfo1, 10000);
-setInterval(MidInfo, 1000);
+MidInit();
 MainActivityClick();
 </script>
 
@@ -112,7 +86,30 @@ MainActivityClick();
 {% end %}
 
 {% block ship %}
-<p>ship</p>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>正在使用中</h2>
+    </div>
+</div>
+<div id="main_ship_active">
+    <p>activity ship</p>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>无法使用</h2>
+    </div>
+</div>
+<div id="main_broke_ship">
+    <p>broke ship</p>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h2>空闲</h2>
+    </div>
+</div>
+<div id="main_idle_ship">
+    <p>idle ship</p>
+</div>
 {% end %}
 
 {% block reservation %}

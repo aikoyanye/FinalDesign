@@ -102,31 +102,22 @@ class MemberTool:
             print('没有正在进行的活动')
             pass
 
-# 给member标签页用的
+    # 给member标签页用的
     @staticmethod
     def member_main(db):
-        cursor = db.cursor()
-        activity_sql = 'SELECT userId FROM activity WHERE status = "正在游玩"'
-        cursor.execute(activity_sql)
-        ids = str(cursor.fetchone()).replace(',', '')
-        if ids != 'None':
-            user_sql = 'SELECT * FROM member WHERE member.id NOT IN ' + ids
-        else:
-            user_sql = 'SELECT * FROM member'
-        cursor.execute(user_sql)
-        mem = cursor.fetchall()
-        cursor.close()
-        return mem
-        # try:
-        #     cursor = db.cursor()
-        #     activity_sql = 'SELECT userId FROM activity WHERE status = "正在游玩"'
-        #     cursor.execute(activity_sql)
-        #     ids = str(cursor.fetchone()).replace(',', '')
-        #     user_sql = 'SELECT * FROM member WHERE id NOT EXIST (SELECT * FROM member WHERE id = ' + ids + ')'
-        #     cursor.execute(user_sql)
-        #     mem = cursor.fetchall()
-        #     cursor.close()
-        #     return mem
-        # except:
-        #     print('没有正在进行的活动')
-        #     pass
+        try:
+            cursor = db.cursor()
+            activity_sql = 'SELECT userId FROM activity WHERE status = "正在游玩"'
+            cursor.execute(activity_sql)
+            ids = str(cursor.fetchone()).replace(',', '')
+            if ids != 'None':
+                user_sql = 'SELECT * FROM member WHERE member.id NOT IN ' + ids
+            else:
+                user_sql = 'SELECT * FROM member'
+            cursor.execute(user_sql)
+            mem = cursor.fetchall()
+            cursor.close()
+            return mem
+        except:
+            print('没有正在进行的活动')
+            pass
