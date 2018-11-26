@@ -62,6 +62,7 @@
     </nav>
     {% block main %}{% end %}
     <div id="myTabContent" class="tab-content">
+        {% if current %}
         <div class="tab-pane fade in active" id="act">
             {% block activity %}{% end %}
         </div>
@@ -80,6 +81,13 @@
         <div class="tab-pane fade" id="sact">
             {% block sact %}{% end %}
         </div>
+        {% else %}
+        <form action="/" method="post">
+            <div class="input-group">
+                <input type="password" class="form-control" placeholder="Username" aria-describedby="basic-addon1" name="key" />
+            </div>
+        </form>
+        {% end %}
     </div>
 </div>
 {% block check %}{% end %}

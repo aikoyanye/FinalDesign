@@ -1,4 +1,5 @@
 import pymysql, base64
+from tool.some_tool import SomeTool
 
 # 数据库信息
 HOST = '120.77.153.248'
@@ -58,7 +59,5 @@ cursor = db.cursor()
 #     db.commit()
 # except:
 #     db.rollback()
-
-
 
 db.close()
