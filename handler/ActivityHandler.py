@@ -12,3 +12,6 @@ class ActivityHandler(BaseHandler):
             ActivityTool.finish_activity(self.application.db, self.get_argument('id'), self.get_argument('cost'))
         else:
             self.write(json.dumps(ActivityTool.activity_init_played(self.application.db)))
+
+    async def post(self, *args, **kwargs):
+        print('activity post')

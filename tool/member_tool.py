@@ -100,7 +100,6 @@ class MemberTool:
             return act_mem
         except:
             print('没有正在进行的活动')
-            pass
 
     # 给member标签页用的
     @staticmethod
@@ -120,4 +119,16 @@ class MemberTool:
             return mem
         except:
             print('没有正在进行的活动')
-            pass
+
+    # 添加活动时检索用户
+    @staticmethod
+    def add_activity_member(db, key):
+        cursor = db.cursor()
+        sql = 'SELECT username, phone FROM member WHERE phone like "{}%"'.format(str(key))
+        keys, values = [], []
+        cursor.execute(sql)
+        for s in cursor.fetchall():
+            keys.append(s[0]+'('+s[1]+')')
+            values.append(s[1])
+        cursor.close()
+        return keys, values

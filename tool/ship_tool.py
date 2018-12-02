@@ -131,3 +131,15 @@ class ShipTool:
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
+
+    # 获取空闲种类的游船，add_activity使用
+    @staticmethod
+    def add_activity_ship(db):
+        cursor = db.cursor()
+        sql = 'SELECT type FROM ship WHERE status = "空闲"'
+        cursor.execute(sql)
+        cursor.close()
+        results = list()
+        for result in cursor.fetchall():
+            results.append(result[0])
+        return list(set(results))

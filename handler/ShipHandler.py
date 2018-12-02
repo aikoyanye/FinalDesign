@@ -11,5 +11,7 @@ class ShipHandler(BaseHandler):
             self.write(json.dumps(ShipTool.active_ship_main(self.application.db)))
         elif type == '2':
             self.write(json.dumps(ShipTool.broke_ship_main(self.application.db)))
+        elif type == '3':
+            self.write(json.dumps(ShipTool.add_activity_ship(self.application.db)))
         else:
             self.write(json.dumps(ShipTool.idle_ship_main(self.application.db)))

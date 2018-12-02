@@ -24,5 +24,6 @@ db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 
 # MemberTool.activity_finish_member(db, 2)
 
-print(MemberTool.member_main(db))
+# print(MemberTool.member_main(db))
 # print(MemberTool.member_main_act(db))
+print(MemberTool.add_activity_member(db, '13'))

@@ -26,4 +26,5 @@ db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 
 # ShipTool.finish_activity_ship_time(db, 1)
 
-print(ShipTool.broke_ship_main(db))
+# print(ShipTool.broke_ship_main(db))
+print(ShipTool.add_activity_ship(db))

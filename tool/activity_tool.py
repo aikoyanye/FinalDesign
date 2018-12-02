@@ -92,14 +92,16 @@ class ActivityTool:
     @staticmethod
     def activity_init_play(db):
         cursor = db.cursor()
-        sql1 = 'SELECT id, created, userId, shipId FROM activity WHERE status = "正在游玩"'
+        sql1 = 'SELECT id, created, userId, shipId, cost FROM activity WHERE status = "正在游玩"'
         cursor.execute(sql1)
         results = list()
         # 外键查询对于两个以上外键以上的没用，所以自己写
         for result in cursor.fetchall():
             member = list(MemberTool.activity_main_play_user(db, id=result[2])[0])
             ship = list(ShipTool.activity_main_play(db, id=result[3])[0])
-            results.append(list(result) + member + ship)
+            result = list(result)
+            result.pop(2)
+            results.append(result + member + ship)
         cursor.close()
         return results
 

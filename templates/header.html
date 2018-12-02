@@ -39,7 +39,7 @@
                 <!--这里不能用form，要实现选项卡的话只能用buttom-->
                 <form class="navbar-form navbar-left" id="form">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search" id="key">
+                        <input type="text" class="form-control" placeholder="输入关键字" id="key">
                     </div>
                     <!--<button type="submit" class="btn btn-default">Submit</button>-->
                     <button onclick="Search()" class="btn btn-default">Search</button>
@@ -61,8 +61,8 @@
         </div><!--/.container-fluid -->
     </nav>
     {% block main %}{% end %}
+    {% if current %}
     <div id="myTabContent" class="tab-content">
-        {% if current %}
         <div class="tab-pane fade in active" id="act">
             {% block activity %}{% end %}
         </div>
@@ -81,15 +81,21 @@
         <div class="tab-pane fade" id="sact">
             {% block sact %}{% end %}
         </div>
-        {% else %}
-        <form action="/" method="post">
-            <div class="input-group">
-                <input type="password" class="form-control" placeholder="Username" aria-describedby="basic-addon1" name="key" />
+    </div>
+    {% else %}
+    <div class="jumbotron">
+        <h1>你好，管理员</h1>
+        <p>如丢失密钥或密钥过期，请联系超级管理员</p>
+        <form action="/" method="post" id="f_key">
+            <div class="input-group input-group-lg">
+                <input type="password" class="form-control" placeholder="请输入密钥" aria-describedby="sub" name="key" />
+                <a class="btn btn-primary btn-lg input-group-addon" role="button" id="sub" onclick="FormKeySubmit()">提交</a>
             </div>
         </form>
-        {% end %}
     </div>
+    {% end %}
 </div>
 {% block check %}{% end %}
+{% block add_act %}{% end %}
 </body>
 </html>

@@ -7,5 +7,8 @@ class MemberHandler(BaseHandler):
         print('member get')
         if self.get_argument('type') == '1':
             self.write(json.dumps(MemberTool.member_main_act(self.application.db)))
+        elif self.get_argument('type') == '2':
+            keys, values = MemberTool.add_activity_member(self.application.db, self.get_argument('key'))
+            self.write(json.dumps(keys+values))
         else:
             self.write(json.dumps(MemberTool.member_main(self.application.db)))

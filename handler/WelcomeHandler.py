@@ -16,3 +16,5 @@ class WelcomeHandler(BaseHandler):
         else :
             self.write('<script>alert("密钥错误")</script>')
             self.render('welcome.html', current=False)
+
+
