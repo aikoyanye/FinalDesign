@@ -1,4 +1,6 @@
 from tool.activity_tool import ActivityTool
+from tool.member_tool import MemberTool
+from tool.ship_tool import ShipTool
 from handler.BaseHandler import BaseHandler
 import json
 
@@ -15,3 +17,7 @@ class ActivityHandler(BaseHandler):
 
     async def post(self, *args, **kwargs):
         print('activity post')
+        ActivityTool.add(self.application.db, '正在游玩', '正在计时', self.get_argument('cost'),
+                         MemberTool.get_member_id_by_phone(self.application.db, self.get_argument('phone')),
+                         ShipTool.get_ship_id_on_add_activity(self.application.db, self.get_argument('t')))
+        self.write('')

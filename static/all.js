@@ -154,7 +154,7 @@ function MainShipClick(){
     $.ajax({
         url: "/ship",
         type: "GET",
-        data: {type: "3"},
+        data: {type: "10086"},
         success: function(arg){
             var data = jQuery.parseJSON(arg);
             var div = document.getElementById("main_idle_ship")
@@ -179,7 +179,14 @@ function AddActivity(){
     if(phone=="请选择" || t=="请选择" || cost==''){
         alert('选项不能为空')
     }else{
-        alert(phone + ' ' + t + ' ' + cost)
+        $.ajax({
+            url: "/activity",
+            type: "POST",
+            data: {phone: phone, cost: cost, t: t},
+            success: function(arg){
+                MainActivityClick();
+            }
+        })
     }
 }
 
@@ -203,7 +210,6 @@ function AddActivitySelectOption(k){
             for (var i=0; i<l; i++){
                 select.add(new Option(data[i], data[i+l]));
             }
-
         }
     })
 }

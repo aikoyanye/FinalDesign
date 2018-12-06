@@ -132,3 +132,19 @@ class MemberTool:
             values.append(s[1])
         cursor.close()
         return keys, values
+
+    # 添加活动时根据phone判断用户是否已注册，如果没有就注册，返回id
+    @staticmethod
+    def get_member_id_by_phone(db, phone):
+        cursor = db.cursor()
+        sql = 'SELECT id FROM member WHERE phone = "{}"'.format(str(phone))
+        cursor.execute(sql)
+        cursor.close()
+        result = cursor.fetchone()
+        if result:
+            return result[0]
+        MemberTool.add(db, '游客', str(phone), '良')
+        sql = 'SELECT id FROM member WHERE phone = "{}"'.format(str(phone))
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchone()[0]

@@ -14,7 +14,7 @@
 {% extends "header.html" %}
 
 {% block main %}
-<div id="mid">
+<div id="mid" style="margin-top:45px;">
     <!-- 交给react -->
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -162,7 +162,7 @@ MainActivityClick();
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="AddActivity()">提交</button>
+                    <button type="button" class="btn btn-primary" onclick="AddActivity()" data-dismiss="modal">提交</button>
                 </div>
             </form>
         </div>

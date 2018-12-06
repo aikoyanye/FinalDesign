@@ -13,7 +13,7 @@ db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 # MemberTool.add(db, 'AikoYanye', '13212345678', '良')
 
 # 查找数据
-# print(MemberTool.get(db))
+print(MemberTool.get(db))
 # print(MemberTool.get(db, key='9'))
 
 # 修改数据
@@ -26,4 +26,6 @@ db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 
 # print(MemberTool.member_main(db))
 # print(MemberTool.member_main_act(db))
-print(MemberTool.add_activity_member(db, '13'))
+# print(MemberTool.add_activity_member(db, '13'))
+
+# print(MemberTool.get_member_id_by_phone(db, '13212345677'))

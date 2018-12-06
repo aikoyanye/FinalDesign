@@ -143,3 +143,27 @@ class ShipTool:
         for result in cursor.fetchall():
             results.append(result[0])
         return list(set(results))
+
+    # 改变船的状态
+    @staticmethod
+    def change_ship_status(db, id, status):
+        cursor = db.cursor()
+        sql = 'UPDATE ship SET status = "{}" WHERE id = "{}"'.format(status, id)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        return True
+
+    # 添加活动时根据类型返回一个空闲游船的id，并改变状态
+    @staticmethod
+    def get_ship_id_on_add_activity(db, type):
+        cursor = db.cursor()
+        sql = 'SELECT id FROM ship WHERE type = "{}" AND status = "空闲" LIMIT 0, 1'.format(type)
+        cursor.execute(sql)
+        cursor.close()
+        result = cursor.fetchone()[0]
+        ShipTool.change_ship_status(db, result, '正在使用')
+        return result
