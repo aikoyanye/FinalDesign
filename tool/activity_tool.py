@@ -92,7 +92,7 @@ class ActivityTool:
     @staticmethod
     def activity_init_play(db):
         cursor = db.cursor()
-        sql1 = 'SELECT id, created, userId, shipId, cost FROM activity WHERE status = "正在游玩"'
+        sql1 = 'SELECT id, created, userId, shipId, cost FROM activity WHERE status = "正在游玩" ORDER BY created DESC'
         cursor.execute(sql1)
         results = list()
         # 外键查询对于两个以上外键以上的没用，所以自己写
@@ -109,7 +109,7 @@ class ActivityTool:
     @staticmethod
     def activity_init_played(db):
         cursor = db.cursor()
-        sql2 = 'SELECT id, created, endtime, cost, userId, shipId FROM activity WHERE status = "已付款"'
+        sql2 = 'SELECT id, created, endtime, cost, userId, shipId FROM activity WHERE status != "正在游玩" AND status != "预约" ORDER BY created DESC'
         cursor.execute(sql2)
         results = list()
         # 外键查询对于两个以上外键以上的没用，所以自己写
@@ -134,4 +134,51 @@ class ActivityTool:
         except:
             db.rollback()
             return False
+        return True
+
+    # 获取预约
+    @staticmethod
+    def get_reservation(db):
+        cursor = db.cursor()
+        sql = 'SELECT id, created, cost, userId, shipId FROM activity WHERE status = "预约"'
+        cursor.execute(sql)
+        cursor.close()
+        results = list()
+        for result in cursor.fetchall():
+            member = list(MemberTool.get(db, id=result[3])[0])
+            ship = list(ShipTool.get(db, id=result[4])[0])
+            results.append(list(result) + member + ship)
+        return results
+
+    # 预约2活动
+    @staticmethod
+    def reservation2activity(db, id):
+        cursor = db.cursor()
+        sql = 'UPDATE activity SET status = "正在游玩", created = "{}" WHERE id = "{}"'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), id)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        return True
+
+    # 销毁预约，超过30分钟就扣留押金
+    @staticmethod
+    def destroy_reservation(db, id, shipId):
+        cursor = db.cursor()
+        sql = 'SELECT count(created) FROM activity WHERE id = "{}" AND created > "{}"'.format(id, (datetime.datetime.now()-datetime.timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S"))
+        cursor.execute(sql)
+        if cursor.fetchone()[0] == 0:
+            sql = 'UPDATE activity SET status = "销毁", endtime = "{}" WHERE id = "{}"'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), id)
+        else:
+            sql = 'UPDATE activity SET status = "销毁", cost = "0", endtime = "{}" WHERE id = "{}"'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), id)
+        try:
+            cursor.execute(sql)
+            ShipTool.change_ship_status(db, shipId, '空闲')
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        cursor.close()
         return True

@@ -55,67 +55,36 @@ MainActivityClick();
         </table>
     </div>
 </div>
-<div id="main_activity_play">
-    <p>activity</p>
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>已结束</h2>
-    </div>
-</div>
-<div id="main_activity_played">
-    <p>activity_played</p>
-</div>
+<div id="main_activity_play"></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>已结束</h2></div></div>
+<div id="main_activity_played"></div>
 {% end %}
 
 {% block member %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>正在游玩中的会员</h2>
-    </div>
-</div>
-<div id="main_member_active">
-    <p>activity member</p>
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>其余会员</h2>
-    </div>
-</div>
-<div id="main_member">
-    <p>member</p>
-</div>
+<div class="panel panel-default"><div class="panel-heading"><h2>正在游玩中的会员</h2></div></div>
+<div id="main_member_active"></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>其余会员</h2></div></div>
+<div id="main_member"></div>
 {% end %}
 
 {% block ship %}
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>正在使用中</h2>
-    </div>
-</div>
-<div id="main_ship_active">
-    <p>activity ship</p>
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>无法使用</h2>
-    </div>
-</div>
-<div id="main_broke_ship">
-    <p>broke ship</p>
-</div>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>空闲</h2>
-    </div>
-</div>
-<div id="main_idle_ship">
-    <p>idle ship</p>
-</div>
+<div class="panel panel-default"><div class="panel-heading"><h2>正在使用中</h2></div></div>
+<div id="main_ship_active"></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>无法使用</h2></div></div>
+<div id="main_broke_ship"></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>空闲</h2></div></div>
+<div id="main_idle_ship"></div>
 {% end %}
 
 {% block reservation %}
-<p>reservation</p>
+<div class="panel panel-default"><div class="panel-heading">
+    <table width="100%">
+        <tr>
+            <td width="95%"><h2>预约</h2></td><td><h2><a data-toggle="modal" data-target="#add_act" onclick="AddReservationInitShip()"><span class="glyphicon glyphicon-plus" aria-hidden="true" /></a></h2></td>
+        </tr>
+        <tr><td><h4>预约后半小时内必须开始，否则视为放弃并收取违约费</h4></td></tr>
+    </table></div></div>
+<div id="main_reservation"></div>
 {% end %}
 
 {% block ad %}
@@ -146,7 +115,7 @@ MainActivityClick();
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">添加活动</h4>
+                <h4 class="modal-title" id="add_title"></h4>
             </div>
             <form>
                 <div class="modal-body">
@@ -158,11 +127,10 @@ MainActivityClick();
                             <input style="margin-top:36px;" type="number" id="add_activity_cost" class="form-control" placeholder="押金" oninput="value=value.replace(/[^\d]/g,'')" />
                         </p>
                     </div>
-
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="AddActivity()" data-dismiss="modal">提交</button>
+                <div class="modal-footer" id="add_btn">
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+                    <!--<button type="button" class="btn btn-primary" onclick="AddActivity()" data-dismiss="modal">提交</button>-->
                 </div>
             </form>
         </div>

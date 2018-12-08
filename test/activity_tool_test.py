@@ -19,6 +19,8 @@ db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 # ActivityTool.put(db, 1, '已付款', '2018-10-14 18:45:26', '100', '4', '1', '2018-10-14 17:07:16')
 
 # 查
-print(ActivityTool.get(db))
+# print(ActivityTool.get(db))
 # print(ActivityTool.active_activity(db))
 # print(ActivityTool.last_seven_active(db))
+
+# print(ActivityTool.destroy_reservation(db, 9))

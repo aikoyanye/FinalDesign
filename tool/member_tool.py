@@ -121,17 +121,41 @@ class MemberTool:
             print('没有正在进行的活动')
 
     # 添加活动时检索用户
+    # @staticmethod
+    # def add_activity_member(db, key):
+    #     cursor = db.cursor()
+    #     sql = 'SELECT username, phone FROM member WHERE phone like "{}%"'.format(str(key))
+    #     keys, values = [], []
+    #     cursor.execute(sql)
+    #     for s in cursor.fetchall():
+    #         keys.append(s[0]+'('+s[1]+')')
+    #         values.append(s[1])
+    #     cursor.close()
+    #     return keys, values
+
+    # 给member标签页用的
     @staticmethod
     def add_activity_member(db, key):
-        cursor = db.cursor()
-        sql = 'SELECT username, phone FROM member WHERE phone like "{}%"'.format(str(key))
-        keys, values = [], []
-        cursor.execute(sql)
-        for s in cursor.fetchall():
-            keys.append(s[0]+'('+s[1]+')')
-            values.append(s[1])
-        cursor.close()
-        return keys, values
+        try:
+            cursor = db.cursor()
+            activity_sql = 'SELECT userId FROM activity WHERE status = "正在游玩" OR status = "预约"'
+            cursor.execute(activity_sql)
+            ids = str(cursor.fetchone()).replace(',', '')
+            print(ids)
+            if ids != 'None':
+                sql = 'SELECT username, phone FROM member WHERE phone like "{}%" AND member.id NOT IN '.format(str(key)) + ids
+            else:
+                sql = 'SELECT username, phone FROM member WHERE phone like "{}%"'.format(str(key))
+            keys, values = [], []
+            cursor.execute(sql)
+            for s in cursor.fetchall():
+                keys.append(s[0] + '(' + s[1] + ')')
+                values.append(s[1])
+            cursor.close()
+            return keys, values
+        except:
+            print('没有正在进行的活动')
+
 
     # 添加活动时根据phone判断用户是否已注册，如果没有就注册，返回id
     @staticmethod
@@ -139,9 +163,9 @@ class MemberTool:
         cursor = db.cursor()
         sql = 'SELECT id FROM member WHERE phone = "{}"'.format(str(phone))
         cursor.execute(sql)
-        cursor.close()
         result = cursor.fetchone()
         if result:
+            cursor.close()
             return result[0]
         MemberTool.add(db, '游客', str(phone), '良')
         sql = 'SELECT id FROM member WHERE phone = "{}"'.format(str(phone))

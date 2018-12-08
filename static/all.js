@@ -182,7 +182,7 @@ function AddActivity(){
         $.ajax({
             url: "/activity",
             type: "POST",
-            data: {phone: phone, cost: cost, t: t},
+            data: {type: 1, phone: phone, cost: cost, t: t},
             success: function(arg){
                 MainActivityClick();
             }
@@ -214,12 +214,95 @@ function AddActivitySelectOption(k){
     })
 }
 
+// 添加活动时初始化游船信息
 function AddActivityInitShip(){
     $.ajax({
         url: "/ship",
         type: "GET",
         data: {type: "3"},
         success: function(arg){
+            document.getElementById('add_title').innerHTML = '添加活动'
+            document.getElementById('add_btn').innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" onclick="AddActivity()" data-dismiss="modal">提交</button>'
+            var select = document.getElementById('add_act_select_ship');
+            var data = jQuery.parseJSON(arg);
+            select.options.length = 0;
+            select.add(new Option('请选择', '请选择'))
+            for (var i=0; i<data.length; i++){
+                select.add(new Option(data[i], data[i]));
+            }
+        }
+    })
+}
+
+// 首页预约标签初始化
+function MainReservationInit(){
+    $.ajax({
+        url: "/activity",
+        type: "GET",
+        data: {type: "2"},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            var div = document.getElementById("main_reservation")
+            div.innerHTML = ''
+            for (var i=0, l=data.length; i<l; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="30%">'+data[i][6]+'('+data[i][7]+')</td><td width="30%">'+data[i][1]+'</td><td width="30%">'+data[i][12]+'</td><td width="5%" style="align:right"><a href="#" onclick="Reservation2Activity(\''+data[i][0]+'\', \''+data[i][4]+'\')">开始</a></td><td width="5%" style="align:right"><a href="#" onclick="DestroyReservation(\''+data[i][0]+'\', \''+data[i][4]+'\')">销毁</a></td></tr></table></div></div>'
+            }
+        }
+    })
+}
+
+// 预约转正在进行
+function Reservation2Activity(id, shipId){
+    $.ajax({
+        url: "/activity",
+        type: "PUT",
+        data: {type: "1", id: id, shipId: shipId},
+        success: function(arg){
+            MainReservationInit();
+        }
+    })
+}
+
+// 销毁预约
+function DestroyReservation(id, shipId){
+    $.ajax({
+        url: "/activity",
+        type: "PUT",
+        data: {type: "2", id: id, shipId: shipId},
+        success: function(arg){
+            MainReservationInit();
+        }
+    })
+}
+
+// 手工添加预约
+function AddReservation(){
+    var phone = document.getElementById('add_act_phone').value
+    var t = document.getElementById('add_act_select_ship').value
+    var cost = document.getElementById('add_activity_cost').value
+    if(phone=="请选择" || t=="请选择" || cost==''){
+        alert('选项不能为空')
+    }else{
+        $.ajax({
+            url: "/activity",
+            type: "POST",
+            data: {type: 2, phone: phone, cost: cost, t: t},
+            success: function(arg){
+                MainReservationInit();
+            }
+        })
+    }
+}
+
+// 添加预约时初始化游船信息
+function AddReservationInitShip(){
+    $.ajax({
+        url: "/ship",
+        type: "GET",
+        data: {type: "3"},
+        success: function(arg){
+            document.getElementById('add_title').innerHTML = '添加活动'
+            document.getElementById('add_btn').innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" onclick="AddReservation()" data-dismiss="modal">提交</button>'
             var select = document.getElementById('add_act_select_ship');
             var data = jQuery.parseJSON(arg);
             select.options.length = 0;
