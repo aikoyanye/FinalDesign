@@ -21,3 +21,8 @@ class SomeTool:
         m = hashlib.md5()
         m.update(str(emm).encode('utf-8'))
         return m.hexdigest()
+
+    # 如果字符串倒数第二个字符是‘,’，去除
+    @staticmethod
+    def delete_dot_last_2(s):
+        return str(s) if str(s)[-2] != ',' else str(s).replace(',', '')

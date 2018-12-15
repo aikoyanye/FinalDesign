@@ -1,4 +1,5 @@
 import datetime
+from tool.some_tool import SomeTool
 
 # 静态工具类，会员
 class MemberTool:
@@ -92,8 +93,10 @@ class MemberTool:
             cursor = db.cursor()
             activity_sql = 'SELECT userId FROM activity WHERE status = "正在游玩"'
             cursor.execute(activity_sql)
-            ids = str(cursor.fetchone()).replace(',', '')
-            user_sql = 'SELECT * FROM member WHERE id = ' + ids
+            ids = []
+            for i in cursor.fetchall():
+                ids.append(i[0])
+            user_sql = 'SELECT * FROM member WHERE id = ' + SomeTool.delete_dot_last_2(str(tuple(ids)))
             cursor.execute(user_sql)
             act_mem = cursor.fetchall()
             cursor.close()
@@ -108,9 +111,11 @@ class MemberTool:
             cursor = db.cursor()
             activity_sql = 'SELECT userId FROM activity WHERE status = "正在游玩"'
             cursor.execute(activity_sql)
-            ids = str(cursor.fetchone()).replace(',', '')
-            if ids != 'None':
-                user_sql = 'SELECT * FROM member WHERE member.id NOT IN ' + ids
+            ids = []
+            for i in cursor.fetchall():
+                ids.append(i[0])
+            if len(ids) != 0:
+                user_sql = 'SELECT * FROM member WHERE member.id NOT IN ' + SomeTool.delete_dot_last_2(str(tuple(ids)))
             else:
                 user_sql = 'SELECT * FROM member'
             cursor.execute(user_sql)
@@ -140,10 +145,11 @@ class MemberTool:
             cursor = db.cursor()
             activity_sql = 'SELECT userId FROM activity WHERE status = "正在游玩" OR status = "预约"'
             cursor.execute(activity_sql)
-            ids = str(cursor.fetchone()).replace(',', '')
-            print(ids)
+            ids = []
+            for i in cursor.fetchall():
+                ids.append(i[0])
             if ids != 'None':
-                sql = 'SELECT username, phone FROM member WHERE phone like "{}%" AND member.id NOT IN '.format(str(key)) + ids
+                sql = 'SELECT username, phone FROM member WHERE phone like "{}%" AND member.id NOT IN '.format(str(key)) + SomeTool.delete_dot_last_2(str(tuple(ids)))
             else:
                 sql = 'SELECT username, phone FROM member WHERE phone like "{}%"'.format(str(key))
             keys, values = [], []

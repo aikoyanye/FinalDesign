@@ -44,7 +44,6 @@
 MidInit();
 MainActivityClick();
 </script>
-
 {% end %}
 
 {% block activity %}
@@ -56,7 +55,28 @@ MainActivityClick();
     </div>
 </div>
 <div id="main_activity_play"></div>
-<div class="panel panel-default"><div class="panel-heading"><h2>已结束</h2></div></div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <table width="100%">
+            <tr>
+                <td width="10%"><h2>已结束</h2></td>
+                <td width="20%"><label for="create">开始时间区间：</label><input oninput="ActivitySearch()" type="date" id="create" class="form-control" style="width:150px" /></td>
+                <td width="20%"><label for="created">到</label><input oninput="ActivitySearch()" type="date" id="created" class="form-control" style="width:150px" /></td>
+                <td width="35%">
+                    <select onchange="ActivitySearchSelected(this.value)" style="width:200px;height:36px;" class="form-control" id="act_search_select"></select>
+                    <input oninput="AddActivitySelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" placeholder="请输入用户电话" name="act_search_phone" id="act_search_phone" type="text" />
+                </td>
+                <td width="15%">
+                    <select onchange="ActivitySearch()" class="form-control" id="act_search_ship">
+                        <option value="">请选择</option>
+                        <option value="游船">游船</option>
+                        <option value="步行球">步行球</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 <div id="main_activity_played"></div>
 {% end %}
 
@@ -80,7 +100,8 @@ MainActivityClick();
 <div class="panel panel-default"><div class="panel-heading">
     <table width="100%">
         <tr>
-            <td width="95%"><h2>预约</h2></td><td><h2><a data-toggle="modal" data-target="#add_act" onclick="AddReservationInitShip()"><span class="glyphicon glyphicon-plus" aria-hidden="true" /></a></h2></td>
+            <td width="95%"><h2>预约</h2></td>
+            <td><h2><a data-toggle="modal" data-target="#add_act" onclick="AddReservationInitShip()"><span class="glyphicon glyphicon-plus" aria-hidden="true" /></a></h2></td>
         </tr>
         <tr><td><h4>预约后半小时内必须开始，否则视为放弃并收取违约费</h4></td></tr>
     </table></div></div>
@@ -88,7 +109,10 @@ MainActivityClick();
 {% end %}
 
 {% block ad %}
-<p>ad</p>
+<div class="panel panel-default"><div class="panel-heading"><h2>广告</h2></div></div>
+<div id="main_ad_new"></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>历史广告</h2></div></div>
+<div id="main_ad_old"></div>
 {% end %}
 
 {% block sact %}
@@ -122,7 +146,7 @@ MainActivityClick();
                     <div style="position:relative;">
                         <p style=":auto;padding:5px;">
                             <select onchange="AddActivitySelected(this.value)" style="width:100%;height:36px;" class="form-control" id="add_act_select"></select>
-                            <input oninput="AddActivitySelectOption(this.value)" class="form-control" placeholder="请输入用户电话" name="add_act_phone" id="add_act_phone" type="text" style="width:97%;height:36px;position: relative;top: -36px"  />
+                            <input oninput="AddActivitySelectOption(this.value)" class="form-control" placeholder="请输入用户电话" name="add_act_phone" id="add_act_phone" type="text" style="width:97%;height:36px;position: relative;top: -36px" />
                             <select class="form-control" id="add_act_select_ship"></select>
                             <input style="margin-top:36px;" type="number" id="add_activity_cost" class="form-control" placeholder="押金" oninput="value=value.replace(/[^\d]/g,'')" />
                         </p>

@@ -203,12 +203,16 @@ function AddActivitySelectOption(k){
         data: {type: "2", key: k},
         success: function(arg){
             var select = document.getElementById('add_act_select');
+            var select1 = document.getElementById('act_search_select');
             var data = jQuery.parseJSON(arg);
             var l = data.length / 2;
             select.options.length = 0;
             select.add(new Option('请选择', '请选择'))
+            select1.options.length = 0;
+            select1.add(new Option('请选择', '请选择'))
             for (var i=0; i<l; i++){
                 select.add(new Option(data[i], data[i+l]));
+                select1.add(new Option(data[i], data[i+l]));
             }
         }
     })
@@ -310,6 +314,29 @@ function AddReservationInitShip(){
             for (var i=0; i<data.length; i++){
                 select.add(new Option(data[i], data[i]));
             }
+        }
+    })
+}
+
+// activity筛选，用户select点击
+function ActivitySearchSelected(value){
+    document.getElementById('act_search_phone').value = value;
+    ActivitySearch();
+}
+
+// activity search改变筛选条件之后触发
+function ActivitySearch(){
+    $.ajax({
+        url: "/activity",
+        type: "GET",
+        data: {
+            type: "3", create: document.getElementById('create').value,
+            created: document.getElementById('created').value,
+            phone: document.getElementById('act_search_phone').value,
+            ship: document.getElementById('act_search_ship').value
+        },
+        success: function(arg){
+
         }
     })
 }
