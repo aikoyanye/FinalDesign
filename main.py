@@ -15,7 +15,7 @@ DATABASE = 'final_design'
 class Application(tornado.web.Application):
     def __init__(self, db):
         self.db = db
-        # api定义
+        #api定义
         handlers = [
             tornado.web.url(r'/', WelcomeHandler, name='welcome'),
             tornado.web.url(r'/mid', MidHandler, name='mid'),
@@ -42,5 +42,5 @@ async def main():
     app.listen(8080)
     await tornado.locks.Event().wait()
 
-if __name__ == '__main__':
+if __name__ == '__main__':   
     tornado.ioloop.IOLoop.current().run_sync(main)

@@ -60,13 +60,15 @@ MainActivityClick();
         <table width="100%">
             <tr>
                 <td width="10%"><h2>已结束</h2></td>
-                <td width="20%"><label for="create">开始时间区间：</label><input oninput="ActivitySearch()" type="date" id="create" class="form-control" style="width:150px" /></td>
+                <td width="20%"><label for="create">开始时间区间</label><input oninput="ActivitySearch()" type="date" id="create" class="form-control" style="width:150px" /></td>
                 <td width="20%"><label for="created">到</label><input oninput="ActivitySearch()" type="date" id="created" class="form-control" style="width:150px" /></td>
                 <td width="30%">
+                    <label for="act_search_select" style="margin-top:33px">用户电话</label>
                     <select onchange="ActivitySearchSelected(this.value)" style="width:200px;height:36px;" class="form-control" id="act_search_select"></select>
                     <input oninput="ActivitySearchSelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" placeholder="请输入用户电话" name="act_search_phone" id="act_search_phone" type="text" />
                 </td>
                 <td width="15%">
+                    <label for="act_search_ship">船只类型</label>
                     <select onchange="ActivitySearch()" class="form-control" id="act_search_ship">
                         <option value="">请选择</option>
                         <option value="游船">游船</option>
