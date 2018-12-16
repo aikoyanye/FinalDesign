@@ -125,18 +125,18 @@ class MemberTool:
         except:
             print('没有正在进行的活动')
 
-    # 添加活动时检索用户
-    # @staticmethod
-    # def add_activity_member(db, key):
-    #     cursor = db.cursor()
-    #     sql = 'SELECT username, phone FROM member WHERE phone like "{}%"'.format(str(key))
-    #     keys, values = [], []
-    #     cursor.execute(sql)
-    #     for s in cursor.fetchall():
-    #         keys.append(s[0]+'('+s[1]+')')
-    #         values.append(s[1])
-    #     cursor.close()
-    #     return keys, values
+    # 首页活动筛选条件
+    @staticmethod
+    def search_activity_member(db, key):
+        cursor = db.cursor()
+        sql = 'SELECT username, phone FROM member WHERE phone like "{}%"'.format(str(key))
+        keys, values = [], []
+        cursor.execute(sql)
+        for s in cursor.fetchall():
+            keys.append(s[0]+'('+s[1]+')')
+            values.append(s[1])
+        cursor.close()
+        return keys, values
 
     # 给member标签页用的
     @staticmethod
@@ -148,7 +148,7 @@ class MemberTool:
             ids = []
             for i in cursor.fetchall():
                 ids.append(i[0])
-            if ids != 'None':
+            if len(ids) != 0:
                 sql = 'SELECT username, phone FROM member WHERE phone like "{}%" AND member.id NOT IN '.format(str(key)) + SomeTool.delete_dot_last_2(str(tuple(ids)))
             else:
                 sql = 'SELECT username, phone FROM member WHERE phone like "{}%"'.format(str(key))

@@ -19,7 +19,8 @@ class ActivityHandler(BaseHandler):
             self.write(json.dumps(ActivityTool.get_reservation(self.application.db)))
         # activity标签筛选
         elif self.get_argument('type') == '3':
-            print(ActivityTool.activity_search(self.application.db, self.get_argument('create'), self.get_argument('created'), self.get_argument('phone'), self.get_argument('ship')))
+            self.write(json.dumps(ActivityTool.activity_search(self.application.db, self.get_argument('create'),
+                                    self.get_argument('created'), self.get_argument('phone'), self.get_argument('ship'))))
         # activity标签页游玩结束的活动获取初始化
         else:
             self.write(json.dumps(ActivityTool.activity_init_played(self.application.db)))

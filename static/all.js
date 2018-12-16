@@ -203,16 +203,12 @@ function AddActivitySelectOption(k){
         data: {type: "2", key: k},
         success: function(arg){
             var select = document.getElementById('add_act_select');
-            var select1 = document.getElementById('act_search_select');
             var data = jQuery.parseJSON(arg);
             var l = data.length / 2;
             select.options.length = 0;
             select.add(new Option('请选择', '请选择'))
-            select1.options.length = 0;
-            select1.add(new Option('请选择', '请选择'))
             for (var i=0; i<l; i++){
                 select.add(new Option(data[i], data[i+l]));
-                select1.add(new Option(data[i], data[i+l]));
             }
         }
     })
@@ -336,7 +332,31 @@ function ActivitySearch(){
             ship: document.getElementById('act_search_ship').value
         },
         success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            var div = document.getElementById("main_activity_played")
+            div.innerHTML = ""
+            for (var i=0, l=data.length; i<l; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="45%">开始时间：'+data[i][1]+'</td><td width="45%">结束时间：'+data[i][2]+'</td></tr><tr><td width="33%">游客：'+data[i][6]+'('+data[i][7]+')</td><td width="33%">类型：'+data[i][8]+'</td><td width="33%">花费：'+data[i][3]+'</td></tr></table></div></div>'
+            }
+        }
+    })
+}
 
+// 添加activity模态框的select option动态添加，key是显示的值，value是实际的指
+function ActivitySearchSelectOption(k){
+    $.ajax({
+        url: "/member",
+        type: "GET",
+        data: {type: "3", key: k},
+        success: function(arg){
+            var select = document.getElementById('act_search_select');
+            var data = jQuery.parseJSON(arg);
+            var l = data.length / 2;
+            select.options.length = 0;
+            select.add(new Option('请选择', '请选择'))
+            for (var i=0; i<l; i++){
+                select.add(new Option(data[i], data[i+l]));
+            }
         }
     })
 }

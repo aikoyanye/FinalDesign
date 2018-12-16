@@ -62,9 +62,9 @@ MainActivityClick();
                 <td width="10%"><h2>已结束</h2></td>
                 <td width="20%"><label for="create">开始时间区间：</label><input oninput="ActivitySearch()" type="date" id="create" class="form-control" style="width:150px" /></td>
                 <td width="20%"><label for="created">到</label><input oninput="ActivitySearch()" type="date" id="created" class="form-control" style="width:150px" /></td>
-                <td width="35%">
+                <td width="30%">
                     <select onchange="ActivitySearchSelected(this.value)" style="width:200px;height:36px;" class="form-control" id="act_search_select"></select>
-                    <input oninput="AddActivitySelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" placeholder="请输入用户电话" name="act_search_phone" id="act_search_phone" type="text" />
+                    <input oninput="ActivitySearchSelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" placeholder="请输入用户电话" name="act_search_phone" id="act_search_phone" type="text" />
                 </td>
                 <td width="15%">
                     <select onchange="ActivitySearch()" class="form-control" id="act_search_ship">
@@ -73,6 +73,7 @@ MainActivityClick();
                         <option value="步行球">步行球</option>
                     </select>
                 </td>
+                <td width="5%" align="right"><h3><a href="#" onclick="MainActivityClick()" class="glyphicon glyphicon-refresh" aria-hidden="true"></a></h3></td>
             </tr>
         </table>
     </div>

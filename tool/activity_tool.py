@@ -187,22 +187,28 @@ class ActivityTool:
     # activity标签筛选
     @staticmethod
     def activity_search(db, create, created, phone, ship):
-        cursor = db.cursor()
-        sql = 'SELECT id FROM ship WHERE type = "{}"'.format(ship)
-        cursor.execute(sql)
-        ids = []
-        for i in cursor.fetchall():
-            ids.append(i[0])
-        sql1 = 'SELECT id, created, endtime, cost, userId, shipId FROM activity ' \
-               'WHERE status != "正在游玩" AND status != "预约" AND created > "{}" AND created < "{}" AND userId = "{}" AND shipId IN {} ' \
-               'ORDER BY created DESC'.format(create+' 00:00:00', created+' 23:59:59', MemberTool.get_member_id_by_phone(db, phone), SomeTool.delete_dot_last_2(str(tuple(ids))))
-        print(sql1)
-        cursor.execute(sql1)
-        results = list()
-        # 外键查询对于两个以上外键以上的没用，所以自己写
-        for result in cursor.fetchall():
-            member = list(MemberTool.activity_main_play_user(db, id=result[4])[0])
-            ship = list(ShipTool.activity_main_play(db, id=result[5])[0])
-            results.append(list(result) + member + ship)
-        cursor.close()
-        return results
+        try:
+            cursor = db.cursor()
+            sql = 'SELECT id, created, endtime, cost, userId, shipId FROM activity WHERE status != "正在游玩" AND status != "预约"'
+            if create: sql = sql + ' AND created > "{} 00:00:00"'.format(create)
+            if created: sql = sql + ' AND created < "{} 23:59:59"'.format(created)
+            if phone != '请选择': sql = sql + ' AND userId = "{}"'.format(MemberTool.get_member_id_by_phone(db, phone))
+            if ship:
+                sql1 = 'SELECT id FROM ship WHERE type = "{}"'.format(ship)
+                cursor.execute(sql1)
+                ids = []
+                for i in cursor.fetchall():
+                    ids.append(i[0])
+                sql = sql + ' AND shipId IN {}'.format(SomeTool.delete_dot_last_2(str(tuple(ids))))
+            sql = sql + ' ORDER BY created DESC'
+            cursor.execute(sql)
+            results = list()
+            # 外键查询对于两个以上外键以上的没用，所以自己写
+            for result in cursor.fetchall():
+                member = list(MemberTool.activity_main_play_user(db, id=result[4])[0])
+                ship = list(ShipTool.activity_main_play(db, id=result[5])[0])
+                results.append(list(result) + member + ship)
+            cursor.close()
+            return results
+        except:
+            print('没有筛选出数据')
