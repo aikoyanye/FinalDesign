@@ -50,7 +50,7 @@ function MainActivityClick(){
             var div = document.getElementById("main_activity_play")
             div.innerHTML = ""
             for (var i=0, l=data.length; i<l; i++){
-                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:33%"><h5>开始时间：' + data[i][1] + '</h5></td><td style="width:24%"><h5>游客：' + data[i][4] + '(' + data[i][5] + ')</h5></td><td style="width:24%"><h5>类型：' + data[i][6] + '</h5></td><td style="width:24%">已付押金：'+data[i][3]+'</td><td align="right" style="width:3%"><h5><a data-toggle="modal" data-target="#check" onclick="ActivityComplateCheck(\''+data[i][0]+'\', \''+data[i][1]+'\')" href="#">完成</a></h5></td></tr></table></div></div>'
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:33%"><h5>开始时间：' + data[i][1] + '</h5></td><td style="width:24%"><h5>游客：' + data[i][4] + '(' + data[i][5] + ')</h5></td><td style="width:24%"><h5>类型：' + data[i][6] + '</h5></td><td style="width:24%">已付押金：'+data[i][3]+'</td><td align="right" style="width:3%"><h5><a data-toggle="modal" data-target="#mo" onclick="ActivityComplateCheck(\''+data[i][0]+'\', \''+data[i][1]+'\')" href="#">完成</a></h5></td></tr></table></div></div>'
 //                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:33%"><h5>开始时间：' + data[i][1] + '</h5></td><td style="width:32%"><h5>游客：' + data[i][4] + '(' + data[i][5] + ')</h5></td><td style="width:32%"><h5>类型：' + data[i][6] + '</h5></td><td align="right" style="width:3%"><h5><a onclick="ActivityComplate(\''+data[i][0]+'\', \''+data[i][1]+'\')" href="#">完成</a></h5></td></tr></table></div></div>'
             }
         }
@@ -85,12 +85,10 @@ function ActivityComplate(id, cost){
 // activity确认完成的方法
 function ActivityComplateCheck(id, created){
     var endtime = Date.parse(new Date())
-//    alert((endtime - Date.parse(new Date(created)))/(1000*60))
-    var div = document.getElementById("check_cost")
-    var btn = document.getElementById("cost_commit")
     var cost = parseInt((endtime - Date.parse(new Date(created)))/(1000*60))
-    div.innerHTML = '本次消费为' + cost + '元'
-    btn.innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" data-dismiss="modal" class="btn btn-primary" onclick="ActivityComplate(\''+id+'\', \''+cost+'\')">提交</button>'
+    document.getElementById("modal_header").innerHTML = '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">确认要提交吗？</h4>'
+    document.getElementById("modal_body").innerHTML = '本次消费为' + cost + '元';
+    document.getElementById("modal_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" data-dismiss="modal" class="btn btn-primary" onclick="ActivityComplate(\''+id+'\', \''+cost+'\')">提交</button>';
 }
 
 // member标签页刷新
@@ -214,15 +212,15 @@ function AddActivitySelectOption(k){
     })
 }
 
-// 添加活动时初始化游船信息
+// 添加活动时初始化模态框信息
 function AddActivityInitShip(){
+    document.getElementById('add_title').innerHTML = '添加活动';
+    document.getElementById('add_btn').innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" onclick="AddActivity()" data-dismiss="modal">提交</button>';
     $.ajax({
         url: "/ship",
         type: "GET",
         data: {type: "3"},
         success: function(arg){
-            document.getElementById('add_title').innerHTML = '添加活动'
-            document.getElementById('add_btn').innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" onclick="AddActivity()" data-dismiss="modal">提交</button>'
             var select = document.getElementById('add_act_select_ship');
             var data = jQuery.parseJSON(arg);
             select.options.length = 0;
@@ -359,4 +357,26 @@ function ActivitySearchSelectOption(k){
             }
         }
     })
+}
+
+// 广告套餐
+function AdPackage(){
+    document.getElementById("modal_header").innerHTML = '广告规则'
+    document.getElementById("modal_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>'
+    document.getElementById("modal_body").innerHTML = '<p>1、广告仅允许视频或图片轮播</p><p>2、视频长度不得超过9s</p><p>3、图片数量不得超过3张</p><p>4、广告投放时间最短为一星期<\p>'
+}
+
+// 添加广告的资源控制
+function AddAdResource(type){
+    if(type == 'video'){
+        document.getElementById("ad_resource").innerHTML = '<label for="ad_video">请选择视频</label><input type="file" id="ad_video" accept="video/*">'
+    }else{
+        document.getElementById("ad_resource").innerHTML = '<label for="ad_pic1">请选择图片</label><input type="file" id="ad_pic1" accept="image/*"><input type="file" id="ad_pic2" accept="image/*"><input type="file" id="ad_pic3" accept="image/*">'
+    }
+}
+
+// 添加广告默认点击图片单选框
+function AddAdResourceInit(){
+    document.getElementById('ad_resource_type_pic').onclick();
+    document.getElementById('ad_resource_type_pic').checked = 'checked'
 }

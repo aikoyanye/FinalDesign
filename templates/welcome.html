@@ -112,8 +112,17 @@ MainActivityClick();
 {% end %}
 
 {% block ad %}
-<div class="panel panel-default"><div class="panel-heading"><h2>广告</h2></div></div>
+<div class="panel panel-default"><div class="panel-heading">
+    <table width="100%">
+        <tr>
+            <td width="95%"><h2><a onclick="AdPackage()" href="#" data-toggle="modal" data-target="#mo">广告</a></h2></td>
+            <td width="5%"><h2><a data-toggle="modal" data-target="#add_ad" onclick="AddAdResourceInit()"><span class="glyphicon glyphicon-plus" aria-hidden="true" /></a></h2></td>
+        </tr>
+    </table>
+</div></div>
 <div id="main_ad_new"></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>待审核&审核失败</h2></div></div>
+<div id="main_ad_break"></div>
 <div class="panel panel-default"><div class="panel-heading"><h2>历史广告</h2></div></div>
 <div id="main_ad_old"></div>
 {% end %}
@@ -123,15 +132,12 @@ MainActivityClick();
 {% end %}
 
 {% block check %}
-<div class="modal fade" id="check" aria-hidden="true">
+<div class="modal fade" id="mo" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">确认要提交吗？</h4>
-            </div>
-            <div class="modal-body" id="check_cost"></div>
-            <div class="modal-footer" id="cost_commit"></div>
+            <div class="modal-header" id="modal_header"></div>
+            <div class="modal-body" id="modal_body"></div>
+            <div class="modal-footer" id="modal_footer"></div>
         </div>
     </div>
 </div>
@@ -144,22 +150,50 @@ MainActivityClick();
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="add_title"></h4>
             </div>
-            <form>
-                <div class="modal-body">
-                    <div style="position:relative;">
-                        <p style=":auto;padding:5px;">
-                            <select onchange="AddActivitySelected(this.value)" style="width:100%;height:36px;" class="form-control" id="add_act_select"></select>
-                            <input oninput="AddActivitySelectOption(this.value)" class="form-control" placeholder="请输入用户电话" name="add_act_phone" id="add_act_phone" type="text" style="width:97%;height:36px;position: relative;top: -36px" />
-                            <select class="form-control" id="add_act_select_ship"></select>
-                            <input style="margin-top:36px;" type="number" id="add_activity_cost" class="form-control" placeholder="押金" oninput="value=value.replace(/[^\d]/g,'')" />
-                        </p>
-                    </div>
+            <div class="modal-body">
+                <div style="position:relative;">
+                    <p style=":auto;padding:5px;">
+                        <select onchange="AddActivitySelected(this.value)" style="width:100%;height:36px;" class="form-control" id="add_act_select"></select>
+                        <input oninput="AddActivitySelectOption(this.value)" class="form-control" placeholder="请输入用户电话" name="add_act_phone" id="add_act_phone" type="text" style="width:97%;height:36px;position: relative;top: -36px" />
+                        <select class="form-control" id="add_act_select_ship"></select>
+                        <input style="margin-top:36px;" type="number" id="add_activity_cost" class="form-control" placeholder="押金" oninput="value=value.replace(/[^\d]/g,'')" />
+                    </p>
                 </div>
-                <div class="modal-footer" id="add_btn">
-                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-                    <!--<button type="button" class="btn btn-primary" onclick="AddActivity()" data-dismiss="modal">提交</button>-->
-                </div>
-            </form>
+            </div>
+            <div class="modal-footer" id="add_btn">
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+                <!--<button type="button" class="btn btn-primary" onclick="AddActivity()" data-dismiss="modal">提交</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block add_ad %}
+<div class="modal fade" id="add_ad" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">添加广告</div>
+            <div class="modal-body">
+                <label for="add_ad_sponsor">赞助商</label>
+                <input type="text" id="add_ad_sponsor" class="form-control" placeholder="赞助商" />
+                <label for="add_ad_endtime" style="margin-top:10px;">广告结束时间</label>
+                <input type="date" id="add_ad_endtime" class="form-control" />
+                <label for="add_ad_cost" style="margin-top:10px;">花费</label>
+                <input type="text" id="add_ad_cost" class="form-control" placeholder="花费" />
+                <label for="add_ad_content" style="margin-top:10px;">广告文案</label>
+                <textarea id="add_ad_content" class="form-control" placeholder="广告文案" style="resize:none" maxlength="100"></textarea>
+                <table width="100%" style="margin-top:10px;">
+                    <tr>
+                        <td width="10%"><div><input type="radio" name="ad_resource_type" onclick="AddAdResource('pic')" id="ad_resource_type_pic" >图片</div></td>
+                        <td><div><input type="radio" name="ad_resource_type" onclick="AddAdResource('video')" >视频</div></td>
+                    </tr>
+                </table>
+                <div id="ad_resource"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="" data-dismiss="modal">提交</button>
+            </div>
         </div>
     </div>
 </div>
