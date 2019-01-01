@@ -193,7 +193,7 @@ class ActivityTool:
             sql = 'SELECT id, created, endtime, cost, userId, shipId FROM activity WHERE status != "正在游玩" AND status != "预约"'
             if create: sql = sql + ' AND created > "{} 00:00:00"'.format(create)
             if created: sql = sql + ' AND created < "{} 23:59:59"'.format(created)
-            if phone != '请选择' and phone != None: sql = sql + ' AND userId = "{}"'.format(MemberTool.get_member_id_by_phone(db, phone))
+            if phone != '请选择' and phone != None and phone != '': sql = sql + ' AND userId = "{}"'.format(MemberTool.get_member_id_by_phone(db, phone))
             if ship:
                 sql1 = 'SELECT id FROM ship WHERE type = "{}"'.format(ship)
                 cursor.execute(sql1)

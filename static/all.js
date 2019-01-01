@@ -369,9 +369,9 @@ function AdPackage(){
 // 添加广告的资源控制
 function AddAdResource(type){
     if(type == 'video'){
-        document.getElementById("ad_resource").innerHTML = '<label for="ad_video">请选择视频</label><input type="file" id="ad_video" accept="video/*">'
+        document.getElementById("ad_resource").innerHTML = '<label for="p1">请选择视频</label><input type="file" id="p1" accept="video/*">'
     }else{
-        document.getElementById("ad_resource").innerHTML = '<label for="ad_pic1">请选择图片</label><input type="file" id="ad_pic1" accept="image/*"><input type="file" id="ad_pic2" accept="image/*"><input type="file" id="ad_pic3" accept="image/*">'
+        document.getElementById("ad_resource").innerHTML = '<label for="p1">请选择图片</label><input type="file" id="p1" accept="image/*"><input type="file" id="p2" accept="image/*"><input type="file" id="p3" accept="image/*">'
     }
 }
 
@@ -379,4 +379,34 @@ function AddAdResource(type){
 function AddAdResourceInit(){
     document.getElementById('ad_resource_type_pic').onclick();
     document.getElementById('ad_resource_type_pic').checked = 'checked'
+}
+
+// 上传广告信息
+function AddAd(){
+    alert('cld');
+    var ip1 = document.getElementById('add_ad_sponsor');
+    var ip2 = document.getElementById('add_ad_endtime');
+    var ip3 = document.getElementById('add_ad_cost');
+    var ip4 = document.getElementById('add_ad_content');
+    var d = new FormData();
+    if(ip1.value=='' || ip2.value=='' || ip3.value=='' || ip4.value==''){
+        alert('输入框组不能为空');
+        return
+    }
+    d.append('sponsor', ip1.value);
+    d.append('endtime', ip2.value);
+    d.append('cost', ip3.value);
+    d.append('content', ip4.value);
+    d.append('type', '1');
+    d.append('p1', document.getElementById('p1').files[0]);
+    $.ajax({
+        url: "/ad",
+        type: "POST",
+        data: d,
+        processData: false,
+        contentType: false,
+        success: function(arg){
+            alert('2333');
+        }
+    })
 }
