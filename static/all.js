@@ -369,9 +369,11 @@ function AdPackage(){
 // 添加广告的资源控制
 function AddAdResource(type){
     if(type == 'video'){
-        document.getElementById("ad_resource").innerHTML = '<label for="p1">请选择视频</label><input type="file" id="p1" accept="video/*">'
+        document.getElementById("ad_model_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" onclick="AddAd(\'v\')" data-dismiss="modal">提交</button>'
+        document.getElementById("ad_resource").innerHTML = '<label for="p1">请选择视频</label><input type="file" id="p1" name="p1" accept="video/*">'
     }else{
-        document.getElementById("ad_resource").innerHTML = '<label for="p1">请选择图片</label><input type="file" id="p1" accept="image/*"><input type="file" id="p2" accept="image/*"><input type="file" id="p3" accept="image/*">'
+        document.getElementById("ad_model_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" onclick="AddAd(\'p\')" data-dismiss="modal">提交</button>'
+        document.getElementById("ad_resource").innerHTML = '<label for="p1">请选择图片</label><input type="file" id="p1" name="p1" accept="image/*"><input type="file" id="p2" name="p2" accept="image/*"><input type="file" id="p3" name="p3" accept="image/*">'
     }
 }
 
@@ -382,29 +384,36 @@ function AddAdResourceInit(){
 }
 
 // 上传广告信息
-function AddAd(){
-    alert('cld');
-    var ip1 = document.getElementById('add_ad_sponsor');
-    var ip2 = document.getElementById('add_ad_endtime');
-    var ip3 = document.getElementById('add_ad_cost');
-    var ip4 = document.getElementById('add_ad_content');
-    var d = new FormData();
-    if(ip1.value=='' || ip2.value=='' || ip3.value=='' || ip4.value==''){
+function AddAd(t){
+    var ip1 = document.getElementById('sponsor');
+    var ip2 = document.getElementById('endtime');
+    var ip3 = document.getElementById('cost');
+    var ip4 = document.getElementById('content');
+    var p1 = document.getElementById('p1');
+    if(ip1.value=='' || ip2.value=='' || ip3.value=='' || ip4.value=='' || p1.value==''){
         alert('输入框组不能为空');
         return
     }
+    var d = new FormData();
     d.append('sponsor', ip1.value);
     d.append('endtime', ip2.value);
     d.append('cost', ip3.value);
     d.append('content', ip4.value);
     d.append('type', '1');
     d.append('p1', document.getElementById('p1').files[0]);
+    if(t=='v'){
+        d.append('t', '.mp4');
+    }else{
+        d.append('t', '.png');
+    }
     $.ajax({
         url: "/ad",
         type: "POST",
         data: d,
         processData: false,
         contentType: false,
+        async: false,
+        cache: false,
         success: function(arg){
             alert('2333');
         }

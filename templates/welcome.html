@@ -173,27 +173,29 @@ MainActivityClick();
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">添加广告</div>
-            <div class="modal-body">
-                <label for="add_ad_sponsor">赞助商</label>
-                <input type="text" id="add_ad_sponsor" class="form-control" placeholder="赞助商" />
-                <label for="add_ad_endtime" style="margin-top:10px;">广告结束时间</label>
-                <input type="date" id="add_ad_endtime" class="form-control" />
-                <label for="add_ad_cost" style="margin-top:10px;">花费</label>
-                <input type="text" id="add_ad_cost" class="form-control" placeholder="花费" />
-                <label for="add_ad_content" style="margin-top:10px;">广告文案</label>
-                <textarea id="add_ad_content" class="form-control" placeholder="广告文案" style="resize:none" maxlength="100"></textarea>
-                <table width="100%" style="margin-top:10px;">
-                    <tr>
-                        <td width="10%"><div><input type="radio" name="ad_resource_type" onclick="AddAdResource('pic')" id="ad_resource_type_pic" >图片</div></td>
-                        <td><div><input type="radio" name="ad_resource_type" onclick="AddAdResource('video')" >视频</div></td>
-                    </tr>
-                </table>
-                <div id="ad_resource"></div>
-            </div>
-            <div class="modal-footer" id="ad_model_footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" onclick="AddAd()" data-dismiss="modal">提交</button>
-            </div>
+            <form id="ad_add_form" enctype="multipart/form-data" method="post" action="/ad">
+                <div class="modal-body">
+                    <label for="sponsor">赞助商</label>
+                    <input type="text" id="sponsor" name="sponsor" class="form-control" placeholder="赞助商" />
+                    <label for="endtime" style="margin-top:10px;">广告结束时间</label>
+                    <input type="date" id="endtime" name="endtime" class="form-control" />
+                    <label for="cost" style="margin-top:10px;">花费</label>
+                    <input type="text" id="cost" name="cost" class="form-control" placeholder="花费" />
+                    <label for="content" style="margin-top:10px;">广告文案</label>
+                    <textarea id="content" name="content" class="form-control" placeholder="广告文案" style="resize:none" maxlength="100"></textarea>
+                    <table width="100%" style="margin-top:10px;">
+                        <tr>
+                            <td width="10%"><div><input type="radio" name="ad_resource_type" onclick="AddAdResource('pic')" id="ad_resource_type_pic" >图片</div></td>
+                            <td><div><input type="radio" name="ad_resource_type" onclick="AddAdResource('video')" >视频</div></td>
+                        </tr>
+                    </table>
+                    <div id="ad_resource"></div>
+                </div>
+                <div class="modal-footer" id="ad_model_footer">
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+                    <!--<button type="button" class="btn btn-primary" onclick="AddAd()" data-dismiss="modal">提交</button>-->
+                </div>
+            </form>
         </div>
     </div>
 </div>
