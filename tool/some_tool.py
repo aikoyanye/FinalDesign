@@ -8,6 +8,11 @@ class SomeTool:
     def current_date():
         return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
+    # 获取当前时间，没有格式
+    @staticmethod
+    def current_date1():
+        return str(datetime.datetime.now())
+
     # 获取ip所在地的天气
     @staticmethod
     def weather():

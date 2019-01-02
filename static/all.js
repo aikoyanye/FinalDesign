@@ -383,7 +383,7 @@ function AddAdResourceInit(){
     document.getElementById('ad_resource_type_pic').checked = 'checked'
 }
 
-// 上传广告信息
+// 上传广告信息，由于要使用ajax上传图片，所以用FormData
 function AddAd(t){
     var ip1 = document.getElementById('sponsor');
     var ip2 = document.getElementById('endtime');
@@ -401,10 +401,19 @@ function AddAd(t){
     d.append('content', ip4.value);
     d.append('type', '1');
     d.append('p1', document.getElementById('p1').files[0]);
+    d.append('num', '1');
     if(t=='v'){
         d.append('t', '.mp4');
     }else{
         d.append('t', '.png');
+        if(document.getElementById('p2').value){
+            d.append('p2', document.getElementById('p2').files[0]);
+            d.append('num', '2');
+        }
+        if(document.getElementById('p3').value){
+            d.append('p3', document.getElementById('p3').files[0]);
+            d.append('num', '3');
+        }
     }
     $.ajax({
         url: "/ad",
@@ -415,7 +424,7 @@ function AddAd(t){
         async: false,
         cache: false,
         success: function(arg){
-            alert('2333');
+            alert('ajax返回');
         }
     })
 }
