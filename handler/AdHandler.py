@@ -27,8 +27,16 @@ class AdHandler(BaseHandler):
         print('ad get')
         # 获取活动广告
         if self.get_argument('type') == '1':
-            pass
+            self.write(json.dumps(AdTool.get_activity_ad(self.application.db, '1')))
         elif self.get_argument('type') == '2':
-            pass
+            self.write(json.dumps(AdTool.get_activity_ad(self.application.db, '2')))
         elif self.get_argument('type') == '3':
-            pass
+            self.write(json.dumps(AdTool.get_activity_ad(self.application.db, '3')))
+
+    async def put(self, *args, **kwargs):
+        print('ad put')
+        # 销毁广告
+        if self.get_argument('type') == '1':
+            AdTool.delete_ad_by_id(self.application.db, self.get_argument('id'))
+        elif self.get_argument('type') == '2':
+            self.write(json.dumps(AdTool.get_ad_resource_by_sid(self.application.db, self.get_argument('id'))))

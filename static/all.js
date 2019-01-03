@@ -425,6 +425,7 @@ function AddAd(t){
         cache: false,
         success: function(arg){
             alert('上传成功');
+            MainAdClick();
         }
     })
 }
@@ -436,7 +437,12 @@ function ActivityAd(){
         type: "GET",
         data: {type: "1"},
         success: function(arg){
-            
+            var reselts = jQuery.parseJSON(arg);
+            var div = document.getElementById('main_ad_new')
+            div.innerHTML = ''
+            for (var i=0; i<reselts.length; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="10%">'+reselts[i][1]+'</td><td width="30%">'+reselts[i][2]+'</td><td width="30%">'+reselts[i][3]+'</td><td width="20%">'+reselts[i][4]+'</td><td width="10%"><a onclick="DestroyAd('+reselts[i][0]+')">销毁</a>&nbsp;&nbsp;<a data-toggle="modal" data-target="#preview_ad" onclick="PreviewAd('+reselts[i][0]+',\''+reselts[i][5]+'\')">预览</a></td></tr></table></div></div>'
+            }
         }
     })
 }
@@ -448,7 +454,12 @@ function ExamineAd(){
         type: "GET",
         data: {type: "2"},
         success: function(arg){
-            
+            var reselts = jQuery.parseJSON(arg);
+            var div = document.getElementById('main_ad_break')
+            div.innerHTML = ''
+            for (var i=0; i<reselts.length; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="10%">'+reselts[i][1]+'</td><td width="30%">'+reselts[i][2]+'</td><td width="30%">'+reselts[i][3]+'</td><td width="20%">'+reselts[i][4]+'</td><td width="10%"><a onclick="DestroyAd('+reselts[i][0]+')">销毁</a>&nbsp;&nbsp;<a data-toggle="modal" data-target="#preview_ad" onclick="PreviewAd('+reselts[i][0]+',\''+reselts[i][5]+'\')">预览</a></td></tr></table></div></div>'
+            }
         }
     })
 }
@@ -460,7 +471,60 @@ function ClosedAd(){
         type: "GET",
         data: {type: "3"},
         success: function(arg){
-            
+            var reselts = jQuery.parseJSON(arg);
+            var div = document.getElementById('main_ad_old')
+            div.innerHTML = ''
+            for (var i=0; i<reselts.length; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="10%">'+reselts[i][1]+'</td><td width="30%">'+reselts[i][2]+'</td><td width="30%">'+reselts[i][3]+'</td><td width="20%">'+reselts[i][4]+'</td><td width="10%"><a data-toggle="modal" data-target="#preview_ad" onclick="PreviewAd('+reselts[i][0]+',\''+reselts[i][5]+'\')">预览</a></td></tr></table></div></div>'
+            }
+        }
+    })
+}
+
+// 主页广告标签初始化
+function MainAdClick(){
+     ActivityAd();
+     ExamineAd();
+     ClosedAd();
+}
+
+// 销毁广告
+function DestroyAd(id){
+    $.ajax({
+        url: "/ad",
+        type: "PUT",
+        data: {type: "1", id: id},
+        success: function(arg){
+            MainAdClick();
+        }
+    })
+}
+
+// 预览广告
+function PreviewAd(id, content){
+    $.ajax({
+        url: "/ad",
+        type: "PUT",
+        data: {type: "2", id: id},
+        success: function(arg){
+            var reselts = jQuery.parseJSON(arg);
+            if(reselts[0][1] == '.png'){
+                var img_div = document.getElementById('ad_preview_main');
+                var control_div = document.getElementById('ad_carousel_control');
+                img_div.innerHTML = ''
+                control_div.innerHTML = '<a class="left carousel-control" href="#ad_preview_carousel" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span><span class="sr-only">Previous</span></a>'
+                control_div.innerHTML = control_div.innerHTML + '<a class="right carousel-control" href="#ad_preview_carousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">Next</span></a>'
+                for(i=0; i<reselts.length; i++){
+                    if(i==0){
+                        img_div.innerHTML = img_div.innerHTML + '<div class="item active"><img src="'+reselts[i][0]+'"><div class="carousel-caption">'+content+'</div></div>'
+                    }else{
+                        img_div.innerHTML = img_div.innerHTML + '<div class="item"><img src="'+reselts[i][0]+'"><div class="carousel-caption">'+content+'</div></div>'
+                    }
+                }
+            }else{
+                document.getElementById('ad_carousel_control').innerHTML = ''
+                document.getElementById('ad_preview_main').innerHTML = '<embed src="'+reselts[0][0]+'" width="560" height="480" />'
+            }
         }
     })
 }

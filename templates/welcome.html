@@ -191,11 +191,25 @@ MainActivityClick();
                     </table>
                     <div id="ad_resource"></div>
                 </div>
-                <div class="modal-footer" id="ad_model_footer">
-                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-                    <!--<button type="button" class="btn btn-primary" onclick="AddAd()" data-dismiss="modal">提交</button>-->
-                </div>
+                <div class="modal-footer" id="ad_model_footer"></div>
             </form>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block preview_ad %}
+<div class="modal fade" id="preview_ad" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">广告预览</div>
+            <div class="modal-body" id="preview_ad_body">
+                <div id="ad_preview_carousel" class="carousel slide">
+                    <div id="ad_preview_main" class="carousel-inner"></div>
+                    <div id="ad_carousel_control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
         </div>
     </div>
 </div>
