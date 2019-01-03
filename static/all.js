@@ -424,7 +424,43 @@ function AddAd(t){
         async: false,
         cache: false,
         success: function(arg){
-            alert('ajax返回');
+            alert('上传成功');
+        }
+    })
+}
+
+// 获取正在进行的广告
+function ActivityAd(){
+    $.ajax({
+        url: "/ad",
+        type: "GET",
+        data: {type: "1"},
+        success: function(arg){
+            
+        }
+    })
+}
+
+// 获取待审核的广告
+function ExamineAd(){
+    $.ajax({
+        url: "/ad",
+        type: "GET",
+        data: {type: "2"},
+        success: function(arg){
+            
+        }
+    })
+}
+
+// 获取关闭的广告
+function ClosedAd(){
+    $.ajax({
+        url: "/ad",
+        type: "GET",
+        data: {type: "3"},
+        success: function(arg){
+            
         }
     })
 }
