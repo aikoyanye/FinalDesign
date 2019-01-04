@@ -544,6 +544,7 @@ function AddGroupBuilding(){
     var i3 = document.getElementById('gb_gname');
     var i4 = document.getElementById('gb_extra');
     var i5 = document.getElementById('gb_endtime');
+    var i6 = document.getElementById('gb_cost');
     if(i2.value > 70){
         alert('人数不可超过70人');
         return
@@ -551,9 +552,10 @@ function AddGroupBuilding(){
     $.ajax({
         url: "/gb",
         type: "POST",
-        data: {type: "1", phone: i1.value, count: i2.value, gname: i3.value, extra: i4.value, endtime: i5.value},
+        data: {type: "1", phone: i1.value, count: i2.value, gname: i3.value, extra: i4.value, endtime: i5.value, cost: i6.value},
         success: function(arg){
             alert('添加团建成功');
+            MainGroupBuilding();
         }
     })
 }
@@ -563,4 +565,58 @@ function GroupBuildingPackage(){
     document.getElementById("modal_header").innerHTML = '团建规则'
     document.getElementById("modal_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>'
     document.getElementById("modal_body").innerHTML = '<p>1、要提前一些时间预约</p><p>2、食物可以自带也可以在园区内购买，须提前通知</p><p>3、人数上限为70人</p><p>4、爱护环境，人人有责<\p>'
+}
+
+// 团建标签主页刷新
+function MainGroupBuilding(){
+    $.ajax({
+        url: "/gb",
+        type: "GET",
+        data: {type: "1"},
+        success: function(arg){
+            var reselts = jQuery.parseJSON(arg);
+            var div = document.getElementById('activity_gb');
+            div.innerHTML = ''
+            for(i=0; i<reselts.length; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="10%">'+reselts[i][8]+'</td><td width="10%">'+reselts[i][3]+'</td><td width="25%">'+reselts[i][5]+'</td><td width="25%">'+reselts[i][6]+'</td><td width="10%">'+reselts[i][7]+'</td><td width="10%"><a onclick="DestroyGb('+reselts[i][0]+')">完成</a></td></tr><tr><td>'+reselts[i][4]+'</td></tr></table></div></div>'
+            }
+        }
+    })
+    $.ajax({
+        url: "/gb",
+        type: "GET",
+        data: {type: "2"},
+        success: function(arg){
+            var reselts = jQuery.parseJSON(arg);
+            var div = document.getElementById('check_gb');
+            div.innerHTML = ''
+            for(i=0; i<reselts.length; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="20%">'+reselts[i][8]+'</td><td width="10%">'+reselts[i][3]+'</td><td width="20%">'+reselts[i][5]+'</td><td width="20%">'+reselts[i][6]+'</td><td width="10%">'+reselts[i][7]+'</td><td width="10%"><a onclick="DestroyGb('+reselts[i][0]+')">销毁</a></td></tr><tr><td>'+reselts[i][4]+'</td></tr></table></div></div>'
+            }
+        }
+    })
+    $.ajax({
+        url: "/gb",
+        type: "GET",
+        data: {type: "3"},
+        success: function(arg){
+            var reselts = jQuery.parseJSON(arg);
+            var div = document.getElementById('finish_gb');
+            div.innerHTML = ''
+            for(i=0; i<reselts.length; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="10%">'+reselts[i][8]+'</td><td width="10%">'+reselts[i][3]+'</td><td width="25%">'+reselts[i][5]+'</td><td width="25%">'+reselts[i][6]+'</td><td width="10%">'+reselts[i][7]+'</td><td width="10%"></td></tr><tr><td>'+reselts[i][4]+'</td></tr></table></div></div>'
+            }
+        }
+    })
+}
+
+function DestroyGb(id){
+    $.ajax({
+        url: "/gb",
+        type: "PUT",
+        data: {type: "1", id: id},
+        success: function(arg){
+            MainGroupBuilding();
+        }
+    })
 }

@@ -178,3 +178,13 @@ class MemberTool:
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchone()[0]
+
+    # 根据用户id返回【用户名(电话)】
+    @staticmethod
+    def get_userphone_by_id(db, id):
+        cursor = db.cursor()
+        sql = 'SELECT username, phone FROM member WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        cursor.close()
+        result = cursor.fetchone()
+        return str(result[0]+'({})'.format(result[1]))
