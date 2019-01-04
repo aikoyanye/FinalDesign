@@ -6,6 +6,7 @@ from handler.ActivityHandler import ActivityHandler
 from handler.MemberHandler import MemberHandler
 from handler.ShipHandler import ShipHandler
 from handler.AdHandler import AdHandler
+from handler.GroupBuildingHandler import GroupBuildingHandler
 
 # 数据库信息
 HOST = '120.77.153.248'
@@ -24,6 +25,7 @@ class Application(tornado.web.Application):
             tornado.web.url(r'/member', MemberHandler, name='member'),
             tornado.web.url(r'/ship', ShipHandler, name='ship'),
             tornado.web.url(r'/ad', AdHandler, name='ad'),
+            tornado.web.url(r'/gb', GroupBuildingHandler, name='gb')
         ]
         # 服务端设置，设定好网页和静态文件存放位置，以及安全设置
         settings = dict(

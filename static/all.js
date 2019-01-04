@@ -348,12 +348,16 @@ function ActivitySearchSelectOption(k){
         data: {type: "3", key: k},
         success: function(arg){
             var select = document.getElementById('act_search_select');
+            var select1 = document.getElementById('gb_pid_select');
             var data = jQuery.parseJSON(arg);
             var l = data.length / 2;
             select.options.length = 0;
-            select.add(new Option('请选择', '请选择'))
+            select.add(new Option('请选择', '请选择'));
+            select1.options.length = 0;
+            select1.add(new Option('请选择', '请选择'));
             for (var i=0; i<l; i++){
                 select.add(new Option(data[i], data[i+l]));
+                select1.add(new Option(data[i], data[i+l]));
             }
         }
     })
@@ -363,7 +367,7 @@ function ActivitySearchSelectOption(k){
 function AdPackage(){
     document.getElementById("modal_header").innerHTML = '广告规则'
     document.getElementById("modal_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>'
-    document.getElementById("modal_body").innerHTML = '<p>1、广告仅允许视频或图片轮播</p><p>2、视频长度不得超过9s</p><p>3、图片数量不得超过3张</p><p>4、广告投放时间最短为一星期<\p>'
+    document.getElementById("modal_body").innerHTML = '<p>1、广告仅允许视频或图片轮播</p><p>2、视频大小不得超过30M</p><p>3、图片数量不得超过3张</p><p>4、广告投放时间最短为一星期<\p>'
 }
 
 // 添加广告的资源控制
@@ -392,6 +396,10 @@ function AddAd(t){
     var p1 = document.getElementById('p1');
     if(ip1.value=='' || ip2.value=='' || ip3.value=='' || ip4.value=='' || p1.value==''){
         alert('输入框组不能为空');
+        return
+    }
+    if(p1.files[0].size > 31457280){
+        alert('文件大小超过30M');
         return
     }
     var d = new FormData();
@@ -527,4 +535,32 @@ function PreviewAd(id, content){
             }
         }
     })
+}
+
+// 添加团建
+function AddGroupBuilding(){
+    var i1 = document.getElementById('gb_phone');
+    var i2 = document.getElementById('gb_count');
+    var i3 = document.getElementById('gb_gname');
+    var i4 = document.getElementById('gb_extra');
+    var i5 = document.getElementById('gb_endtime');
+    if(i2.value > 70){
+        alert('人数不可超过70人');
+        return
+    }
+    $.ajax({
+        url: "/gb",
+        type: "POST",
+        data: {type: "1", phone: i1.value, count: i2.value, gname: i3.value, extra: i4.value, endtime: i5.value},
+        success: function(arg){
+            alert('添加团建成功');
+        }
+    })
+}
+
+// 团建规则
+function GroupBuildingPackage(){
+    document.getElementById("modal_header").innerHTML = '团建规则'
+    document.getElementById("modal_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>'
+    document.getElementById("modal_body").innerHTML = '<p>1、要提前一些时间预约</p><p>2、食物可以自带也可以在园区内购买，须提前通知</p><p>3、人数上限为70人</p><p>4、爱护环境，人人有责<\p>'
 }

@@ -123,12 +123,24 @@ MainActivityClick();
 <div id="main_ad_new"></div>
 <div class="panel panel-default"><div class="panel-heading"><h2>待审核&审核失败</h2></div></div>
 <div id="main_ad_break"></div>
-<div class="panel panel-default"><div class="panel-heading"><h2>历史广告</h2></div></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>过期</h2></div></div>
 <div id="main_ad_old"></div>
 {% end %}
 
 {% block sact %}
-<p>sact</p>
+<div class="panel panel-default"><div class="panel-heading">
+    <table width="100%">
+        <tr>
+            <td width="95%"><h2><a onclick="GroupBuildingPackage()" href="#" data-toggle="modal" data-target="#mo">团建</a></h2></td>
+            <td width="5%"><h2><a data-toggle="modal" data-target="#add_gb"><span class="glyphicon glyphicon-plus" aria-hidden="true" /></a></h2></td>
+        </tr>
+    </table>
+</div></div>
+<div id="activity_gb"></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>待审核&审核失败</h2></div></div>
+<div id="check_gb"></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>已完成</h2></div></div>
+<div id="finish_gb"></div>
 {% end %}
 
 {% block check %}
@@ -160,10 +172,7 @@ MainActivityClick();
                     </p>
                 </div>
             </div>
-            <div class="modal-footer" id="add_btn">
-                <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-                <!--<button type="button" class="btn btn-primary" onclick="AddActivity()" data-dismiss="modal">提交</button>-->
-            </div>
+            <div class="modal-footer" id="add_btn"></div>
         </div>
     </div>
 </div>
@@ -210,6 +219,32 @@ MainActivityClick();
                 </div>
             </div>
             <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
+        </div>
+    </div>
+</div>
+{% end %}
+{% block add_gb %}
+<div class="modal fade" id="add_gb" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">添加团建</div>
+            <div class="modal-body">
+                <label for="gb_phone">负责人</label>
+                <select onchange="document.getElementById('gb_phone').value = this.value" style="width:100%;height:36px;" class="form-control" id="gb_pid_select"></select>
+                <input oninput="ActivitySearchSelectOption(this.value)" class="form-control" placeholder="请输入用户电话" id="gb_phone" type="text" style="width:97%;height:36px;position: relative;top: -36px" />
+                <label for="gb_count">人数</label>
+                <input type="number" id="gb_count" class="form-control" oninput="value=value.replace(/[^\d]/g,'')" />
+                <label for="gb_gname">名称</label>
+                <input type="text" id="gb_gname" class="form-control" />
+                <label for="gb_endtime">活动日期</label>
+                <input type="date" id="gb_endtime" name="endtime" class="form-control" />
+                <label for="gb_extra">追加要求</label>
+                <textarea id="gb_extra" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="AddGroupBuilding()" data-dismiss="modal">提交</button>
+            </div>
         </div>
     </div>
 </div>
