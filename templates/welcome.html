@@ -65,7 +65,7 @@ MainActivityClick();
                 <td width="30%">
                     <label for="act_search_select" style="margin-top:33px">用户电话</label>
                     <select onchange="ActivitySearchSelected(this.value)" style="width:200px;height:36px;" class="form-control" id="act_search_select"></select>
-                    <input oninput="ActivitySearchSelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" placeholder="请输入用户电话" name="act_search_phone" id="act_search_phone" type="text" />
+                    <input oninput="value=value.replace(/[^\d]/g,'');ActivitySearchSelectOption(this.value)" onchange = "value=value.replace(/[^\d]/g,'')" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" placeholder="请输入用户电话" name="act_search_phone" id="act_search_phone" type="text" />
                 </td>
                 <td width="15%">
                     <label for="act_search_ship">船只类型</label>
@@ -166,7 +166,7 @@ MainActivityClick();
                 <div style="position:relative;">
                     <p style=":auto;padding:5px;">
                         <select onchange="AddActivitySelected(this.value)" style="width:100%;height:36px;" class="form-control" id="add_act_select"></select>
-                        <input oninput="AddActivitySelectOption(this.value)" class="form-control" placeholder="请输入用户电话" name="add_act_phone" id="add_act_phone" type="text" style="width:97%;height:36px;position: relative;top: -36px" />
+                        <input oninput="value=value.replace(/[^\d]/g,'');AddActivitySelectOption(this.value)" class="form-control" placeholder="请输入用户电话" name="add_act_phone" id="add_act_phone" type="text" style="width:97%;height:36px;position: relative;top: -36px" />
                         <select class="form-control" id="add_act_select_ship"></select>
                         <input style="margin-top:36px;" type="number" id="add_activity_cost" class="form-control" placeholder="押金" oninput="value=value.replace(/[^\d]/g,'')" />
                     </p>
@@ -189,7 +189,7 @@ MainActivityClick();
                     <label for="endtime" style="margin-top:10px;">广告结束时间</label>
                     <input type="date" id="endtime" name="endtime" class="form-control" />
                     <label for="cost" style="margin-top:10px;">花费</label>
-                    <input type="text" id="cost" name="cost" class="form-control" placeholder="花费" />
+                    <input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="cost" name="cost" class="form-control" placeholder="花费" />
                     <label for="content" style="margin-top:10px;">广告文案</label>
                     <textarea id="content" name="content" class="form-control" placeholder="广告文案" style="resize:none" maxlength="100"></textarea>
                     <table width="100%" style="margin-top:10px;">

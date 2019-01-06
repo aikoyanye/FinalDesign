@@ -299,7 +299,7 @@ function AddReservationInitShip(){
         type: "GET",
         data: {type: "3"},
         success: function(arg){
-            document.getElementById('add_title').innerHTML = '添加活动'
+            document.getElementById('add_title').innerHTML = '添加预约'
             document.getElementById('add_btn').innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" onclick="AddReservation()" data-dismiss="modal">提交</button>'
             var select = document.getElementById('add_act_select_ship');
             var data = jQuery.parseJSON(arg);
@@ -524,9 +524,9 @@ function PreviewAd(id, content){
                 control_div.innerHTML = control_div.innerHTML + '<a class="right carousel-control" href="#ad_preview_carousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">Next</span></a>'
                 for(i=0; i<reselts.length; i++){
                     if(i==0){
-                        img_div.innerHTML = img_div.innerHTML + '<div class="item active"><img src="'+reselts[i][0]+'"><div class="carousel-caption">'+content+'</div></div>'
+                        img_div.innerHTML = img_div.innerHTML + '<div class="item active"><img src="'+reselts[i][0]+'" alt="资源无法加载"><div class="carousel-caption">'+content+'</div></div>'
                     }else{
-                        img_div.innerHTML = img_div.innerHTML + '<div class="item"><img src="'+reselts[i][0]+'"><div class="carousel-caption">'+content+'</div></div>'
+                        img_div.innerHTML = img_div.innerHTML + '<div class="item"><img src="'+reselts[i][0]+'" alt="资源无法加载"><div class="carousel-caption">'+content+'</div></div>'
                     }
                 }
             }else{

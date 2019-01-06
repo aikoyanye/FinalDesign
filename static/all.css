@@ -1,0 +1,9 @@
+body.bg{
+    background-image: url('http://127.0.0.1:8080/static/bg.png');
+    background-attachment: fixed;
+    background-repeat:no-repeat;
+}
+
+nav._nav{
+    background-color: rgb(255, 255, 255, .7);
+}

@@ -37,7 +37,6 @@ class GbTool:
             i = list(item)
             i.append(MemberTool.get_userphone_by_id(db, item[1]))
             results.append(i)
-        print(results)
         return results
 
     # 团建过期
