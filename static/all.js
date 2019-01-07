@@ -166,7 +166,7 @@ function MainShipClick(){
 
 // 管理员密钥提交方法
 function FormKeySubmit(){
-    document.getElementById("f_key").submit()
+    document.getElementById("f_key").submit();
 }
 
 // 手工添加activity

@@ -60,4 +60,6 @@ cursor = db.cursor()
 # except:
 #     db.rollback()
 
+# print(SomeTool.key('hatsuneMiku'))
+
 db.close()

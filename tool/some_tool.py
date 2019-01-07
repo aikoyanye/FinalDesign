@@ -31,3 +31,12 @@ class SomeTool:
     @staticmethod
     def delete_dot_last_2(s):
         return str(s) if str(s)[-2] != ',' else str(s).replace(',', '')
+
+    # 获取密钥md5
+    @staticmethod
+    def get_key_by_type(db, type):
+        cursor = db.cursor()
+        sql = 'SELECT _key FROM rootkey WHERE type = "{}"'.format(type)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchone()[0]
