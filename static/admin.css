@@ -1,0 +1,12 @@
+div.left_side{
+    width: 15%;
+    height: 100%;
+    float:left;
+    background-color: #424242;
+}
+
+div.right_side{
+    float:left;
+    width: 85%;
+    background-color: #66ccff;
+}
