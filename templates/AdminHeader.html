@@ -16,32 +16,30 @@
 <div class="left_side">
     <ul class="side-nav">
         <li class="active"><a class="a" href="#">首页</a></li>
-        <li><a class="a" href="#">Link 1</a></li>
+        <li><a class="a" href="#">活动&预约</a></li>
         <li class="divider"></li>
-        <li><a class="a" href="#">Link 2</a></li>
+        <li><a class="a" href="#">会员</a></li>
         <li class="divider"></li>
-        <li><a class="a" href="#">Link 3</a></li>
+        <li><a class="a" href="#">船只</a></li>
         <li class="divider"></li>
-        <li><a class="a" href="#">Link 4</a></li>
+        <li><a class="a" href="#">广告</a></li>
+        <li class="divider"></li>
+        <li><a class="a" href="#">团建</a></li>
     </ul>
 </div>
 
 <div class="right_side">
-    <div style="padding:20px;">
-        <h3>侧栏导航</h3>
-        <p> .active 类用于设置当期页链接。</p>
-        <p> .divider 类用于设置水平的分割线。</p>
-    </div>
     {% if current %}
+    
     {% else %}
-    <div class="jumbotron">
-        <h1>你好，管理员</h1>
-        <p>如丢失密钥或密钥过期，请联系超级管理员</p>
+    <div class="giant_screen">
+        <h1>你好，超级管理员</h1>
+        <p>请铭记超级密钥，因为该密钥将无法找回</p>
         <form action="/admin" method="post" id="f_key">
-            <div class="input-group input-group-lg">
-                <input type="password" class="form-control" placeholder="请输入密钥" aria-describedby="sub" name="key" />
-                <a class="btn btn-primary btn-lg input-group-addon" role="button" id="sub" onclick="FormKeySubmit()">提交</a>
-            </div>
+            <table width="100%">
+                <tr><td width="90%"><input type="password" class="form-control" placeholder="请输入密钥" aria-describedby="sub" name="key" /></td>
+                <td width="10%"><a class="button postfix" role="button" id="sub" onclick="FormKeySubmit()">提交</a></td></tr>
+            </table>
         </form>
     </div>
 </div>

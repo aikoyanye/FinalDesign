@@ -8,5 +8,12 @@ div.left_side{
 div.right_side{
     float:left;
     width: 85%;
-    background-color: #66ccff;
+    padding-left: 15px;
+}
+
+div.giant_screen{
+    background-color: #D9D9D9;
+    float: center;
+    padding: 30px;
+    margin-top: 150px;
 }
