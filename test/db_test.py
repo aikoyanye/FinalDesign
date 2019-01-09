@@ -28,9 +28,9 @@ cursor = db.cursor()
 # sql = """
 #     SELECT * FROM member
 #     """
-# sql1 = """
-#     SELECT * FROM member WHERE username = {}
-#     """.format('"雾雨魔理沙"')
+sql = 'SELECT SUM(cost) FROM group_building'
+cursor.execute(sql)
+cursor.close()
 # try:
 #     cursor.execute(sql)
 #     for result in cursor.fetchall():

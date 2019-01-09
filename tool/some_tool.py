@@ -40,3 +40,35 @@ class SomeTool:
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchone()[0]
+
+    # 输入年月返回[%Y-%m-%d %H:%M:%S]
+    @staticmethod
+    def get_date_by_ym(year, month):
+        if month == '02':
+            return year + '-' + month + '-01 01:01:01', year + '-' + month + '-28 01:01:01'
+        elif month in ['04', '06', '09', '11']:
+            return year + '-' + month + '-01 01:01:01', year + '-' + month + '-30 01:01:01'
+        else:
+            return year + '-' + month + '-01 01:01:01', year + '-' + month + '-31 01:01:01'
+
+    # 返回距今n个月的年和月
+    @staticmethod
+    def get_year_month_by_padding(n):
+        now = datetime.datetime.now()
+        result = (datetime.date(now.year, now.month, 15) - datetime.timedelta(days=30*int(n))).strftime('%Y,%m').split(',')
+        return result[0], result[1]
+
+    # 三个列表对应项相加
+    @staticmethod
+    def single_list(y1, y2, y3):
+        y = []
+        for i in range(len(y1)):
+            y.append(y1[i] + y2[i] + y3[i])
+        return y
+
+    # 返回今天和n天前的start和end，[%Y-%m-%d %H:%M:%S]
+    @staticmethod
+    def get_last_7_and_now(n):
+        now = datetime.datetime.now()
+        last = (datetime.date(now.year, now.month, now.day) - datetime.timedelta(days=int(n))).strftime('%Y-%m-%d')
+        return last+' 00:00:00', last+' 23:59:59'
