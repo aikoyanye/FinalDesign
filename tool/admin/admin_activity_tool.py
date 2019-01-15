@@ -1,4 +1,5 @@
 from tool.some_tool import SomeTool
+from pyecharts import Bar, Line, Overlap
 
 class AdminActivityTool:
     # 获取制定月份的活动数和总盈利
@@ -71,3 +72,26 @@ class AdminActivityTool:
             x.append(start[0:10])
         cursor.close()
         return x[::-1], y1[::-1], y2[::-1]
+
+    # 早中晚活动占比
+    @staticmethod
+    def get_man_activity(db):
+        cursor = db.cursor()
+        sql = 'SELECT created FROM activity'
+        cursor.execute(sql)
+        cursor.close()
+        results = {'早': 0, '中': 0, '晚': 0}
+        for item in cursor.fetchall():
+            if int(str(item)[13:15]) <= 11:
+                results['早'] = results['早'] + 1
+            elif int(str(item)[13:15]) <= 17:
+                results['中'] = results['中'] + 1
+            elif int(str(item)[13:15]) <= 23:    
+                results['晚'] = results['晚'] + 1
+        return list(results.keys()), list(results.values())
+
+    # 首页数据render
+    @staticmethod
+    def admin_activity_main(db):
+        # 每月活动
+        bar = Bar()
