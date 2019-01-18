@@ -398,8 +398,8 @@ function AddAd(t){
         alert('输入框组不能为空');
         return
     }
-    if(p1.files[0].size > 31457280){
-        alert('文件大小超过30M');
+    if(p1.files[0].size > 131457280){
+        alert('文件大小超过130M');
         return
     }
     var d = new FormData();

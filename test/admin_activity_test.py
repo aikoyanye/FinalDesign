@@ -12,8 +12,10 @@ DATABASE = 'final_design'
 db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 cursor = db.cursor()
 
-print(AdminActivityTool.get_num_count_activity(db, 8, 1))
-print(AdminActivityTool.get_num_count_activity(db, 8, 2))
-print(AdminActivityTool.get_total_by_year_month(db, 8))
-print(AdminActivityTool.get_last_activity_by_days(db, 7))
-print(AdminShipTool.get_ship_type(db))
+# print(AdminActivityTool.get_num_count_activity(db, 8, 1))
+# print(AdminActivityTool.get_num_count_activity(db, 8, 2))
+# print(AdminActivityTool.get_total_by_year_month(db, 8))
+# print(AdminActivityTool.get_last_activity_by_days(db, 7))
+# print(AdminShipTool.get_ship_type(db))
+
+print(AdminActivityTool.admin_activity_all(db))

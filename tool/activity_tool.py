@@ -31,7 +31,6 @@ class ActivityTool:
         sql = """INSERT INTO activity (status, endtime, cost, userId, shipId, created) VALUES
                 ('{}', '{}', '{}', '{}', '{}', '{}')
                 """.format(status, endtime, cost, userId, shipId, created)
-        # cursor.execute(sql)
         try:
             cursor.execute(sql)
             db.commit()

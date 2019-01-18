@@ -1,4 +1,5 @@
 import datetime, requests, hashlib
+from pyecharts import Bar, Line, Overlap, Pie
 
 WEATHER_API = 'https://api.seniverse.com/v3/weather/now.json?key=wj3xlpuivdrhutm1&location=ip&language=zh-Hans'
 
@@ -72,3 +73,15 @@ class SomeTool:
         now = datetime.datetime.now()
         last = (datetime.date(now.year, now.month, now.day) - datetime.timedelta(days=int(n))).strftime('%Y-%m-%d')
         return last+' 00:00:00', last+' 23:59:59'
+
+    # 返回line+bar 的overlap
+    @staticmethod
+    def get_overlap_by_bar_line(x, y1, y2, title, title1, title2):
+        bar = Bar(title, title_pos='50%')
+        line = Line()
+        overlap = Overlap(width=1000)
+        bar.add(title1, x, y1, legend_pos="70%", xaxis_interval=0, xaxis_rotate=30, is_label_show=True, is_stack=True, label_pos='inside')
+        line.add(title2, x, y2, xaxis_interval=0, xaxis_rotate=30, is_smooth=True, is_label_show=True)
+        overlap.add(bar)
+        overlap.add(line)
+        return overlap

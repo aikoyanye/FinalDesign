@@ -1,0 +1,64 @@
+{% extends "AdminHeader.html" %}
+
+{% block ad %}
+<div class="container" style="margin-top: 20px">
+	<div class="row" style="text-align:center;">
+		<ul class="list-group col-lg-4">
+			<li class="list-group-item up_well"><h3>广告总数</h3></li>
+			<li class="list-group-item down_well"><h3>{{ results[0] }}</h3></li>
+		</ul>
+        <ul class="list-group col-lg-4">
+			<li class="list-group-item up_well"><h3>总收入</h3></li>
+			<li class="list-group-item down_well"><h3>{{ results[1] }}</h3></li>
+		</ul>
+        <ul class="list-group col-lg-4">
+			<li class="list-group-item up_well"><h3>待审核广告数</h3></li>
+			<li class="list-group-item down_well"><h3>{{ results[2] }}</h3></li>
+		</ul>
+	</div>
+</div>
+<hr>
+<table width="100%" class="table table-striped table-hover table-bordered">
+    <thead>
+    <tr>
+        <th>广告编号</th>
+        <th>赞助商名称</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>花费</th>
+        <th>状态</th>
+        <th>广告文案</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in range(len(data)) %}
+    <tr>
+        <td>{{ data[i][0] }}</td>
+        <td id="name{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'name{{ i }}', '{{ data[i][1] }}', 'name')">{{ data[i][1] }}</td>
+        <td id="created{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'created{{ i }}', '{{ data[i][2] }}', 'created')">{{ data[i][2] }}</td>
+        <td id="endtime{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'endtime{{ i }}', '{{ data[i][3] }}', 'endtime')">{{ data[i][3] }}</td>
+        <td id="cost{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'cost{{ i }}', '{{ data[i][4] }}', 'cost')">{{ data[i][4] }}</td>
+        <td id="type{{ i }}" onclick="AdTdOnClickSelect({{ data[i][0] }}, 'type{{ i }}', '{{ data[i][5] }}', 'type')">{{ data[i][5] }}</td>
+        <td id="content{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'content{{ i }}', '{{ data[i][6] }}', 'content')">{{ data[i][6] }}</td>
+        <td><a data-toggle="modal" data-target="#preview_ad" onclick="PreviewAd({{ data[i][0] }}, '{{ data[i][6] }}')">预览</a></td>
+    </tr>
+    {% end %}
+    </tbody>
+</table>
+<div class="modal fade" id="preview_ad" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">广告预览</div>
+            <div class="modal-body" id="preview_ad_body">
+                <div id="ad_preview_carousel" class="carousel slide">
+                    <div id="ad_preview_main" class="carousel-inner"></div>
+                    <div id="ad_carousel_control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">关闭</button></div>
+        </div>
+    </div>
+</div>
+{% end %}

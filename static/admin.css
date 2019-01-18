@@ -12,8 +12,17 @@ div.right_side{
 }
 
 div.giant_screen{
-    background-color: #D9D9D9;
     float: center;
     padding: 30px;
     margin-top: 150px;
+}
+
+li.up_well{
+    background-color: #333333;
+    color: #f6f6f6;
+}
+
+li.down_well{
+    background-color: #f6f6f6;
+    color: #333333;
 }

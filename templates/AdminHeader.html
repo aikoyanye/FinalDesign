@@ -1,45 +1,48 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/foundation/5.5.3/css/foundation.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/foundation/5.5.3/js/foundation.min.js"></script>
-    <script src="https://cdn.staticfile.org/foundation/5.5.3/js/vendor/modernizr.js"></script>
-    <link href="static\admin.css" rel="stylesheet">
-    <script src="static\admin.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+    <script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+    <link href="http://127.0.0.1:8080/static/admin.css" rel="stylesheet">
+    <script src="http://127.0.0.1:8080/static/admin.js" type="text/javascript"></script>
+    <title>伥窿水上世界-后端数据管理</title>
 </head>
 
 <body>
 <div class="left_side">
-    <ul class="side-nav">
-        <li class="active"><a class="a" href="#">首页</a></li>
-        <li><a class="a" href="#">活动&预约</a></li>
-        <li class="divider"></li>
-        <li><a class="a" href="#">会员</a></li>
-        <li class="divider"></li>
-        <li><a class="a" href="#">船只</a></li>
-        <li class="divider"></li>
-        <li><a class="a" href="#">广告</a></li>
-        <li class="divider"></li>
-        <li><a class="a" href="#">团建</a></li>
+    <ul class="nav">
+        <li><a href="/admin"><h3>首页</h3></a></li>
+        <li><a href="/admin/activity"><h3>活动&预约</h3></a></li>
+        <li><a href="/admin/member"><h3>会员</h3></a></li>
+        <li><a href="/admin/ship"><h3>船只</h3></a></li>
+        <li><a href="/admin/ad"><h3>广告</h3></a></li>
+        <li><a href="#"><h3>团建</h3></a></li>
+        <li><a href="/"><h3>返回</h3></a></li>
     </ul>
 </div>
 
 <div class="right_side">
     {% if current %}
-    
+        {% block echarts %}{% end %}
+        {% block activity %}{% end %}
+        {% block member %}{% end %}
+        {% block ship %}{% end %}
+        {% block ad %}{% end %}
     {% else %}
-    <div class="giant_screen">
+    <div class="jumbotron giant_screen">
         <h1>你好，超级管理员</h1>
         <p>请铭记超级密钥，因为该密钥将无法找回</p>
         <form action="/admin" method="post" id="f_key">
-            <table width="100%">
-                <tr><td width="90%"><input type="password" class="form-control" placeholder="请输入密钥" aria-describedby="sub" name="key" /></td>
-                <td width="10%"><a class="button postfix" role="button" id="sub" onclick="FormKeySubmit()">提交</a></td></tr>
-            </table>
+            <div class="input-group input-group-lg">
+                <input type="password" class="form-control" placeholder="请输入密钥" aria-describedby="sub" name="key" />
+                <a class="btn btn-primary btn-lg input-group-addon" role="button" id="sub" onclick="FormKeySubmit()">提交</a>
+            </div>
         </form>
     </div>
 </div>

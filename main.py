@@ -8,6 +8,10 @@ from handler.ShipHandler import ShipHandler
 from handler.AdHandler import AdHandler
 from handler.GroupBuildingHandler import GroupBuildingHandler
 from handler.admin.AdminWelcomeHandler import AdminWelcomeHandler
+from handler.admin.AdminActivityHandler import AdminActivityHandler
+from handler.admin.AdminMemberHandler import AdminMemberHandler
+from handler.admin.AdminShipHandler import AdminShipHandler
+from handler.admin.AdminAdHandler import AdminAdHandler
 
 # 数据库信息
 HOST = '120.77.153.248'
@@ -28,6 +32,10 @@ class Application(tornado.web.Application):
             tornado.web.url(r'/ad', AdHandler, name='ad'),
             tornado.web.url(r'/gb', GroupBuildingHandler, name='gb'),
             tornado.web.url(r'/admin', AdminWelcomeHandler, name='admin_welcome'),
+            tornado.web.url(r'/admin/activity', AdminActivityHandler, name='admin_activity'),
+            tornado.web.url(r'/admin/member', AdminMemberHandler, name='admin_member'),
+            tornado.web.url(r'/admin/ship', AdminShipHandler, name='admin_ship'),
+            tornado.web.url(r'/admin/ad', AdminAdHandler, name='admin_ad'),
         ]
         # 服务端设置，设定好网页和静态文件存放位置，以及安全设置
         settings = dict(
