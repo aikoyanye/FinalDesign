@@ -14,10 +14,14 @@
 	</div>
 </div>
 <hr>
-<table width="100%" class="table table-striped table-hover table-bordered">
+<table id="table" width="100%" class="table table-striped table-hover table-bordered">
     <thead>
     <tr>
-        <th>游船编号</th>
+        <th>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="ShipAddRow()"></span>
+            <a class="glyphicon glyphicon-download-alt" href="http://127.0.0.1:8080/static/data.xls" download="data.xls"></a>
+            游船编号
+        </th>
         <th>游船称号</th>
         <th>游船状态</th>
         <th>描述</th>
@@ -29,7 +33,7 @@
     <tbody>
     {% for i in range(len(data)) %}
         <tr>
-            <td>{{ data[i][0] }}</td>
+            <td><span onclick="DeleteModelu({{ data[i][0] }}, {{ i }}+2, 'ship')" class="glyphicon glyphicon-remove" data-toggle="modal" data-target="#delete_table_modal">{{ data[i][0] }}</span></td>
             <td id="name{{ i }}" onclick="ShipTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][1] }}', 'shipname')">{{ data[i][1] }}</td>
             <td id="status{{ i }}" onclick="ShipTdOnClickSelect({{ data[i][0] }}, this.id, '{{ data[i][2] }}', 'status', SHIP_STATUS)">{{ data[i][2] }}</td>
             <td id="desc{{ i }}" onclick="ShipTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][3] }}', 'descroption')">{{ data[i][3] }}</td>

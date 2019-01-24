@@ -18,10 +18,14 @@
 	</div>
 </div>
 <hr>
-<table width="100%" class="table table-striped table-hover table-bordered">
+<table id="table" width="100%" class="table table-striped table-hover table-bordered">
     <thead>
     <tr>
-        <th>广告编号</th>
+        <th>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="AdAddRow()"></span>
+            <a class="glyphicon glyphicon-download-alt" href="http://127.0.0.1:8080/static/data.xls" download="data.xls"></a>
+            广告编号
+        </th>
         <th>赞助商名称</th>
         <th>开始时间</th>
         <th>结束时间</th>
@@ -34,7 +38,7 @@
     <tbody>
     {% for i in range(len(data)) %}
     <tr>
-        <td>{{ data[i][0] }}</td>
+        <td><span onclick="DeleteModelu({{ data[i][0] }}, {{ i }}+2, 'ad')" class="glyphicon glyphicon-remove" data-toggle="modal" data-target="#delete_table_modal">{{ data[i][0] }}</span></td>
         <td id="name{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'name{{ i }}', '{{ data[i][1] }}', 'name')">{{ data[i][1] }}</td>
         <td id="created{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'created{{ i }}', '{{ data[i][2] }}', 'created')">{{ data[i][2] }}</td>
         <td id="endtime{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'endtime{{ i }}', '{{ data[i][3] }}', 'endtime')">{{ data[i][3] }}</td>

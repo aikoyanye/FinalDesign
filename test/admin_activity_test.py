@@ -18,4 +18,5 @@ cursor = db.cursor()
 # print(AdminActivityTool.get_last_activity_by_days(db, 7))
 # print(AdminShipTool.get_ship_type(db))
 
-print(AdminActivityTool.admin_activity_all(db))
+# print(AdminActivityTool.admin_activity_all(db))
+# AdminActivityTool.data_2_excel(db)

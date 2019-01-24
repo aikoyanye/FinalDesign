@@ -18,10 +18,14 @@
 	</div>
 </div>
 <hr>
-<table width="100%" style="margin-top: 20px" class="table table-striped table-hover table-bordered">
+<table id="table" width="100%" style="margin-top: 20px" class="table table-striped table-hover table-bordered">
     <thead>
     <tr>
-        <th>会员编号</th>
+        <th>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="MemberAddRow()"></span>
+            <a class="glyphicon glyphicon-download-alt" href="http://127.0.0.1:8080/static/data.xls" download="data.xls"></a>
+            会员编号
+        </th>
         <th>会员名称</th>
         <th>会员电话</th>
         <th>会员信誉</th>
@@ -32,7 +36,7 @@
     <tbody>
     {% for index in range(len(data)) %}
     <tr>
-        <td>{{ data[index][0] }}</td>
+        <td><span onclick="DeleteModelu({{ data[index][0] }}, {{ index }}+2, 'member')" class="glyphicon glyphicon-remove" data-toggle="modal" data-target="#delete_table_modal">{{ data[index][0] }}</span></td>
         <td id="name{{ index }}" onclick="MemberTdOnClickInput({{ data[index][0] }}, 'name{{ index }}', '{{ data[index][1] }}', 'username')">{{ data[index][1] }}</td>
         <td id="phone{{ index }}" onclick="MemberTdOnClickInput({{ data[index][0] }}, 'phone{{ index }}', '{{ data[index][2] }}', 'phone')">{{ data[index][2] }}</td>
         <td id="reputation{{ index }}" onclick="MemberTdOnClickSelect({{ data[index][0] }}, 'reputation{{ index }}', '{{ data[index][3] }}', 'reputation')">{{ data[index][3] }}</td>

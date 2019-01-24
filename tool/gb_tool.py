@@ -23,7 +23,7 @@ class GbTool:
         cursor = db.cursor()
         # 获取正在进行的团建信息
         if str(type) == '1':
-            sql = 'SELECT id, principalId, count, gname, extra, created, endtime, cost FROM group_building WHERE type = "正在进行"'
+            sql = 'SELECT id, principalId, count, gname, extra, created, endtime, cost FROM group_building WHERE type = "活动"'
         # 获取待审核的团建信息
         elif str(type) == '2':
             sql = 'SELECT id, principalId, count, gname, extra, created, endtime, cost FROM group_building WHERE type = "待审核"'

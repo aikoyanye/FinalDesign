@@ -1,3 +1,7 @@
+from tool.some_tool import SomeTool
+
+TITLES = ['游船编号', '游船称号', '游船状态', '描述', '引进时间', '出行次数', '游船类型']
+
 class AdminShipTool:
     # 游客所游玩船只占比
     @staticmethod
@@ -45,3 +49,36 @@ class AdminShipTool:
             db.rollback()
             return False
         return True
+
+    # 删除一行数据
+    @staticmethod
+    def delete_row_by_id(db, id):
+        cursor = db.cursor()
+        sql = 'DELETE FROM ship WHERE id = {}'.format(id)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        return True
+
+    # 添加表格一行数据并返回
+    @staticmethod
+    def add_table_row(db, shipname, status, descroption, created, time, type):
+        cursor = db.cursor()
+        sql = '''
+        INSERT INTO ship (shipname, status, descroption, created, time, type, lastbroke) VALUES 
+        ("{}", "{}", "{}", "{}", "{}", "{}", "None")
+        '''.format(shipname, status, descroption, created, time, type)
+        cursor.execute(sql)
+        db.commit()
+        sql = 'SELECT * FROM ship WHERE shipname = "{}" AND descroption = "{}"'.format(shipname, descroption)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchone()
+
+    # 导出数据
+    @staticmethod
+    def data_2_excel(db):
+        SomeTool.data_2_excel(AdminShipTool.get_ship(db), TITLES, 'ship')

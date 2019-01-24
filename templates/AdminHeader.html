@@ -22,18 +22,30 @@
         <li><a href="/admin/member"><h3>会员</h3></a></li>
         <li><a href="/admin/ship"><h3>船只</h3></a></li>
         <li><a href="/admin/ad"><h3>广告</h3></a></li>
-        <li><a href="#"><h3>团建</h3></a></li>
+        <li><a href="/admin/gb"><h3>团建</h3></a></li>
+        <li><a href="/admin/key"><h3>密钥</h3></a></li>
         <li><a href="/"><h3>返回</h3></a></li>
     </ul>
 </div>
 
 <div class="right_side">
     {% if current %}
-        {% block echarts %}{% end %}
-        {% block activity %}{% end %}
-        {% block member %}{% end %}
-        {% block ship %}{% end %}
-        {% block ad %}{% end %}
+    {% block echarts %}{% end %}
+    {% block activity %}{% end %}
+    {% block member %}{% end %}
+    {% block ship %}{% end %}
+    {% block ad %}{% end %}
+    {% block gb %}{% end %}
+    {% block key %}{% end %}
+    <div class="modal fade" id="delete_table_modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">通知</div>
+                <div class="modal-body"><h3>你确定删除本行数据？</h3></div>
+                <div class="modal-footer" id="modal_table_footer"></div>
+            </div>
+        </div>
+    </div>
     {% else %}
     <div class="jumbotron giant_screen">
         <h1>你好，超级管理员</h1>

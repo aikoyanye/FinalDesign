@@ -1,0 +1,22 @@
+{% extends "AdminHeader.html" %}
+
+{% block key %}
+<table style="margin-top: 150px;" width="100%" id="table" class="table table-striped table-hover table-bordered">
+    <thead>
+    <tr>
+        <th>编号</th>
+        <th>密钥MD5（只能修改，不可查看）</th>
+        <th>类型</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in range(len(data)) %}
+    <tr>
+        <td width="5%">{{ data[i][0] }}</td>
+        <td width="85%" id="key{{ i }}" onclick="KeyTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][1] }}', '_key')">{{ data[i][1] }}</td>
+        <td>{{ data[i][2] }}</td>
+    </tr>
+    {% end %}
+    </tbody>
+</table>
+{% end %}

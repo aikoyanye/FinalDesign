@@ -1,9 +1,10 @@
 from tool.some_tool import SomeTool
 from tool.admin.admin_ship_tool import AdminShipTool
 from pyecharts import Grid, Line, Pie, Page
-from pyecharts.conf import PyEchartsConfig
-from pyecharts.engine import EchartsEnvironment
-from pyecharts.utils import write_utf8_html_file
+import xlwt
+
+TITLES = ['活动编号', '状态', '开始时间', '结束时间', '花费', '会员编号', '船只编号', '会员名', '会员电话', '会员信誉', '注册时间', '游玩次数',
+                  '船只名', '船只当前状态', '船只描述', '引进时间', '出游次数', '船只类型']
 
 class AdminActivityTool:
     # 获取制定月份的活动数和总盈利
@@ -141,7 +142,8 @@ class AdminActivityTool:
         '''
         cursor.execute(sql)
         cursor.close()
-        return cursor.fetchall()
+        results = cursor.fetchall()
+        return results
 
     # 修改表格中的数据
     @staticmethod
@@ -155,3 +157,37 @@ class AdminActivityTool:
             db.rollback()
             return False
         return True
+
+    # 删除指定id的数据
+    @staticmethod
+    def delete_row_by_id(db, id):
+        cursor = db.cursor()
+        sql = 'DELETE FROM activity WHERE id = {}'.format(id)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        return True
+
+    # 添加表格数据并返回
+    @staticmethod
+    def add_activity_row(db, status, created, endtime, cost, user, ship):
+        cursor = db.cursor()
+        sql = '''
+        INSERT INTO activity (status, created, endtime, cost, userId, shipId) 
+        VALUES ("{}", "{}", "{}", "{}", {}, {})
+        '''.format(status, created, endtime, cost, int(user), int(ship))
+        cursor.execute(sql)
+        db.commit()
+        sql = 'SELECT * FROM activity WHERE status = "{}" AND created = "{}" AND endtime = "{}"'.format(status, created,
+                                                                                                        endtime)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchone()
+
+    # 生成excel
+    @staticmethod
+    def data_2_excel(db):
+        SomeTool.data_2_excel(AdminActivityTool.admin_activity_all(db), TITLES, 'activity数据')

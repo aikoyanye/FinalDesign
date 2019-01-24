@@ -12,6 +12,8 @@ from handler.admin.AdminActivityHandler import AdminActivityHandler
 from handler.admin.AdminMemberHandler import AdminMemberHandler
 from handler.admin.AdminShipHandler import AdminShipHandler
 from handler.admin.AdminAdHandler import AdminAdHandler
+from handler.admin.AdminGbHandler import AdminGbHandler
+from handler.admin.AdminKeyHandler import AdminKeyHandler
 
 # 数据库信息
 HOST = '120.77.153.248'
@@ -36,6 +38,8 @@ class Application(tornado.web.Application):
             tornado.web.url(r'/admin/member', AdminMemberHandler, name='admin_member'),
             tornado.web.url(r'/admin/ship', AdminShipHandler, name='admin_ship'),
             tornado.web.url(r'/admin/ad', AdminAdHandler, name='admin_ad'),
+            tornado.web.url(r'/admin/gb', AdminGbHandler, name='admin_gb'),
+            tornado.web.url(r'/admin/key', AdminKeyHandler, name='admin_key'),
         ]
         # 服务端设置，设定好网页和静态文件存放位置，以及安全设置
         settings = dict(

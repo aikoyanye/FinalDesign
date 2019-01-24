@@ -1,3 +1,7 @@
+from tool.some_tool import SomeTool
+
+TITLES = ['广告编号', '赞助商名称', '开始时间', '结束时间', '花费', '状态', '广告文案']
+
 class AdminAdTool:
     # 获取广告总数、总收入、待审核广告数
     @staticmethod
@@ -32,3 +36,37 @@ class AdminAdTool:
             db.rollback()
             return False
         return True
+
+    # 删除一行数据
+    @staticmethod
+    def delete_row_by_id(db, id):
+        cursor = db.cursor()
+        sql = 'DELETE FROM ad_sponsor WHERE id = {}'.format(id)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        return True
+
+    # 添加一行广告供应商数据并返回
+    @staticmethod
+    def add_ad_sponsor(db, name, created, endtime, cost, type, content):
+        print(name, created, endtime, cost, type, content)
+        cursor = db.cursor()
+        sql = '''
+        INSERT INTO ad_sponsor (name, created, endtime, cost, type, content) VALUES 
+        ("{}", "{}", "{}", "{}", "{}", "{}")
+        '''.format(name, created, endtime, cost, type, content)
+        cursor.execute(sql)
+        db.commit()
+        sql = 'SELECT * FROM ad_sponsor WHERE name = "{}" AND created = "{}"'.format(name, created)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchone()
+
+    # 导出数据
+    @staticmethod
+    def data_2_excel(db):
+        SomeTool.data_2_excel(AdminAdTool.get_ad(db), TITLES, '广告')

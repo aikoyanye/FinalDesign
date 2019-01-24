@@ -1,6 +1,7 @@
 import pymysql, base64
 from tool.some_tool import SomeTool
 from tool.ad_tool import AdTool
+from tool.admin.admin_key_tool import AdminKeyTool
 
 # 数据库信息
 HOST = '120.77.153.248'
@@ -12,5 +13,4 @@ DATABASE = 'final_design'
 db = pymysql.connect(HOST, USERNAME, PASSWORD, DATABASE)
 cursor = db.cursor()
 
-print(AdTool.get_ad_resource_by_sid(db, 12))
-# print(AdTool.get_activity_ad(db, '2'))
+print(AdminKeyTool.get_key(db))

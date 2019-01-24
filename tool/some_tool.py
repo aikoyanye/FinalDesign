@@ -1,5 +1,5 @@
-import datetime, requests, hashlib
-from pyecharts import Bar, Line, Overlap, Pie
+import datetime, requests, hashlib, xlwt, os
+from pyecharts import Bar, Line, Overlap
 
 WEATHER_API = 'https://api.seniverse.com/v3/weather/now.json?key=wj3xlpuivdrhutm1&location=ip&language=zh-Hans'
 
@@ -85,3 +85,17 @@ class SomeTool:
         overlap.add(bar)
         overlap.add(line)
         return overlap
+
+    # 生成excel
+    @staticmethod
+    def data_2_excel(results, TITLES, sheetname):
+        if (os.path.exists('static\data.xls')):
+            os.remove('static\data.xls')
+        excel = xlwt.Workbook()
+        sheet = excel.add_sheet(sheetname)
+        for i in range(len(TITLES)):
+            sheet.write(0, i, TITLES[i])
+        for i in range(len(results)):
+            for ii in range(len(results[i])):
+                sheet.write(i+1, ii, results[i][ii])
+        excel.save('static\data.xls')
