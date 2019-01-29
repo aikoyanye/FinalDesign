@@ -121,8 +121,10 @@ MainActivityClick();
     </table>
 </div></div>
 <div id="main_ad_new"></div>
-<div class="panel panel-default"><div class="panel-heading"><h2>待审核&审核失败</h2></div></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>待审核</h2></div></div>
 <div id="main_ad_break"></div>
+<div class="panel panel-default"><div class="panel-heading"><h2>审核失败</h2></div></div>
+<div id="main_ad_false"></div>
 <div class="panel panel-default"><div class="panel-heading"><h2>过期</h2></div></div>
 <div id="main_ad_old"></div>
 {% end %}
@@ -178,6 +180,25 @@ MainActivityClick();
 </div>
 {% end %}
 {% block add_ad %}
+<div class="modal fade" id="put_ad_resource" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">更换广告资源</div>
+            <div class="modal-body">
+                <table width="100%" style="margin-top:10px;">
+                    <tr>
+                        <td width="10%"><div><input type="radio" name="ad_resource_type" onclick="PutAdResource('pic')" id="put_ad_resource_type_pic" >图片</div></td>
+                        <td><div><input type="radio" name="ad_resource_type" onclick="PutAdResource('video')" >视频</div></td>
+                    </tr>
+                </table>
+                <input type="hidden" id="ad_sponsor_id" />
+                <input type="hidden" id="ad_sponsor_name" />
+                <div id="put_ad_resource_body"></div>
+            </div>
+            <div class="modal-footer" id="put_ad_resource_footer"></div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="add_ad" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

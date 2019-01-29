@@ -32,6 +32,8 @@ class AdHandler(BaseHandler):
             self.write(json.dumps(AdTool.get_activity_ad(self.application.db, '2')))
         elif self.get_argument('type') == '3':
             self.write(json.dumps(AdTool.get_activity_ad(self.application.db, '3')))
+        elif self.get_argument('type') == '4':
+            self.write(json.dumps(AdTool.get_activity_ad(self.application.db, '4')))
 
     async def put(self, *args, **kwargs):
         print('ad put')
@@ -40,3 +42,15 @@ class AdHandler(BaseHandler):
             AdTool.delete_ad_by_id(self.application.db, self.get_argument('id'))
         elif self.get_argument('type') == '2':
             self.write(json.dumps(AdTool.get_ad_resource_by_sid(self.application.db, self.get_argument('id'))))
+        # 更换广告资源
+        elif self.get_argument('type') == '3':
+            if self.get_argument('num') == '1':
+                AdTool.put_ad_resource(self.application.db, self.get_argument('id'), self.get_argument('t'),
+                                       self.get_argument('sponsor'), self.request.files.get('pp1')[0]['body'])
+            elif self.get_argument('num') == '2':
+                AdTool.put_ad_resource(self.application.db, self.get_argument('id'), self.get_argument('t'),
+                                       self.get_argument('sponsor'), self.request.files.get('pp1')[0]['body'], self.request.files.get('pp2')[0]['body'])
+            elif self.get_argument('num') == '3':
+                AdTool.put_ad_resource(self.application.db, self.get_argument('id'), self.get_argument('t'),
+                                       self.get_argument('sponsor'), self.request.files.get('pp1')[0]['body'], self.request.files.get('pp2')[0]['body'],
+                                       self.request.files.get('pp3')[0]['body'])

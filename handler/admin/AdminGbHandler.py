@@ -4,7 +4,6 @@ from tool.admin.admin_gb_tool import AdminGbTool
 class AdminGbHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         if self.get_cookie('current') == 'a':
-            AdminGbTool.data_2_excel(self.application.db)
             self.render('AdminGb.html', current=True, results=AdminGbTool.admin_gb_count_sum(self.application.db),
                         data=AdminGbTool.admin_gb(self.application.db))
         else:
@@ -22,3 +21,6 @@ class AdminGbHandler(tornado.web.RequestHandler):
 
     async def delete(self, *args, **kwargs):
         AdminGbTool.delete_row_by_id(self.application.db, self.get_argument('id'))
+
+    async def put(self, *args, **kwargs):
+        AdminGbTool.data_2_excel(self.application.db)

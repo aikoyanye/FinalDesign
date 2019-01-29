@@ -4,7 +4,6 @@ from tool.admin.admin_ad_tool import AdminAdTool
 class AdminAdHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         if self.get_cookie('current') == 'a':
-            AdminAdTool.data_2_excel(self.application.db)
             self.render('AdminAd.html', current=True, results=AdminAdTool.get_ad_count_sum(self.application.db),
                         data=AdminAdTool.get_ad(self.application.db))
         else:
@@ -22,3 +21,6 @@ class AdminAdHandler(tornado.web.RequestHandler):
 
     async def delete(self, *args, **kwargs):
         AdminAdTool.delete_row_by_id(self.application.db, self.get_argument('id'))
+
+    async def put(self, *args, **kwargs):
+        AdminAdTool.data_2_excel(self.application.db)

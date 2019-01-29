@@ -4,7 +4,6 @@ from tool.admin.admin_member_tool import AdminMemberTool
 class AdminMemberHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         if self.get_cookie('current') == 'a':
-            AdminMemberTool.data_2_excel(self.application.db)
             self.render('AdminMember.html', current=True, results=AdminMemberTool.get_member_count_sum(self.application.db),
                         data=AdminMemberTool.get_member(self.application.db))
         else:
@@ -21,3 +20,6 @@ class AdminMemberHandler(tornado.web.RequestHandler):
 
     async def delete(self, *args, **kwargs):
         AdminMemberTool.delete_row_by_id(self.application.db, self.get_argument('id'))
+
+    async def put(self, *args, **kwargs):
+        AdminMemberTool.data_2_excel(self.application.db)

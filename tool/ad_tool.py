@@ -61,9 +61,11 @@ class AdTool():
         if str(type) == '1':
             sql = 'SELECT id, name, created, endtime, cost, content FROM ad_sponsor WHERE type = "活动"'
         elif str(type) == '2':
-            sql = 'SELECT id, name, created, endtime, cost, content FROM ad_sponsor WHERE type = "待审核" or type = "审核不通过"'
+            sql = 'SELECT id, name, created, endtime, cost, content FROM ad_sponsor WHERE type = "待审核"'
         elif str(type) == '3':
             sql = 'SELECT id, name, created, endtime, cost, content FROM ad_sponsor WHERE type = "过期"'
+        elif str(type) == '4':
+            sql = 'SELECT id, name, created, endtime, cost, content FROM ad_sponsor WHERE type = "审核不通过"'
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
@@ -89,3 +91,38 @@ class AdTool():
             db.rollback()
             return False
         return True
+
+    # 更换广告资源
+    @staticmethod
+    def put_ad_resource(db, id, t, sponsor, pp1, pp2=None, pp3=None):
+        cursor = db.cursor()
+        sql = 'DELETE FROM ad_resource WHERE sponsorId = {}'.format(id)
+        cursor.execute(sql)
+        db.commit()
+        file_name = sponsor + '_' + SomeTool.current_date1().replace(':', '_') + t
+        with open('static/' + file_name, 'wb') as f:
+            f.write(pp1)
+        sql = """
+        INSERT INTO ad_resource (uri, type, sponsorId) VALUES 
+        ('{}', '{}', '{}')
+        """.format(URI + file_name, t, id)
+        cursor.execute(sql)
+        if pp2:
+            file_name = sponsor + '_' + SomeTool.current_date1().replace(':', '_') + t
+            with open('static/' + file_name, 'wb') as f:
+                f.write(pp2)
+            sql = """
+                    INSERT INTO ad_resource (uri, type, sponsorId) VALUES 
+                    ('{}', '{}', '{}')
+                    """.format(URI + file_name, t, id)
+            cursor.execute(sql)
+        if pp3:
+            file_name = sponsor + '_' + SomeTool.current_date1().replace(':', '_') + t
+            with open('static/' + file_name, 'wb') as f:
+                f.write(pp3)
+            sql = """
+                    INSERT INTO ad_resource (uri, type, sponsorId) VALUES 
+                    ('{}', '{}', '{}')
+                    """.format(URI + file_name, t, id)
+            cursor.execute(sql)
+        db.commit()

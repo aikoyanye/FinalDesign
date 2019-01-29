@@ -50,8 +50,7 @@ function MainActivityClick(){
             var div = document.getElementById("main_activity_play")
             div.innerHTML = ""
             for (var i=0, l=data.length; i<l; i++){
-                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:33%"><h5>开始时间：' + data[i][1] + '</h5></td><td style="width:24%"><h5>游客：' + data[i][4] + '(' + data[i][5] + ')</h5></td><td style="width:24%"><h5>类型：' + data[i][6] + '</h5></td><td style="width:24%">已付押金：'+data[i][3]+'</td><td align="right" style="width:3%"><h5><a data-toggle="modal" data-target="#mo" onclick="ActivityComplateCheck(\''+data[i][0]+'\', \''+data[i][1]+'\')" href="#">完成</a></h5></td></tr></table></div></div>'
-//                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:33%"><h5>开始时间：' + data[i][1] + '</h5></td><td style="width:32%"><h5>游客：' + data[i][4] + '(' + data[i][5] + ')</h5></td><td style="width:32%"><h5>类型：' + data[i][6] + '</h5></td><td align="right" style="width:3%"><h5><a onclick="ActivityComplate(\''+data[i][0]+'\', \''+data[i][1]+'\')" href="#">完成</a></h5></td></tr></table></div></div>'
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:33%"><h5>开始时间：' + data[i][1] + '</h5></td><td style="width:24%"><h5>游客：' + data[i][4] + '(' + data[i][5] + ')</h5></td><td style="width:24%"><h5>类型：' + data[i][6] + '</h5></td><td style="width:24%">已付押金：'+data[i][3]+'</td><td align="right" style="width:3%"><h5><a data-toggle="modal" data-target="#mo" onclick="ActivityComplateCheck(\''+data[i][0]+'\', \''+data[i][1]+'\', '+data[i][3]+')" href="#">完成</a></h5></td></tr></table></div></div>'
             }
         }
     })
@@ -83,11 +82,17 @@ function ActivityComplate(id, cost){
 }
 
 // activity确认完成的方法
-function ActivityComplateCheck(id, created){
-    var endtime = Date.parse(new Date())
-    var cost = parseInt((endtime - Date.parse(new Date(created)))/(1000*60))
-    document.getElementById("modal_header").innerHTML = '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">确认要提交吗？</h4>'
-    document.getElementById("modal_body").innerHTML = '本次消费为' + cost + '元';
+function ActivityComplateCheck(id, created, costed){
+    var endtime = Date.parse(new Date());
+    var cost = parseInt((endtime - Date.parse(new Date(created)))/(1000*60));
+    var ret = costed - cost;
+    if(ret > 0){
+        var body = '本次消费为' + cost + '元，将从押金中扣除，多余的' + ret + '元将返回';
+    }else{
+        var body = '本次消费为' + cost + '元，将从押金中扣除，其次仍需支付' + ret + '元';
+    }
+    document.getElementById("modal_header").innerHTML = '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">确认要提交吗？</h4>';
+    document.getElementById("modal_body").innerHTML = body;
     document.getElementById("modal_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" data-dismiss="modal" class="btn btn-primary" onclick="ActivityComplate(\''+id+'\', \''+cost+'\')">提交</button>';
 }
 
@@ -367,7 +372,7 @@ function ActivitySearchSelectOption(k){
 function AdPackage(){
     document.getElementById("modal_header").innerHTML = '广告规则'
     document.getElementById("modal_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">OK</button>'
-    document.getElementById("modal_body").innerHTML = '<p>1、广告仅允许视频或图片轮播</p><p>2、视频大小不得超过30M</p><p>3、图片数量不得超过3张</p><p>4、广告投放时间最短为一星期<\p>'
+    document.getElementById("modal_body").innerHTML = '<p>1、广告仅允许视频或图片轮播</p><p>2、视频大小不得超过130M</p><p>3、图片数量不得超过3张</p><p>4、广告投放时间最短为一星期<\p>'
 }
 
 // 添加广告的资源控制
@@ -489,11 +494,93 @@ function ClosedAd(){
     })
 }
 
+// 获取审核失败的广告
+function FalseAd(){
+    $.ajax({
+        url: "/ad",
+        type: "GET",
+        data: {type: "4"},
+        success: function(arg){
+            var reselts = jQuery.parseJSON(arg);
+            var div = document.getElementById('main_ad_false');
+            div.innerHTML = '';
+            for (var i=0; i<reselts.length; i++){
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="10%">'+reselts[i][1]+'</td><td width="30%">'+reselts[i][2]+'</td><td width="30%">'+reselts[i][3]+'</td><td width="20%">'+reselts[i][4]+'</td><td width="5%"><a data-toggle="modal" data-target="#preview_ad" onclick="PreviewAd('+reselts[i][0]+',\''+reselts[i][5]+'\')">预览</a></td><td><a data-toggle="modal" data-target="#put_ad_resource" onclick="PutAdResourceInit('+reselts[i][0]+', \''+reselts[i][1]+'\')">更换</a></td></tr></table></div></div>'
+            }
+        }
+    })
+}
+
+// 更换广告的资源控制
+function PutAdResource(type){
+    if(type == 'video'){
+        document.getElementById("put_ad_resource_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" onclick="PutAd(\'v\')" data-dismiss="modal">提交</button>'
+        document.getElementById("put_ad_resource_body").innerHTML = '<label for="pp1">请选择视频</label><input type="file" id="pp1" name="pp1" accept="video/*">'
+    }else{
+        document.getElementById("put_ad_resource_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" class="btn btn-primary" onclick="PutAd(\'p\')" data-dismiss="modal">提交</button>'
+        document.getElementById("put_ad_resource_body").innerHTML = '<label for="pp1">请选择图片</label><input type="file" id="pp1" name="pp1" accept="image/*"><input type="file" id="pp2" name="pp2" accept="image/*"><input type="file" id="pp3" name="pp3" accept="image/*">'
+    }
+}
+
+// 更换广告默认点击图片单选框
+function PutAdResourceInit(id, sponsor){
+    document.getElementById('put_ad_resource_type_pic').onclick();
+    document.getElementById('put_ad_resource_type_pic').checked = 'checked';
+    document.getElementById('ad_sponsor_id').value = id;
+    document.getElementById('ad_sponsor_name').value = sponsor;
+}
+
+// 更换广告资源
+function PutAd(t){
+    var pp1 = document.getElementById('pp1');
+    if(pp1.value == ''){
+        alert('输入框不能为空');
+        return
+    }
+    if(pp1.files[0].size > 131457280){
+        alert('文件大小超过130M');
+        return
+    }
+    var d = new FormData();
+    d.append('type', '3');
+    d.append('pp1', document.getElementById('pp1').files[0]);
+    d.append('num', '1');
+    d.append('sponsor', document.getElementById('ad_sponsor_name').value);
+    d.append('id', document.getElementById('ad_sponsor_id').value);
+    if(t=='v'){
+        d.append('t', '.mp4');
+    }else{
+        d.append('t', '.png');
+        if(document.getElementById('pp2').value){
+            d.append('pp2', document.getElementById('pp2').files[0]);
+            d.append('num', '2');
+        }
+        if(document.getElementById('pp3').value){
+            d.append('pp3', document.getElementById('pp3').files[0]);
+            d.append('num', '3');
+        }
+    }
+    $.ajax({
+        url: "/ad",
+        type: "PUT",
+        data: d,
+        processData: false,
+        contentType: false,
+        async: false,
+        cache: false,
+        success: function(arg){
+            alert('更换成功');
+            MainAdClick();
+        }
+    })
+}
+
 // 主页广告标签初始化
 function MainAdClick(){
      ActivityAd();
      ExamineAd();
      ClosedAd();
+     FalseAd();
 }
 
 // 销毁广告

@@ -4,7 +4,6 @@ from tool.admin.admin_ship_tool import AdminShipTool
 class AdminShipHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         if self.get_cookie('current') == 'a':
-            AdminShipTool.data_2_excel(self.application.db)
             self.render('AdminShip.html', current=True, results=AdminShipTool.get_ship_count(self.application.db),
                         data=AdminShipTool.get_ship(self.application.db))
         else:
@@ -22,3 +21,6 @@ class AdminShipHandler(tornado.web.RequestHandler):
 
     async def delete(self, *args, **kwargs):
         AdminShipTool.delete_row_by_id(self.application.db, self.get_argument('id'))
+
+    async def put(self, *args, **kwargs):
+        AdminShipTool.data_2_excel(self.application.db)
