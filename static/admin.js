@@ -324,14 +324,15 @@ function AddAdTableRow(row_count){
     var ncost = document.getElementById('ncost'+row_count);
     var ntype = document.getElementById('ntype'+row_count);
     var ncontent = document.getElementById('ncontent'+row_count);
-    if(nname.value=="" || ncreated.value=="" || nendtime.value=="" || ncost.value=="" || ntype.value=="" || ncontent.value==""){
+    var nreason = document.getElementById('nreason'+row_count);
+    if(nname.value=="" || ncreated.value=="" || nendtime.value=="" || ncost.value=="" || ntype.value=="" || ncontent.value=="" || nreason.value==""){
         alert('输入框内容不能空');
         return
     }
     $.ajax({
         url: "/admin/ad",
         type: "POST",
-        data: {name: nname.value, created: ncreated.value, endtime: nendtime.value, cost: ncost.value, type: ntype.value, content: ncontent.value},
+        data: {name: nname.value, created: ncreated.value, endtime: nendtime.value, cost: ncost.value, type: ntype.value, content: ncontent.value, reason: nreason.value},
         success: function(arg){
             var data = jQuery.parseJSON(arg);
             var tr = document.getElementById('row'+row_count);
@@ -342,6 +343,7 @@ function AddAdTableRow(row_count){
             tr.innerHTML = tr.innerHTML + '<td id="cost_'+row_count+'" onclick="AdTdOnClickInput('+data[0]+', \'cost_'+row_count+'\', \''+data[4]+'\', \'cost\')">'+data[4]+'</td>';
             tr.innerHTML = tr.innerHTML + '<td id="type_'+row_count+'" onclick="AdTdOnClickInput('+data[0]+', \'type_'+row_count+'\', \''+data[5]+'\', \'type\')">'+data[5]+'</td>';
             tr.innerHTML = tr.innerHTML + '<td id="content_'+row_count+'" onclick="AdTdOnClickInput('+data[0]+', \'content_'+row_count+'\', \''+data[6]+'\', \'content\')">'+data[6]+'</td>';
+            tr.innerHTML = tr.innerHTML + '<td id="reason_'+row_count+'" onclick="AdTdOnClickInput('+data[0]+', \'reason_'+row_count+'\', \''+data[7]+'\', \'reason\')">'+data[7]+'</td>';
         }, error: function(arg){
             alert('输入的数据不符合条件');
         }
@@ -361,6 +363,7 @@ function AdAddRow(){
     tr.innerHTML = tr.innerHTML + '<td><input type="text" class="form-control" id="ncost'+row_count+'"></td>';
     tr.innerHTML = tr.innerHTML + '<td><input type="text" class="form-control" id="ntype'+row_count+'"></td>';
     tr.innerHTML = tr.innerHTML + '<td><input type="text" class="form-control" id="ncontent'+row_count+'"></td>';
+    tr.innerHTML = tr.innerHTML + '<td><input type="text" class="form-control" id="nreason'+row_count+'"></td>';
 }
 
 // gb添加一行数据
@@ -372,14 +375,15 @@ function AddGbTableRow(row_count){
     var nendtime = document.getElementById('nendtime'+row_count);
     var ntype = document.getElementById('ntype'+row_count);
     var ncost = document.getElementById('ncost'+row_count);
-    if(ncount.value=="" || nname.value=="" || nextre.value=="" || ncreated.value=="" || nendtime.value=="" || ntype.value=="" || ncost.value==""){
+    var nreason = document.getElementById('nreason'+row_count);
+    if(ncount.value=="" || nname.value=="" || nextre.value=="" || ncreated.value=="" || nendtime.value=="" || ntype.value=="" || ncost.value=="" || nreason.value==""){
         alert('输入框内容不能空');
         return
     }
     $.ajax({
         url: "/admin/gb",
         type: "POST",
-        data: {count: ncount.value, gname: nname.value, extre: nextre.value, created: ncreated.value, endtime: nendtime.value, type: ntype.value, cost: ncost.value},
+        data: {count: ncount.value, gname: nname.value, extre: nextre.value, created: ncreated.value, endtime: nendtime.value, type: ntype.value, cost: ncost.value, reason: nreason.value},
         success: function(arg){
             var data = jQuery.parseJSON(arg);
             var tr = document.getElementById('row'+row_count);
@@ -389,8 +393,9 @@ function AddGbTableRow(row_count){
             tr.innerHTML = tr.innerHTML + '<td id="extre_'+row_count+'" onclick="GbTdOnClickInput('+data[0]+', \'extre_'+row_count+'\', \''+data[4]+'\', \'extra\')">'+data[4]+'</td>';
             tr.innerHTML = tr.innerHTML + '<td id="created_'+row_count+'" onclick="GbTdOnClickInput('+data[0]+', \'created_'+row_count+'\', \''+data[6]+'\', \'created\')">'+data[6]+'</td>';
             tr.innerHTML = tr.innerHTML + '<td id="endtime_'+row_count+'" onclick="GbTdOnClickInput('+data[0]+', \'endtime_'+row_count+'\', \''+data[5]+'\', \'endtime\')">'+data[5]+'</td>';
-            tr.innerHTML = tr.innerHTML + '<td id="type_'+row_count+'" onclick="GbTdOnClickInput('+data[0]+', \'type_'+row_count+'\', \''+data[7]+'\', \'type\')">'+data[7]+'</td>';
+            tr.innerHTML = tr.innerHTML + '<td id="type_'+row_count+'" onclick="GbTdOnClickSelect('+data[0]+', \'type_'+row_count+'\', \''+data[7]+'\', \'type\')">'+data[7]+'</td>';
             tr.innerHTML = tr.innerHTML + '<td id="cost_'+row_count+'" onclick="GbTdOnClickInput('+data[0]+', \'cost_'+row_count+'\', \''+data[8]+'\', \'cost\')">'+data[8]+'</td>';
+            tr.innerHTML = tr.innerHTML + '<td id="reason_'+row_count+'" onclick="GbTdOnClickInput('+data[0]+', \'reason_'+row_count+'\', \''+data[9]+'\', \'reason\')">'+data[9]+'</td>';
         }, error: function(arg){
             alert('输入的数据不符合条件');
         }
@@ -411,6 +416,7 @@ function GbAddRow(){
     tr.innerHTML = tr.innerHTML + '<td><input type="text" class="form-control" id="nendtime'+row_count+'"></td>';
     tr.innerHTML = tr.innerHTML + '<td><input type="text" class="form-control" id="ncost'+row_count+'"></td>';
     tr.innerHTML = tr.innerHTML + '<td><input type="text" class="form-control" id="ntype'+row_count+'"></td>';
+    tr.innerHTML = tr.innerHTML + '<td><input type="text" class="form-control" id="nreason'+row_count+'"></td>';
 }
 
 // member添加一行数据

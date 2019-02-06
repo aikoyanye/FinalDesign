@@ -19,6 +19,8 @@ class GroupBuildingHandler(BaseHandler):
             self.write(json.dumps(GbTool.get_gb(self.application.db, '2')))
         elif self.get_argument('type') == '3':
             self.write(json.dumps(GbTool.get_gb(self.application.db, '3')))
+        elif self.get_argument('type') == '4':
+            self.write(json.dumps(GbTool.get_gb(self.application.db, '4')))
 
     async def put(self, *args, **kwargs):
         print('gb put')

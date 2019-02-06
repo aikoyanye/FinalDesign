@@ -29,7 +29,7 @@ class AdminActivityTool:
         for i in range(int(n)):
             year, month = SomeTool.get_year_month_by_padding(i)
             result = AdminActivityTool.get_echarts_data_by_year_month_sql(db, year, month, sql)
-            if result[0] == 0 or result[1] == None: break
+            # if result[0] == 0 or result[1] == None: break
             y1.append(result[0])
             y2.append(result[1])
             x.append(year + '年' + month + '月')

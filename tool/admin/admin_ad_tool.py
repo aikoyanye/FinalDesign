@@ -1,6 +1,6 @@
 from tool.some_tool import SomeTool
 
-TITLES = ['广告编号', '赞助商名称', '开始时间', '结束时间', '花费', '状态', '广告文案']
+TITLES = ['广告编号', '赞助商名称', '开始时间', '结束时间', '花费', '状态', '广告文案', '审核失败原因']
 
 class AdminAdTool:
     # 获取广告总数、总收入、待审核广告数
@@ -52,13 +52,12 @@ class AdminAdTool:
 
     # 添加一行广告供应商数据并返回
     @staticmethod
-    def add_ad_sponsor(db, name, created, endtime, cost, type, content):
-        print(name, created, endtime, cost, type, content)
+    def add_ad_sponsor(db, name, created, endtime, cost, type, content, reason):
         cursor = db.cursor()
         sql = '''
-        INSERT INTO ad_sponsor (name, created, endtime, cost, type, content) VALUES 
-        ("{}", "{}", "{}", "{}", "{}", "{}")
-        '''.format(name, created, endtime, cost, type, content)
+        INSERT INTO ad_sponsor (name, created, endtime, cost, type, content, reason) VALUES 
+        ("{}", "{}", "{}", "{}", "{}", "{}", "{}")
+        '''.format(name, created, endtime, cost, type, content, reason)
         cursor.execute(sql)
         db.commit()
         sql = 'SELECT * FROM ad_sponsor WHERE name = "{}" AND created = "{}"'.format(name, created)

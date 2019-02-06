@@ -17,7 +17,7 @@ class AdminAdHandler(tornado.web.RequestHandler):
         else:
             self.write(json.dumps(AdminAdTool.add_ad_sponsor(self.application.db, self.get_argument('name'), self.get_argument('created'),
                                        self.get_argument('endtime'), self.get_argument('cost'), self.get_argument('type'),
-                                       self.get_argument('content'))))
+                                       self.get_argument('content'), self.get_argument('reason'))))
 
     async def delete(self, *args, **kwargs):
         AdminAdTool.delete_row_by_id(self.application.db, self.get_argument('id'))

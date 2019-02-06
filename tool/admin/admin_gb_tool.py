@@ -1,6 +1,6 @@
 from tool.some_tool import SomeTool
 
-TITLES = ['团建编号', '团建人数', '团建名称', '要求', '开始时间', '结束时间', '状态', '花费']
+TITLES = ['团建编号', '关联用户id', '团建人数', '团建名称', '要求', '开始时间', '结束时间', '状态', '花费', '审核失败原因']
 
 class AdminGbTool:
     # 获取团建的总数和收入
@@ -49,12 +49,12 @@ class AdminGbTool:
 
     # 添加表格一行数据，并返回
     @staticmethod
-    def add_table_row(db, count, gname, extre, created, endtime, type, cost):
+    def add_table_row(db, count, gname, extre, created, endtime, type, cost, reason):
         cursor = db.cursor()
         sql = '''
-        INSERT INTO group_building (principalId, count, gname, extra, created, endtime, type, cost) VALUES 
-        (4, "{}", "{}", "{}", "{}", "{}", "{}", "{}")
-        '''.format(count, gname, extre, created, endtime, type, cost)
+        INSERT INTO group_building (principalId, count, gname, extra, created, endtime, type, cost, reason) VALUES 
+        (4, "{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}")
+        '''.format(count, gname, extre, created, endtime, type, cost, reason)
         cursor.execute(sql)
         db.commit()
         sql = 'SELECT * FROM group_building WHERE count = "{}" AND gname = "{}" AND extra = "{}"'.format(count, gname, extre)

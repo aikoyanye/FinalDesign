@@ -1,6 +1,8 @@
 import pymysql, base64
 from tool.admin.admin_activity_tool import AdminActivityTool
 from tool.admin.admin_ship_tool import AdminShipTool
+from tool.admin.admin_ad_tool import AdminAdTool
+from tool.admin.admin_gb_tool import AdminGbTool
 
 # 数据库信息
 HOST = '120.77.153.248'
@@ -20,3 +22,5 @@ cursor = db.cursor()
 
 # print(AdminActivityTool.admin_activity_all(db))
 # AdminActivityTool.data_2_excel(db)
+
+print(AdminGbTool.admin_gb(db))

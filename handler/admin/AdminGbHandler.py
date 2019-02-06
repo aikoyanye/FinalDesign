@@ -17,7 +17,7 @@ class AdminGbHandler(tornado.web.RequestHandler):
         else:
             self.write(json.dumps(AdminGbTool.add_table_row(self.application.db, self.get_argument('count'), self.get_argument('gname'),
                                                             self.get_argument('extre'), self.get_argument('created'), self.get_argument('endtime'),
-                                                            self.get_argument('type'), self.get_argument('cost'))))
+                                                            self.get_argument('type'), self.get_argument('cost'), self.get_argument('reason'))))
 
     async def delete(self, *args, **kwargs):
         AdminGbTool.delete_row_by_id(self.application.db, self.get_argument('id'))

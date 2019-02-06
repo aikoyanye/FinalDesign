@@ -65,7 +65,7 @@ class AdTool():
         elif str(type) == '3':
             sql = 'SELECT id, name, created, endtime, cost, content FROM ad_sponsor WHERE type = "过期"'
         elif str(type) == '4':
-            sql = 'SELECT id, name, created, endtime, cost, content FROM ad_sponsor WHERE type = "审核不通过"'
+            sql = 'SELECT id, name, created, endtime, cost, content, reason FROM ad_sponsor WHERE type = "审核不通过"'
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()

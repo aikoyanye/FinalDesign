@@ -30,6 +30,9 @@ class GbTool:
         # 获取过期的团建信息
         elif str(type) == '3':
             sql = 'SELECT id, principalId, count, gname, extra, created, endtime, cost FROM group_building WHERE type = "过期"'
+        # 获取审核失败的团建信息
+        elif str(type) == '4':
+            sql = 'SELECT id, principalId, count, gname, extra, created, endtime, cost, reason FROM group_building WHERE type = "审核不通过"'
         cursor.execute(sql)
         cursor.close()
         results = []

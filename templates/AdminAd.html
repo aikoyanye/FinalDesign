@@ -33,6 +33,7 @@
         <th>花费</th>
         <th>状态</th>
         <th>广告文案</th>
+        <th>审核失败原因</th>
         <th>操作</th>
     </tr>
     </thead>
@@ -46,7 +47,9 @@
         <td id="cost{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'cost{{ i }}', '{{ data[i][4] }}', 'cost')">{{ data[i][4] }}</td>
         <td id="type{{ i }}" onclick="AdTdOnClickSelect({{ data[i][0] }}, 'type{{ i }}', '{{ data[i][5] }}', 'type')">{{ data[i][5] }}</td>
         <td id="content{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'content{{ i }}', '{{ data[i][6] }}', 'content')">{{ data[i][6] }}</td>
+        <td id="reason{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'reason{{ i }}', '{{ data[i][7] }}', 'reason')">{{ data[i][7] }}</td>
         <td><a data-toggle="modal" data-target="#preview_ad" onclick="PreviewAd({{ data[i][0] }}, '{{ data[i][6] }}')">预览</a></td>
+
     </tr>
     {% end %}
     </tbody>

@@ -30,6 +30,7 @@
         <th>结束时间</th>
         <th>状态</th>
         <th>花费</th>
+        <th>审核不通过原因</th>
     </tr>
     </thead>
     <tbody>
@@ -43,6 +44,7 @@
         <td id="endtime{{ i }}" onclick="GbTdOnClickInput({{ data[i][0] }}, 'endtime{{ i }}', '{{ data[i][5] }}', 'endtime')">{{ data[i][5] }}</td>
         <td id="type{{ i }}" onclick="GbTdOnClickSelect({{ data[i][0] }}, 'type{{ i }}', '{{ data[i][7] }}', 'type')">{{ data[i][7] }}</td>
         <td id="cost{{ i }}" onclick="GbTdOnClickInput({{ data[i][0] }}, 'cost{{ i }}', '{{ data[i][8] }}', 'cost')">{{ data[i][8] }}</td>
+        <td id="reason{{ i }}" onclick="GbTdOnClickInput({{ data[i][0] }}, 'reason{{ i }}', '{{ data[i][9] }}', 'reason')">{{ data[i][9] }}</td>
     </tr>
     {% end %}
     </tbody>
