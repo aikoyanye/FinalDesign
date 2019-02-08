@@ -505,7 +505,7 @@ function FalseAd(){
             var div = document.getElementById('main_ad_false');
             div.innerHTML = '';
             for (var i=0; i<reselts.length; i++){
-                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-heading">'+reselts[i][6]+'</div><div class="panel-body"><table width="100%"><tr><td width="10%">'+reselts[i][1]+'</td><td width="30%">'+reselts[i][2]+'</td><td width="30%">'+reselts[i][3]+'</td><td width="20%">'+reselts[i][4]+'</td><td width="5%"><a data-toggle="modal" data-target="#preview_ad" onclick="PreviewAd('+reselts[i][0]+',\''+reselts[i][5]+'\')">预览</a></td><td><a data-toggle="modal" data-target="#put_ad_resource" onclick="PutAdResourceInit('+reselts[i][0]+', \''+reselts[i][1]+'\')">更换</a></td></tr></table></div></div>'
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-heading">审核失败原因：'+reselts[i][6]+'</div><div class="panel-body"><table width="100%"><tr><td width="10%">'+reselts[i][1]+'</td><td width="30%">'+reselts[i][2]+'</td><td width="30%">'+reselts[i][3]+'</td><td width="20%">'+reselts[i][4]+'</td><td width="5%"><a data-toggle="modal" data-target="#preview_ad" onclick="PreviewAd('+reselts[i][0]+',\''+reselts[i][5]+'\')">预览</a></td><td><a data-toggle="modal" data-target="#put_ad_resource" onclick="PutAdResourceInit('+reselts[i][0]+', \''+reselts[i][1]+'\')">更换</a></td></tr></table></div></div>'
             }
         }
     })
@@ -704,7 +704,7 @@ function MainGroupBuilding(){
             var div = document.getElementById('broke_gb');
             div.innerHTML = ''
             for(i=0; i<reselts.length; i++){
-                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-heading">'+reselts[i][8]+'</div><div class="panel-body"><table width="100%"><tr><td width="">'+reselts[i][9]+'</td><td width="">'+reselts[i][3]+'</td><td width="">'+reselts[i][5]+'</td><td width="">'+reselts[i][6]+'</td><td width="">'+reselts[i][7]+'</td><td width=""><a onclick="DestroyGb('+reselts[i][0]+')">销毁</a></td></tr><tr><td>'+reselts[i][4]+'</td></tr></table></div></div>'
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-heading">审核失败原因：'+reselts[i][8]+'</div><div class="panel-body"><table width="100%"><tr><td width="">'+reselts[i][9]+'</td><td width="">'+reselts[i][3]+'</td><td width="">'+reselts[i][5]+'</td><td width="">'+reselts[i][6]+'</td><td width="">'+reselts[i][7]+'</td><td width=""><a onclick="DestroyGb('+reselts[i][0]+')">销毁</a></td></tr><tr><td>'+reselts[i][4]+'</td></tr></table></div></div>'
             }
         }
     })
