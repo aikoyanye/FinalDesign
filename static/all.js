@@ -150,7 +150,7 @@ function MainShipClick(){
             var div = document.getElementById("main_broke_ship")
             div.innerHTML = ""
             for (var i=0, l=data.length; i<l; i++){
-                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="25%">'+data[i][1]+'</td><td width="25%">'+data[i][6]+'</td><td width="25%">引进时间：'+data[i][4]+'</td><td width="25%">上次维修时间：'+data[i][7]+'</td></tr><tr><td colspan="4">描述：'+data[i][3]+'</td></tr></table></div></div>'
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="20%">'+data[i][1]+'</td><td width="25%">'+data[i][6]+'</td><td width="25%">引进时间：'+data[i][4]+'</td><td width="25%">上次维修时间：'+data[i][7]+'</td><td width="5%"><a onclick="FixedShip('+data[i][0]+', 2)">完成</a></td></tr><tr><td colspan="5">描述：'+data[i][3]+'</td></tr></table></div></div>'
             }
         }
     })
@@ -163,8 +163,20 @@ function MainShipClick(){
             var div = document.getElementById("main_idle_ship")
             div.innerHTML = ""
             for (var i=0, l=data.length; i<l; i++){
-                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="25%">'+data[i][1]+'</td><td width="25%">'+data[i][6]+'</td><td width="25%">引进时间：'+data[i][4]+'</td><td width="25%">上次维修时间：'+data[i][7]+'</td></tr><tr><td colspan="4">描述：'+data[i][3]+'</td></tr></table></div></div>'
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table width="100%"><tr><td width="20%">'+data[i][1]+'</td><td width="25%">'+data[i][6]+'</td><td width="25%">引进时间：'+data[i][4]+'</td><td width="25%">上次维修时间：'+data[i][7]+'</td><td width="5%"><a onclick="FixedShip('+data[i][0]+', 1)">维修</a></td></tr><tr><td colspan="5">描述：'+data[i][3]+'</td></tr></table></div></div>'
             }
+        }
+    })
+}
+
+// 船只维修或修完完成
+function FixedShip(id, type){
+    $.ajax({
+        url: "/ship",
+        type: "PUT",
+        data: {id: id, type: type},
+        success: function(arg){
+            MainShipClick();
         }
     })
 }

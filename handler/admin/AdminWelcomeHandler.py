@@ -17,3 +17,6 @@ class AdminWelcomeHandler(tornado.web.RequestHandler):
         else:
             self.write('<script>alert("密钥错误")</script>')
             self.render('AdminWelcome.html', current=False)
+
+    async def put(self, *args, **kwargs):
+        AdminActivityTool.echarts_2_execl(self.application.db)

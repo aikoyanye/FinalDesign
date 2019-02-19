@@ -535,7 +535,7 @@ function KeyPutData(value, td_id, id, input_id, key){
 // 导出数据
 function Data2Excel(uri){
     $.ajax({
-        url: "/admin/"+uri,
+        url: "/admin"+uri,
         type: "PUT",
         data: {},
         success: function(arg){

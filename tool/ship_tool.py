@@ -1,4 +1,5 @@
 import datetime
+from tool.some_tool import SomeTool
 
 class ShipTool:
     # 查询，当传入id时为精确搜索，传入关键字时就为模糊搜索，不传入为全部查询，但是两个都传入就出错
@@ -74,7 +75,7 @@ class ShipTool:
     @staticmethod
     def broke_ship(db):
         cursor = db.cursor()
-        sql = 'SELECT count(status) FROM ship WHERE status != "正在使用" and status != "空闲"'
+        sql = 'SELECT count(status) FROM ship WHERE status != "正在使用" AND status != "空闲"'
         cursor.execute(sql)
         count = cursor.fetchone()[0]
         cursor.close()
@@ -127,7 +128,7 @@ class ShipTool:
     @staticmethod
     def broke_ship_main(db):
         cursor = db.cursor()
-        sql = 'SELECT * FROM ship WHERE status != "正在使用" and status != "空闲"'
+        sql = 'SELECT * FROM ship WHERE status != "正在使用" AND status != "空闲"'
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
@@ -167,3 +168,16 @@ class ShipTool:
         result = cursor.fetchone()[0]
         ShipTool.change_ship_status(db, result, '正在使用')
         return result
+
+    # 维修船
+    @staticmethod
+    def fix_ship(db, id):
+        cursor = db.cursor()
+        sql = 'UPDATE ship SET status = "维修", lastbroke = "{}" WHERE id = {}'.format(SomeTool.current_date(), id)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        return True

@@ -1,7 +1,7 @@
 from tool.some_tool import SomeTool
 from tool.admin.admin_ship_tool import AdminShipTool
 from pyecharts import Grid, Line, Pie, Page
-import xlwt
+import xlwt, os
 
 TITLES = ['活动编号', '状态', '开始时间', '结束时间', '花费', '会员编号', '船只编号', '会员名', '会员电话', '会员信誉', '注册时间', '游玩次数',
                   '船只名', '船只当前状态', '船只描述', '引进时间', '出游次数', '船只类型']
@@ -29,7 +29,6 @@ class AdminActivityTool:
         for i in range(int(n)):
             year, month = SomeTool.get_year_month_by_padding(i)
             result = AdminActivityTool.get_echarts_data_by_year_month_sql(db, year, month, sql)
-            # if result[0] == 0 or result[1] == None: break
             y1.append(result[0])
             y2.append(result[1])
             x.append(year + '年' + month + '月')
@@ -191,3 +190,54 @@ class AdminActivityTool:
     @staticmethod
     def data_2_excel(db):
         SomeTool.data_2_excel(AdminActivityTool.admin_activity_all(db), TITLES, 'activity数据')
+
+    # 生成首页的各个图表的excel
+    @staticmethod
+    def echarts_2_execl(db):
+        if (os.path.exists('static\data.xls')):
+            os.remove('static\data.xls')
+        excel = xlwt.Workbook()
+        sheet = excel.add_sheet('echarts')
+        key, value = AdminActivityTool.get_man_activity(db)
+        sheet.write(0, 0, '早中晚活动占比')
+        for i in range(len(key)):
+            sheet.write(1, i, key[i])
+            sheet.write(2, i, value[i])
+        sheet.write(4, 0, '各月活动详情')
+        sheet.write(5, 0, '日期')
+        sheet.write(6, 0, '总数')
+        sheet.write(7, 0, '收入')
+        x, y1, y2 = AdminActivityTool.get_num_count_activity(db, 8, 1)
+        for i in range(len(x)):
+            sheet.write(5, i+1, x[i])
+            sheet.write(6, i+1, y1[i])
+            sheet.write(7, i+1, y2[i])
+        sheet.write(9, 0, '活动船占比')
+        x, y1 = AdminShipTool.get_ship_type(db)
+        for i in range(len(x)):
+            sheet.write(10, i, x[i])
+            sheet.write(11, i, y1[i])
+        x, y1, y2 = AdminActivityTool.get_num_count_activity(db, 8, 2)
+        sheet.write(13, 0, '各月团建详情')
+        sheet.write(14, 0, '日期')
+        sheet.write(15, 0, '总数')
+        sheet.write(16, 0, '收入')
+        for i in range(len(x)):
+            sheet.write(14, i+1, x[i])
+            sheet.write(15, i+1, y1[i])
+            sheet.write(16, i+1, y2[i])
+        sheet.write(18, 0, '各月总收入')
+        x, y1 = AdminActivityTool.get_total_by_year_month(db, 8)
+        for i in range(len(x)):
+            sheet.write(19, i, x[i])
+            sheet.write(20, i, y1[i])
+        x, y1, y2 = AdminActivityTool.get_last_activity_by_days(db, 7)
+        sheet.write(22, 0, '近7天活动详情')
+        sheet.write(23, 0, '日期')
+        sheet.write(24, 0, '总数')
+        sheet.write(25, 0, '收入')
+        for i in range(len(x)):
+            sheet.write(23, i+1, x[i])
+            sheet.write(24, i+1, y1[i])
+            sheet.write(25, i+1, y2[i])
+        excel.save('static\data.xls')
