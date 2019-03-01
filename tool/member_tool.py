@@ -188,3 +188,25 @@ class MemberTool:
         cursor.close()
         result = cursor.fetchone()
         return str(result[0]+'({})'.format(result[1]))
+
+    # 拉黑用户，修改信誉
+    @staticmethod
+    def member_in_blick(db, id):
+        cursor = db.cursor()
+        sql = 'UPDATE member SET reputation = "差" WHERE id = {}'.format(id)
+        try:
+            cursor.execute(sql)
+            db.commit()
+        except:
+            db.rollback()
+            return False
+        return True
+
+    # 检测用户是否在黑名单
+    @staticmethod
+    def member_is_in_black(db, phone):
+        cursor = db.cursor()
+        sql = 'SELECT reputation FROM member WHERE phone = "{}"'.format(str(phone))
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchone()

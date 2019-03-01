@@ -159,14 +159,14 @@ function PreviewAd(id, content){
                 control_div.innerHTML = control_div.innerHTML + '<a class="right carousel-control" href="#ad_preview_carousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">Next</span></a>'
                 for(i=0; i<reselts.length; i++){
                     if(i==0){
-                        img_div.innerHTML = img_div.innerHTML + '<div class="item active"><img src="'+reselts[i][0]+'" alt="资源无法加载"><div class="carousel-caption">'+content+'</div></div>'
+                        img_div.innerHTML = img_div.innerHTML + '<div class="item active"><img src="../'+reselts[i][0]+'" alt="资源无法加载"><div class="carousel-caption">'+content+'</div></div>'
                     }else{
-                        img_div.innerHTML = img_div.innerHTML + '<div class="item"><img src="'+reselts[i][0]+'" alt="资源无法加载"><div class="carousel-caption">'+content+'</div></div>'
+                        img_div.innerHTML = img_div.innerHTML + '<div class="item"><img src="../'+reselts[i][0]+'" alt="资源无法加载"><div class="carousel-caption">'+content+'</div></div>'
                     }
                 }
             }else{
                 document.getElementById('ad_carousel_control').innerHTML = ''
-                document.getElementById('ad_preview_main').innerHTML = '<embed src="'+reselts[0][0]+'" width="560" height="480" />'
+                document.getElementById('ad_preview_main').innerHTML = '<embed src="../'+reselts[0][0]+'" width="560" height="480" />'
             }
         }
     })
@@ -228,7 +228,7 @@ function GbTdOnClickInput(id, td_id, value, key){
     var input_id = td_id + '_input';
     if(document.getElementById(input_id) == null){
         var td = document.getElementById(td_id);
-        td.innerHTML = '<input class="form-control" id="'+td_id+'_input" type="text" onblur="GbPutData(this.value, ' + td_id + ', '+id+', this.id, \''+key+'\')" value="' + value + '" >'
+        td.innerHTML = '<input class="form-control" id="'+td_id+'_input" type="text" onblur="GbPutData(this.value, ' + td_id + ', '+id+', this.id, \''+key+'\')" value="' + value + '" >';
         document.getElementById(input_id).focus();
     }
 }

@@ -96,6 +96,25 @@ function ActivityComplateCheck(id, created, costed){
     document.getElementById("modal_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" data-dismiss="modal" class="btn btn-primary" onclick="ActivityComplate(\''+id+'\', \''+cost+'\')">提交</button>';
 }
 
+// member拉黑的确认模态框
+function MemberInBlackModal(id){
+    document.getElementById('modal_header').innerHTML = '确认要拉黑该用户？';
+    document.getElementById('modal_body').innerHTML = '拉黑用户之后要联系超级管理员才能恢复';
+    document.getElementById("modal_footer").innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button><button type="button" data-dismiss="modal" class="btn btn-primary" onclick="MemberInBlack('+id+')">确定</button>';
+}
+
+// member拉黑
+function MemberInBlack(id){
+    $.ajax({
+        url: "/member",
+        type: "PUT",
+        data: {type: "1", id: id},
+        success: function(arg){
+            MainMemberClick();
+        }
+    })
+}
+
 // member标签页刷新
 function MainMemberClick(){
     $.ajax({
@@ -107,7 +126,7 @@ function MainMemberClick(){
             var div = document.getElementById("main_member_active")
             div.innerHTML = ""
             for (var i=0, l=data.length; i<l; i++){
-                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:25%"><h5>' + data[i][1] + '(' + data[i][2] + ')</h5></td><td style="width:25%"><h5>创建时间：' + data[i][4] + '</h5></td><td style="width:25%"><h5>信誉：' + data[i][3] + '</h5></td><td style="width:25%"><h5>游玩次数：'+data[i][5]+'</h5></td></tr></table></div></div>'
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:25%"><h5>' + data[i][1] + '(' + data[i][2] + ')</h5></td><td style="width:25%"><h5>创建时间：' + data[i][4] + '</h5></td><td style="width:20%"><h5>信誉：' + data[i][3] + '</h5></td><td style="width:25%"><h5>游玩次数：'+data[i][5]+'</h5></td><td><a data-toggle="modal" data-target="#mo" onclick="MemberInBlackModal('+data[i][0]+')">拉黑</a></td></tr></table></div></div>';
             }
         }
     })
@@ -120,7 +139,7 @@ function MainMemberClick(){
             var div = document.getElementById("main_member")
             div.innerHTML = ""
             for (var i=0, l=data.length; i<l; i++){
-                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:25%"><h5>' + data[i][1] + '(' + data[i][2] + ')</h5></td><td style="width:25%"><h5>创建时间：' + data[i][4] + '</h5></td><td style="width:25%"><h5>信誉：' + data[i][3] + '</h5></td><td style="width:25%"><h5>游玩次数：'+data[i][5]+'</h5></td></tr></table></div></div>'
+                div.innerHTML = div.innerHTML + '<div class="panel panel-default"><div class="panel-body"><table style="table-layout:fixed" width="100%"><tr><td style="width:25%"><h5>' + data[i][1] + '(' + data[i][2] + ')</h5></td><td style="width:25%"><h5>创建时间：' + data[i][4] + '</h5></td><td style="width:20%"><h5>信誉：' + data[i][3] + '</h5></td><td style="width:25%"><h5>游玩次数：'+data[i][5]+'</h5></td><td><a data-toggle="modal" data-target="#mo" onclick="MemberInBlackModal('+data[i][0]+')">拉黑</a></td></tr></table></div></div>';
             }
         }
     })
@@ -207,7 +226,18 @@ function AddActivity(){
 
 // 添加activity模态框里的select选择事件
 function AddActivitySelected(value){
-    document.getElementById('add_act_phone').value = value
+    document.getElementById('add_act_phone').value = value;
+    $.ajax({
+        url: "/member",
+        type: "GET",
+        data: {type: "4", phone: value},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            if(data[0] == "差"){
+                alert('该用户信誉较差，请三思');
+            }
+        }
+    })
 }
 
 // 添加activity模态框的select option动态添加，key是显示的值，value是实际的指

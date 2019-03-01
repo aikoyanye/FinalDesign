@@ -1,6 +1,7 @@
 from tool.some_tool import SomeTool
+import os
 
-URI = 'http://127.0.0.1:8080/static/'
+URI = 'static/resource/'
 
 class AdTool():
     # 新增广告
@@ -15,7 +16,7 @@ class AdTool():
             cursor.execute(sql)
             db.commit()
             file_name = sponsor + '_' + SomeTool.current_date1().replace(':', '_') + t
-            with open('static/' + file_name, 'wb') as f:
+            with open('static/resource/' + file_name, 'wb') as f:
                 f.write(p1)
             sql = """
                     INSERT INTO ad_resource (uri, type, sponsorId) VALUES 
@@ -24,7 +25,7 @@ class AdTool():
             cursor.execute(sql)
             if p2:
                 file_name = sponsor + '_' + SomeTool.current_date1().replace(':', '_') + t
-                with open('static/' + file_name, 'wb') as f:
+                with open('static/resource/' + file_name, 'wb') as f:
                     f.write(p2)
                 sql = """
                         INSERT INTO ad_resource (uri, type, sponsorId) VALUES 
@@ -33,7 +34,7 @@ class AdTool():
                 cursor.execute(sql)
             if p3:
                 file_name = sponsor + '_' + SomeTool.current_date1().replace(':', '_') + t
-                with open('static/' + file_name, 'wb') as f:
+                with open('static/resource/' + file_name, 'wb') as f:
                     f.write(p3)
                 sql = """
                     INSERT INTO ad_resource (uri, type, sponsorId) VALUES 
@@ -96,11 +97,16 @@ class AdTool():
     @staticmethod
     def put_ad_resource(db, id, t, sponsor, pp1, pp2=None, pp3=None):
         cursor = db.cursor()
+        sql = 'SELECT uri FROM ad_resource WHERE sponsorId = {}'.format(id)
+        cursor.execute(sql)
+        for uri in cursor.fetchone():
+            os.remove(uri)
+            print(uri)
         sql = 'DELETE FROM ad_resource WHERE sponsorId = {}'.format(id)
         cursor.execute(sql)
         db.commit()
         file_name = sponsor + '_' + SomeTool.current_date1().replace(':', '_') + t
-        with open('static/' + file_name, 'wb') as f:
+        with open('static/resource/' + file_name, 'wb') as f:
             f.write(pp1)
         sql = """
         INSERT INTO ad_resource (uri, type, sponsorId) VALUES 
@@ -109,7 +115,7 @@ class AdTool():
         cursor.execute(sql)
         if pp2:
             file_name = sponsor + '_' + SomeTool.current_date1().replace(':', '_') + t
-            with open('static/' + file_name, 'wb') as f:
+            with open('static/resource/' + file_name, 'wb') as f:
                 f.write(pp2)
             sql = """
                     INSERT INTO ad_resource (uri, type, sponsorId) VALUES 
@@ -118,7 +124,7 @@ class AdTool():
             cursor.execute(sql)
         if pp3:
             file_name = sponsor + '_' + SomeTool.current_date1().replace(':', '_') + t
-            with open('static/' + file_name, 'wb') as f:
+            with open('static/resource/' + file_name, 'wb') as f:
                 f.write(pp3)
             sql = """
                     INSERT INTO ad_resource (uri, type, sponsorId) VALUES 
