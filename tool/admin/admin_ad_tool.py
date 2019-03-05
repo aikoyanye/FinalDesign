@@ -24,6 +24,15 @@ class AdminAdTool:
         cursor.close()
         return cursor.fetchall()
 
+    # 按照类型获取广告
+    @staticmethod
+    def type_ad(db, type):
+        cursor = db.cursor()
+        sql = 'SELECT * FROM ad_sponsor WHERE type = "{}"'.format(type)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()
+
     # 修改表格中的数据
     @staticmethod
     def admin_ad_table_put(db, id, key, value):
@@ -69,3 +78,57 @@ class AdminAdTool:
     @staticmethod
     def data_2_excel(db):
         SomeTool.data_2_excel(AdminAdTool.get_ad(db), TITLES, '广告')
+
+    # 广告审核不通过
+    @staticmethod
+    def ad_examine_not_pass(db, id, reason):
+        cursor = db.cursor()
+        sql = 'UPDATE ad_sponsor SET type = "审核不通过", reason = "{}" WHERE id = {}'.format(reason, id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 广告审核通过
+    @staticmethod
+    def ad_examine_pass(db, id):
+        cursor = db.cursor()
+        sql = 'UPDATE ad_sponsor SET type = "活动" WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 根据广告id改变状态
+    @staticmethod
+    def change_ad_type(db, id, type):
+        cursor = db.cursor()
+        sql = 'UPDATE ad_sponsor SET type = "{}" WHERE id = {}'.format(type, id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 广告续约
+    @staticmethod
+    def renew_ad(db, id, endtime, cost):
+        cursor = db.cursor()
+        sql = 'UPDATE ad_sponsor SET endtime = "{}", cost = cost + "{}" WHERE id = {}'.format(endtime, cost, id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 批量删除过期ad
+    @staticmethod
+    def delete_over_ad(db, ids):
+        cursor = db.cursor()
+        sql = 'DELETE FROM ad_sponsor WHERE id IN {}'.format(SomeTool.delete_dot_last_2(str(tuple(ids))))
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 根据关键字查询广告商名字
+    @staticmethod
+    def name_by_key(db, key):
+        cursor = db.cursor()
+        sql = 'SELECT name FROM ad_sponsor WHERE name like "%{}%"'.format(key)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()

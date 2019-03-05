@@ -35,7 +35,7 @@ class ActivityHandler(BaseHandler):
             self.write('')
         # 添加预约
         elif self.get_argument('type') == '2':
-            ActivityTool.add(self.application.db, '预约', '正在计时', self.get_argument('cost'),
+            ActivityTool.add(self.application.db, '预约', '未开始', self.get_argument('cost'),
                              MemberTool.get_member_id_by_phone(self.application.db, self.get_argument('phone')),
                              ShipTool.get_ship_id_on_add_activity(self.application.db, self.get_argument('t')))
             self.write('')
@@ -44,7 +44,7 @@ class ActivityHandler(BaseHandler):
         print('activity put')
         # 开始，预约转活动
         if self.get_argument('type') == '1':
-            ActivityTool.reservation2activity(self.application.db, self.get_argument('id'))
+            ActivityTool.reservation2activity(self.application.db, self.get_argument('id'), self.get_argument('userId'))
         # 预约销毁
         elif self.get_argument('type') == '2':
-            ActivityTool.destroy_reservation(self.application.db, self.get_argument('id'), self.get_argument('shipId'))
+            ActivityTool.destroy_reservation(self.application.db, self.get_argument('id'), self.get_argument('shipId'), self.get_argument('userId'))

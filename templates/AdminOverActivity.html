@@ -1,0 +1,141 @@
+{% extends "AdminHeader.html" %}
+
+{% block order %}
+<script type="text/javascript">
+    var isCheckAll = false;
+    function CheckAll(){
+        if(isCheckAll){
+            $("input[type='checkbox']").each(function(){
+                this.checked = false;
+            });
+            isCheckAll = false;
+        }else{
+            $("input[type='checkbox']").each(function(){
+                this.checked = true;
+            });
+            isCheckAll = true;
+        }
+    }
+</script>
+<div class="container" style="margin-top: 20px">
+    <div class="row" style="text-align:center;">
+        <ul class="list-group col-lg-4">
+            <li class="list-group-item up_well"><h3>活动总数</h3></li>
+            <li class="list-group-item down_well"><h3>{{ results[0] }}</h3></li>
+        </ul>
+        <ul class="list-group col-lg-4">
+            <li class="list-group-item up_well"><h3>有效活动</h3></li>
+            <li class="list-group-item down_well"><h3>{{ results[1] }}</h3></li>
+        </ul>
+        <ul class="list-group col-lg-4">
+            <li class="list-group-item up_well"><h3>活动总收入</h3></li>
+            <li class="list-group-item down_well"><h3>{{ results[2] }}</h3></li>
+        </ul>
+    </div>
+</div>
+<hr>
+<form method="POST" action="/admin/activity/over">
+    <table width="100%" style="margin-top: 20px" id="table" class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th>
+                <a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('/activity')"></a>
+                <a id="download_a" download="data.xls" href="../../static/data.xls"></a>
+                活动编号
+            </th>
+            <th>状态</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>押金</th>
+            <th>用户编号</th>
+            <th>船只编号</th>
+            {% if type == 'admin' %}
+            <th><a href="#" id="sub" onclick="OverActivitySubmit()">批量删除</a><input type="checkbox" aria-label="全选" onclick="CheckAll()"></th>
+            {% end %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in range(len(data)) %}
+        <tr>
+            <td>{{ data[i][0] }}</td>
+            {% if type == 'admin' %}
+            <td id="status{{ data[i][0] }}" onclick="ActivityTdOnClickSelect({{ data[i][0] }}, this.id, '{{ data[i][1] }}', 'status')">{{ data[i][1] }}</td>
+            <td id="created{{ data[i][0] }}" onclick="ActivityTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][2] }}', 'created')">{{ data[i][2] }}</td>
+            <td id="endtime{{ data[i][0] }}" onclick="ActivityTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][3] }}', 'endtime')">{{ data[i][3] }}</td>
+            <td id="cost{{ data[i][0] }}" onclick="ActivityTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][4] }}', 'cost')">{{ data[i][4] }}</td>
+            {% else %}
+            <td id="status{{ data[i][0] }}">{{ data[i][1] }}</td>
+            <td id="created{{ data[i][0] }}">{{ data[i][2] }}</td>
+            <td id="endtime{{ data[i][0] }}">{{ data[i][3] }}</td>
+            <td id="cost{{ data[i][0] }}">{{ data[i][4] }}</td>
+            {% end %}
+            <td onclick="ActivityDisplayTr('user{{ i }}', 'tuser{{ i }}')"><i class="fi-zoom-in">{{ data[i][5] }}</i></td>
+            <td onclick="ActivityDisplayTr('ship{{ i }}', 'tship{{ i }}')"><i class="fi-zoom-in">{{ data[i][6] }}</i></td>
+            {% if type == 'admin' %}<td><input name="act" type="checkbox" value="{{ data[i][0] }}"></td>{% end %}
+        </tr>
+        <tr id="tuser{{ i }}" style="display: none;background-color: #EEEED1;">
+            <td>会员编号</td>
+            <td>会员名</td>
+            <td>会员电话</td>
+            <td>会员信誉</td>
+            <td>注册时间</td>
+            <td>游玩次数</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="user{{ i }}" style="display: none;background-color: #EEEEE0;">
+            <td>{{ data[i][5] }}</td>
+            <td>{{ data[i][7] }}</td>
+            <td>{{ data[i][8] }}</td>
+            <td>{{ data[i][9] }}</td>
+            <td>{{ data[i][10] }}</td>
+            <td>{{ data[i][11] }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr id="tship{{ i }}" style="display: none;background-color: #EEEED1;">
+            <td>船只编号</td>
+            <td>船只名</td>
+            <td>船只当前状态</td>
+            <td>船只描述</td>
+            <td>引进时间</td>
+            <td>被游玩次数</td>
+            <td>船只类型</td>
+            <td></td>
+        </tr>
+        <tr id="ship{{ i }}" style="display: none;background-color: #EEEEE0;">
+            <td>{{ data[i][6] }}</td>
+            <td>{{ data[i][12] }}</td>
+            <td>{{ data[i][13] }}</td>
+            <td>{{ data[i][14] }}</td>
+            <td>{{ data[i][15] }}</td>
+            <td>{{ data[i][16] }}</td>
+            <td>{{ data[i][17] }}</td>
+            <td></td>
+        </tr>
+        {% end %}
+        </tbody>
+    </table>
+</form>
+<div class="modal fade" id="add_act" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="add_title"></h4>
+            </div>
+            <div class="modal-body">
+                <div style="position:relative;">
+                    <p style=":auto;padding:5px;">
+                        <select onchange="AddActivitySelected(this.value)" style="width:100%;height:36px;" class="form-control" id="add_act_select"></select>
+                        <input oninput="value=value.replace(/[^\d]/g,'');AddActivitySelectOption(this.value)" class="form-control" placeholder="请输入用户电话" name="add_act_phone" id="add_act_phone" type="text" style="width:97%;height:36px;position: relative;top: -36px" />
+                        <select class="form-control" id="add_act_select_ship"></select>
+                        <input style="margin-top:36px;" type="number" id="add_activity_cost" class="form-control" placeholder="押金" oninput="value=value.replace(/[^\d]/g,'')" />
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer" id="add_btn"></div>
+        </div>
+    </div>
+</div>
+{% end %}

@@ -1,10 +1,19 @@
 {% extends "AdminHeader.html" %}
 
 {% block echarts %}
+<script>
+$(function () {
+	$("[data-toggle='popover']").popover();
+});
+</script>
 <table>
     <tr>
         <td><h3>简易数据图表</h3></td>
-        <td><a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('')"></a></td>
+        <td>
+            <a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('', '1')"></a>
+        </td>
+        <!--<td><a id="all" class="glyphicon glyphicon-download-alt" onclick="Data2Excel('')" data-toggle="popover"-->
+               <!--data-placement="bottom" data-content="导出所有数据" onmouseover="$('#all').popover('show')"></a></td>-->
         <td><a id="download_a" download="data.xls" href="../static/data.xls"></a></td>
     </tr>
 </table>

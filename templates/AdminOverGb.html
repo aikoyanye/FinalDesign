@@ -1,6 +1,22 @@
 {% extends "AdminHeader.html" %}
 
 {% block gb %}
+<script type="text/javascript">
+    var isCheckAll = false;
+    function CheckAll(){
+        if(isCheckAll){
+            $("input[type='checkbox']").each(function(){
+                this.checked = false;
+            });
+            isCheckAll = false;
+        }else{
+            $("input[type='checkbox']").each(function(){
+                this.checked = true;
+            });
+            isCheckAll = true;
+        }
+    }
+</script>
 <div class="container" style="margin-top: 20px">
 	<div class="row" style="text-align:center;">
 		<ul class="list-group col-lg-4">
@@ -25,7 +41,7 @@
             <!--<span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="GbAddRow()"></span>-->
             <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_gb"></span>
             <a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('/gb')"></a>
-            <a id="download_a" download="data.xls" href="../static/data.xls"></a>
+            <a id="download_a" download="data.xls" href="../../static/data.xls"></a>
             团建编号
         </th>
         <th>团建人数</th>
@@ -36,7 +52,7 @@
         <th>状态</th>
         <th>花费</th>
         <th>审核失败原因</th>
-        <th>操作</th>
+        <th><a href="#" onclick="DeleteGb()">批量删除</a><input type="checkbox" onclick="CheckAll()"></th>
     </tr>
     </thead>
     <tbody>
@@ -62,7 +78,7 @@
         <td>{{ data[i][8] }}</td>
         <td>{{ data[i][9] }}</td>
         {% end %}
-        <td><a href="#" onclick="OverGb({{ data[i][0] }})">结束</a></td>
+        <td><input type="checkbox" name="gb_check" value="{{ data[i][0] }}"></td>
     </tr>
     {% end %}
     </tbody>

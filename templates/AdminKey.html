@@ -1,10 +1,12 @@
 {% extends "AdminHeader.html" %}
 
 {% block key %}
-<table style="margin-top: 150px;" width="100%" id="table" class="table table-striped table-hover table-bordered">
+<hr>
+<table style="margin-top: 20px;" width="100%" id="table" class="table table-striped table-hover table-bordered">
     <thead>
     <tr>
-        <th>编号</th>
+        <th><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_admin"></span>编号</th>
+        <th>账号</th>
         <th>密钥MD5（只能修改，不可查看）</th>
         <th>类型</th>
     </tr>
@@ -13,10 +15,33 @@
     {% for i in range(len(data)) %}
     <tr>
         <td width="5%">{{ data[i][0] }}</td>
-        <td width="85%" id="key{{ i }}" onclick="KeyTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][1] }}', '_key')">{{ data[i][1] }}</td>
+        <td id="account{{ i }}" onclick="KeyTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][3] }}', 'account')">{{ data[i][3] }}</td>
+        <td width="" id="key{{ i }}" onclick="KeyTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][1] }}', '_key')">{{ data[i][1] }}</td>
         <td>{{ data[i][2] }}</td>
     </tr>
     {% end %}
     </tbody>
 </table>
+<div class="modal fade" id="add_admin" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="modal_header">添加管理员</div>
+            <div class="modal-body" id="modal_body">
+                <label for="admin_account">管理员账号</label>
+                <input type="text" id="admin_account" class="form-control" placeholder="管理员账号" />
+                <label for="admin_key">管理员密钥</label>
+                <input type="password" id="admin_key" class="form-control" placeholder="管理员密钥" />
+                <label for="admin_type">管理员类型</label>
+                <select id="admin_type" class="form-control">
+                    <option value="normal">normal</option>
+                    <option value="ship">ship</option>
+                </select>
+            </div>
+            <div class="modal-footer" id="modal_footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="AddAdmin()" data-dismiss="modal">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% end %}

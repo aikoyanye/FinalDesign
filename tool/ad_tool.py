@@ -95,13 +95,16 @@ class AdTool():
 
     # 更换广告资源
     @staticmethod
-    def put_ad_resource(db, id, t, sponsor, pp1, pp2=None, pp3=None):
+    def put_ad_resource(db, id, t, sponsor, endtime, cost, content, pp1, pp2=None, pp3=None):
         cursor = db.cursor()
         sql = 'SELECT uri FROM ad_resource WHERE sponsorId = {}'.format(id)
         cursor.execute(sql)
         for uri in cursor.fetchone():
             os.remove(uri)
-            print(uri)
+        sql = 'UPDATE ad_sponsor SET endtime = "{}", cost = "{}", content = "{}",' \
+              ' type = "待审核", reason = "" WHERE id = {}'.format(endtime+' 23:59:59', cost, content, id)
+        cursor.execute(sql)
+        db.commit()
         sql = 'DELETE FROM ad_resource WHERE sponsorId = {}'.format(id)
         cursor.execute(sql)
         db.commit()

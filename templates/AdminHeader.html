@@ -11,51 +11,167 @@
     <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
     <link href="../static/admin.css" rel="stylesheet">
     <script src="../static/admin.js" type="text/javascript"></script>
-    <title>伥窿水上世界-后端数据管理</title>
+    <script src="../static/admin1.js" type="text/javascript"></script>
+    <link href="../../static/admin.css" rel="stylesheet">
+    <script src="../../static/admin.js" type="text/javascript"></script>
+    <script src="../../static/admin1.js" type="text/javascript"></script>
+    <title>景区游船租赁管理系统</title>
 </head>
 
 <body>
-<div class="left_side">
-    <ul class="nav">
-        <li><a href="/admin"><h3>首页</h3></a></li>
-        <li><a href="/admin/activity"><h3>活动&预约</h3></a></li>
-        <li><a href="/admin/member"><h3>会员</h3></a></li>
-        <li><a href="/admin/ship"><h3>船只</h3></a></li>
-        <li><a href="/admin/ad"><h3>广告</h3></a></li>
-        <li><a href="/admin/gb"><h3>团建</h3></a></li>
-        <li><a href="/admin/key"><h3>密钥</h3></a></li>
-        <li><a href="/"><h3>返回</h3></a></li>
-    </ul>
-</div>
-
-<div class="right_side">
-    {% if current %}
-    {% block echarts %}{% end %}
-    {% block activity %}{% end %}
-    {% block member %}{% end %}
-    {% block ship %}{% end %}
-    {% block ad %}{% end %}
-    {% block gb %}{% end %}
-    {% block key %}{% end %}
-    <div class="modal fade" id="delete_table_modal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">通知</div>
-                <div class="modal-body"><h3>你确定删除本行数据？</h3></div>
-                <div class="modal-footer" id="modal_table_footer"></div>
-            </div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/admin">景区游船管理系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">{% if type=='admin' %}欢迎，超级管理员{% end %}{% if type=='normal' %}欢迎，景区管理员{% end %}{% if type=='ship' %}欢迎，游船维护员{% end %}</a></li>
+                <li><a href="/admin" onclick="Logout()">注销</a></li>
+            </ul>
         </div>
     </div>
-    {% else %}
-    <div class="jumbotron giant_screen">
-        <h1>你好，超级管理员</h1>
-        <p>请铭记超级密钥，因为该密钥将无法找回</p>
-        <form action="/admin" method="post" id="f_key">
-            <div class="input-group input-group-lg">
-                <input type="password" class="form-control" placeholder="请输入密钥" aria-describedby="sub" name="key" />
-                <a class="btn btn-primary btn-lg input-group-addon" role="button" id="sub" onclick="FormKeySubmit()">提交</a>
+</nav>
+<div class="container-fluid" id="main_nav">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            {% if type != 'ship' %}
+            <ul class="nav nav-sidebar">
+                <li><a href="#"><h4>站内查询</h4></a></li>
+            </ul>
+            <div>
+                <ul class="nav nav-sidebar">
+                    <li><a data-toggle="collapse" data-parent="#main_nav"
+                           href="#menu_data"><h4>基础数据管理</h4></a></li>
+                </ul>
+                <div id="menu_data" class="collapse">
+                    <ul class="nav nav-sidebar">
+                        <li><a href="/admin/spot">景区管理</a></li>
+                        <li><a href="#">活动经费管理</a></li>
+                    </ul>
+                </div>
             </div>
-        </form>
+            <div>
+                <ul class="nav nav-sidebar">
+                    <li><a data-toggle="collapse" data-parent="#main_nav"
+                           href="#menu_ship"><h4>船只管理</h4></a></li>
+                </ul>
+                <div id="menu_ship" class="collapse">
+                    <ul class="nav nav-sidebar">
+                        <li><a href="/admin/ship">库存管理</a></li>
+                        <li><a href="/admin/ship/finish">船只类型管理</a></li>
+                        <li><a href="#">船只维修管理</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <ul class="nav nav-sidebar">
+                    <li><a data-toggle="collapse" data-parent="#main_nav"
+                           href="#menu_activity"><h4>游园活动管理</h4></a></li>
+                </ul>
+                <div id="menu_activity" class="collapse">
+                    <ul class="nav nav-sidebar">
+                        <li><a href="#">船只租借管理</a></li>
+                        <li><a href="#">船只租借管理</a></li>
+                        <li><a href="#">船只租借记录</a></li>
+                    </ul>
+                </div>
+            </div>
+            <ul class="nav nav-sidebar">
+                <li><a href="#"><h4>会员管理</h4></a></li>
+            </ul>
+            <div>
+                <ul class="nav nav-sidebar">
+                    <li><a data-toggle="collapse" data-parent="#main_nav"
+                           href="#menu_ad"><h4>广告管理</h4></a></li>
+                </ul>
+                <div id="menu_ad" class="collapse">
+                    <ul class="nav nav-sidebar">
+                        <li><a href="#">正在投放</a></li>
+                        <li><a href="#">待审核</a></li>
+                        <li><a href="#">审核不通过</a></li>
+                        <li><a href="#">过期</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <ul class="nav nav-sidebar">
+                    <li><a data-toggle="collapse" data-parent="#main_nav"
+                           href="#menu_gb"><h4>团建管理</h4></a></li>
+                </ul>
+                <div id="menu_gb" class="collapse">
+                    <ul class="nav nav-sidebar">
+                        <li><a href="#">正在进行</a></li>
+                        <li><a href="#">待审核</a></li>
+                        <li><a href="#">审核失败</a></li>
+                        <li><a href="#">过期</a></li>
+                    </ul>
+                </div>
+            </div>
+            {% else %}
+            <div>
+                <ul class="nav nav-sidebar">
+                    <li><a data-toggle="collapse" data-parent="#main_nav"
+                           href="#menu_ships"><h4>船只管理</h4></a></li>
+                </ul>
+                <div id="menu_ships" class="collapse">
+                    <ul class="nav nav-sidebar">
+                        <li><a href="#">船只租借管理</a></li>
+                        <li><a href="#">库存管理</a></li>
+                        <li><a href="#">船只类型管理</a></li>
+                        <li><a href="#">船只维修管理</a></li>
+                    </ul>
+                </div>
+            </div>
+            {% end %}
+            {% if type == 'admin' %}
+            <ul class="nav nav-sidebar">
+                <li><a href="/admin/key"><h4>管理员账号管理</h4></a></li>
+            </ul>
+            {% end %}
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="table-responsive">
+                {% if current %}
+                {% block echarts %}{% end %}
+                {% block activity %}{% end %}
+                {% block member %}{% end %}
+                {% block ship %}{% end %}
+                {% block ad %}{% end %}
+                {% block gb %}{% end %}
+                {% block key %}{% end %}
+                {% block order %}{% end %}
+                {% block search %}{% end %}
+                {% block spot %}{% end %}
+                <div class="modal fade" id="delete_table_modal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">通知</div>
+                            <div class="modal-body"><h3>你确定删除本行数据？</h3></div>
+                            <div class="modal-footer" id="modal_table_footer"></div>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="jumbotron">
+                    <h1>景区游船租赁管理系统</h1>
+                    <p>请铭记超级密钥，因为该密钥将无法找回</p>
+                    <form action="/admin" method="post" id="f_key">
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" placeholder="请输入账号" aria-describedby="sub" name="account" />
+                            <input type="password" class="form-control" placeholder="请输入密码" aria-describedby="sub" name="key" />
+                            <a class="btn btn-primary btn-lg input-group-addon" role="button" id="sub" onclick="FormKeySubmit()">提交</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% end %}

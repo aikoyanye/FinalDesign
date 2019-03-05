@@ -1,0 +1,39 @@
+{% extends "AdminHeader.html" %}
+
+{% block spot %}
+<hr>
+<table width="100%" style="margin-top: 20px" id="table" class="table table-striped table-hover table-bordered">
+    <thead>
+    <tr>
+        <th>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_type"></span>
+            船只类型编号
+        </th>
+        <th>船只类型</th><th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for i in range(len(data)) %}
+    <tr>
+        <td>{{ data[i][0] }}</td><td>{{ data[i][1] }}</td>
+        <td><a href="#" onclick="DeleteShipType({{ data[i][0] }})">删除</a></td>
+    </tr>
+    {% end %}
+    </tbody>
+</table>
+<div class="modal fade" id="add_type" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">添加船只类型</div>
+            <div class="modal-body">
+                <label for="type">类型</label>
+                <input type="text" id="type" class="form-control" placeholder="类型" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="AddShipType()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}

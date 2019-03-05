@@ -46,11 +46,14 @@ class AdHandler(BaseHandler):
         elif self.get_argument('type') == '3':
             if self.get_argument('num') == '1':
                 AdTool.put_ad_resource(self.application.db, self.get_argument('id'), self.get_argument('t'),
-                                       self.get_argument('sponsor'), self.request.files.get('pp1')[0]['body'])
+                                       self.get_argument('sponsor'), self.get_argument('endtime'), self.get_argument('cost'),
+                                       self.get_argument('content'), self.request.files.get('pp1')[0]['body'])
             elif self.get_argument('num') == '2':
                 AdTool.put_ad_resource(self.application.db, self.get_argument('id'), self.get_argument('t'),
-                                       self.get_argument('sponsor'), self.request.files.get('pp1')[0]['body'], self.request.files.get('pp2')[0]['body'])
+                                       self.get_argument('sponsor'), self.get_argument('endtime'), self.get_argument('cost'),
+                                       self.get_argument('content'), self.request.files.get('pp1')[0]['body'], self.request.files.get('pp2')[0]['body'])
             elif self.get_argument('num') == '3':
                 AdTool.put_ad_resource(self.application.db, self.get_argument('id'), self.get_argument('t'),
-                                       self.get_argument('sponsor'), self.request.files.get('pp1')[0]['body'], self.request.files.get('pp2')[0]['body'],
+                                       self.get_argument('sponsor'), self.get_argument('endtime'), self.get_argument('cost'),
+                                       self.get_argument('content'), self.request.files.get('pp1')[0]['body'], self.request.files.get('pp2')[0]['body'],
                                        self.request.files.get('pp3')[0]['body'])

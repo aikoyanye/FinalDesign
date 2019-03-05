@@ -22,7 +22,8 @@
     <thead>
     <tr>
         <th>
-            <span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="MemberAddRow()"></span>
+            <!--<span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="MemberAddRow()"></span>-->
+            <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#mo"></span>
             <a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('/member')"></a>
             <a id="download_a" download="data.xls" href="../static/data.xls"></a>
             会员编号
@@ -37,7 +38,7 @@
     <tbody>
     {% for index in range(len(data)) %}
     <tr>
-        <td><span onclick="DeleteModelu({{ data[index][0] }}, {{ index }}+2, 'member')" class="glyphicon glyphicon-remove" data-toggle="modal" data-target="#delete_table_modal">{{ data[index][0] }}</span></td>
+        <td>{{ data[index][0] }}</td>
         <td id="name{{ index }}" onclick="MemberTdOnClickInput({{ data[index][0] }}, 'name{{ index }}', '{{ data[index][1] }}', 'username')">{{ data[index][1] }}</td>
         <td id="phone{{ index }}" onclick="MemberTdOnClickInput({{ data[index][0] }}, 'phone{{ index }}', '{{ data[index][2] }}', 'phone')">{{ data[index][2] }}</td>
         <td id="reputation{{ index }}" onclick="MemberTdOnClickSelect({{ data[index][0] }}, 'reputation{{ index }}', '{{ data[index][3] }}', 'reputation')">{{ data[index][3] }}</td>
@@ -47,4 +48,21 @@
     {% end %}
     </tbody>
 </table>
+<div class="modal fade" id="mo" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" id="modal_header">添加会员</div>
+            <div class="modal-body" id="modal_body">
+                <label for="member_name">会员昵称</label>
+                <input type="text" id="member_name" class="form-control" placeholder="会员昵称" />
+                <label for="member_phone">会员电话</label>
+                <input type="text" id="member_phone" class="form-control" placeholder="会员电话" />
+            </div>
+            <div class="modal-footer" id="modal_footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="AddMember()" data-dismiss="modal">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% end %}

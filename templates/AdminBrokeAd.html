@@ -24,7 +24,7 @@
         <th>
             <!--<span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="AdAddRow()"></span>-->
             <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_ad" onclick="AddAdResourceInit()"></span>
-            <a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('/ad/now')"></a>
+            <a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('/ad')"></a>
             <a id="download_a" download="data.xls" href="../../static/data.xls"></a>
             广告编号
         </th>
@@ -49,7 +49,7 @@
         <td id="cost{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'cost{{ i }}', '{{ data[i][4] }}', 'cost')">{{ data[i][4] }}</td>
         <td id="type{{ i }}" onclick="AdTdOnClickSelect({{ data[i][0] }}, 'type{{ i }}', '{{ data[i][5] }}', 'type')">{{ data[i][5] }}</td>
         <td id="content{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'content{{ i }}', '{{ data[i][6] }}', 'content')">{{ data[i][6] }}</td>
-        <td id="reason{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'reason{{ i }}', '{{ data[i][7] }}', 'reason')">{{ data[i][7] }}</td>
+        <td id="reason{{ i }}" onclick="AdTdOnClickInput({{ data[i][0] }}, 'reason{{ i }}', '{{ data[i][7] }}', 'reason')"><font color="#FF0000">{{ data[i][7] }}</font></td>
         {% else %}
         <td id="name{{ i }}">{{ data[i][1] }}</td>
         <td id="created{{ i }}">{{ data[i][2] }}</td>
@@ -57,28 +57,39 @@
         <td id="cost{{ i }}">{{ data[i][4] }}</td>
         <td id="type{{ i }}">{{ data[i][5] }}</td>
         <td id="content{{ i }}">{{ data[i][6] }}</td>
-        <td id="reason{{ i }}">{{ data[i][7] }}</td>
+        <td id="reason{{ i }}"><font color="#FF0000">{{ data[i][7] }}</font></td>
         {% end %}
         <td>
             <a data-toggle="modal" data-target="#preview_ad" onclick="PreviewAd({{ data[i][0] }}, '{{ data[i][6] }}')">预览</a>
+            <a data-toggle="modal" data-target="#put_ad_resource" onclick="PutAdResourceInit({{ data[i][0] }}, '{{ data[i][1] }}', '{{ data[i][3] }}', '{{ data[i][4] }}', '{{ data[i][6] }}')">更换</a>
             <a onclick="OverAd({{ data[i][0] }})">下架</a>
-            <a data-toggle="modal" data-target="#renew_ad" onclick="InitRenewAd({{ data[i][0] }})">续约</a>
         </td>
     </tr>
     {% end %}
     </tbody>
 </table>
-<div class="modal fade" id="renew_ad" aria-hidden="true">
+<div class="modal fade" id="put_ad_resource" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">广告续约</div>
+            <div class="modal-header">更换广告资源</div>
             <div class="modal-body">
-                <label for="reendtime" style="margin-top:10px;">广告延期至</label>
+                <label for="reendtime" style="margin-top:10px;">广告结束时间</label>
                 <input type="date" id="reendtime" name="endtime" class="form-control" />
-                <label for="recost" style="margin-top:10px;">追加花费</label>
+                <label for="recost" style="margin-top:10px;">花费</label>
                 <input type="number" oninput="value=value.replace(/[^\d]/g,'')" id="recost" name="cost" class="form-control" placeholder="花费" />
+                <label for="recontent" style="margin-top:10px;">广告文案</label>
+                <textarea id="recontent" name="content" class="form-control" placeholder="广告文案" style="resize:none" maxlength="100"></textarea>
+                <table width="100%" style="margin-top:10px;">
+                    <tr>
+                        <td width="10%"><div><input type="radio" name="ad_resource_type" onclick="PutAdResource('pic')" id="put_ad_resource_type_pic" >图片</div></td>
+                        <td><div><input type="radio" name="ad_resource_type" onclick="PutAdResource('video')" >视频</div></td>
+                    </tr>
+                </table>
+                <input type="hidden" id="ad_sponsor_id" />
+                <input type="hidden" id="ad_sponsor_name" />
+                <div id="put_ad_resource_body"></div>
             </div>
-            <div class="modal-footer" id="renew_footer"></div>
+            <div class="modal-footer" id="put_ad_resource_footer"></div>
         </div>
     </div>
 </div>

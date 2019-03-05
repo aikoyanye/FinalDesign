@@ -1,0 +1,144 @@
+{% extends "AdminHeader.html" %}
+
+{% block search %}
+<script type="text/babel">
+InitActivitySearch();
+</script>
+<table width="100%" style="margin-top: 20px">
+    <tr>
+        <td width="8%">
+            <select id="search_select" class="form-control">
+                <option value="activity" onclick="InitActivitySearch()">活动</option>
+                <option value="ship" onclick="InitShipSearch()">游船</option>
+                <option value="member" onclick="InitMemberSearch()">会员</option>
+                <option value="ad" onclick="InitAdSearch()">广告</option>
+                <option value="gb" onclick="InitGbSearch()">团建</option>
+            </select>
+        </td>
+        <td style="padding-left: 5px" width="50%"><input type="text" class="form-control" aria-label="关键字" id="key_word"></td>
+        <td style="padding-left: 5px"><button class="btn btn-primary" type="button" onclick="FuzzySearch()">搜索</button></td>
+    </tr>
+</table>
+<table width="100%" style="margin-top: 20px;display: none;" id="activity_search_table">
+    <tr>
+        <td width="15%">
+            <label for="activity_created">时间区间从</label><input oninput="ActivitySearch()" style="width:150px" type="date" class="form-control" id="activity_created">
+        </td>
+        <td width="15%">
+            <label for="activity_endtime">到</label><input oninput="ActivitySearch()" style="width:150px" type="date" class="form-control" id="activity_endtime">
+        </td>
+        <td width="15%">
+            <label for="activity_phone" style="margin-top:34px">会员电话</label>
+            <select onchange="SearchActivitySearchSelected(this.value)" style="width:200px;height:36px;" class="form-control" id="select_activity_phone"></select>
+            <input oninput="value=value.replace(/[^\d]/g,'');SearchActivitySearchSelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" id="activity_phone" type="text" />
+        </td>
+        <td width="15%">
+            <label for="activity_ship">游船类型</label><select onchange="ActivitySearch()" id="activity_ship" class="form-control"><option value="">请选择</option><option value="游船">游船</option><option value="步行球">步行球</option></select>
+        </td>
+    </tr>
+</table>
+<table width="100%" style="margin-top: 20px;display: none;" id="ship_search_table">
+    <tr>
+        <td width="15%">
+            <label for="ship_created">引进时间区间从</label><input oninput="ShipSearch()" style="width:150px" type="date" class="form-control" id="ship_created">
+        </td>
+        <td width="15%">
+            <label for="ship_endtime">到</label><input oninput="ShipSearch()" style="width:150px" type="date" class="form-control" id="ship_endtime">
+        </td>
+        <td width="15%">
+            <label for="ship_type">游船类型</label>
+            <select onchange="ShipSearch()" style="width:150px" id="ship_type" class="form-control">
+                <option value="">请选择</option>
+                <option value="游船">游船</option>
+                <option value="步行球">步行球</option>
+            </select>
+        </td>
+        <td width="15%">
+            <label for="ship_status">游船状态</label>
+            <select onchange="ShipSearch()" style="width:150px" id="ship_status" class="form-control">
+                <option value="">请选择</option>
+                <option value="正在使用">正在使用</option>
+                <option value="空闲">空闲</option>
+                <option value="维修">维修</option>
+            </select>
+        </td>
+    </tr>
+</table>
+<table width="100%" style="margin-top: 20px;display: none;" id="member_search_table">
+    <tr>
+        <td width="15%">
+            <label for="member_created">注册时间区间从</label><input oninput="MemberSearch()" style="width:150px" type="date" class="form-control" id="member_created">
+        </td>
+        <td width="15%">
+            <label for="member_endtime">到</label><input oninput="MemberSearch()" style="width:150px" type="date" class="form-control" id="member_endtime">
+        </td>
+        <td width="15%">
+            <label for="member_reputation">信誉</label>
+            <select onchange="MemberSearch()" style="width:150px" id="member_reputation" class="form-control">
+                <option value="">请选择</option>
+                <option value="良">良</option>
+                <option value="差">差</option>
+            </select>
+        </td>
+        <td width="15%">
+            <label for="member_phone" style="margin-top:34px">会员电话</label>
+            <select onchange="SearchMemberSearchSelected(this.value)" style="width:200px;height:36px;" class="form-control" id="select_member_phone"></select>
+            <input oninput="value=value.replace(/[^\d]/g,'');SearchActivitySearchSelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" id="member_phone" type="text" />
+        </td>
+    </tr>
+</table>
+<table width="100%" style="margin-top: 20px;display: none;" id="ad_search_table">
+    <tr>
+        <td width="15%">
+            <label for="ad_created">投放时间区间从</label><input oninput="AdSearch()" style="width:150px" type="date" class="form-control" id="ad_created">
+        </td>
+        <td width="15%">
+            <label for="ad_endtime">到</label><input oninput="AdSearch()" style="width:150px" type="date" class="form-control" id="ad_endtime">
+        </td>
+        <td width="15%">
+            <label for="ad_type">状态</label>
+            <select onchange="AdSearch()" style="width:150px" id="ad_type" class="form-control">
+                <option value="">请选择</option>
+                <option value="活动">正在投放</option>
+                <option value="待审核">待审核</option>
+                <option value="审核不通过">审核不通过</option>
+                <option value="过期">过期</option>
+            </select>
+        </td>
+        <td width="15%">
+            <label for="ad_name" style="margin-top:34px">广告商名称</label>
+            <select onchange="AdSearchSelect(this.value)" style="width:200px;height:36px;" class="form-control" id="select_ad_name"></select>
+            <input oninput="AdSearchSelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" id="ad_name" type="text" />
+        </td>
+    </tr>
+</table>
+<table width="100%" style="margin-top: 20px;display: none;" id="gb_search_table">
+    <tr>
+        <td width="15%">
+            <label for="gb_created">时间区间从</label><input oninput="GbSearch()" style="width:150px" type="date" class="form-control" id="gb_created">
+        </td>
+        <td width="15%">
+            <label for="gb_endtime">到</label><input oninput="GbSearch()" style="width:150px" type="date" class="form-control" id="gb_endtime">
+        </td>
+        <td width="15%">
+            <label for="gb_type">状态</label>
+            <select onchange="GbSearch()" style="width:150px" id="gb_type" class="form-control">
+                <option value="">请选择</option>
+                <option value="活动">正在投放</option>
+                <option value="待审核">待审核</option>
+                <option value="审核不通过">审核不通过</option>
+                <option value="过期">过期</option>
+            </select>
+        </td>
+        <td width="15%">
+            <label for="gb_phone" style="margin-top:34px">会员电话</label>
+            <select onchange="GbSearchSelected(this.value)" style="width:200px;height:36px;" class="form-control" id="select_gb_phone"></select>
+            <input oninput="value=value.replace(/[^\d]/g,'');SearchActivitySearchSelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" id="gb_phone" type="text" />
+        </td>
+    </tr>
+</table>
+<hr>
+<table width="100%" id="main_search_table" class="table table-striped table-hover table-bordered" style="margin-top: 20px">
+
+</table>
+{% end %}

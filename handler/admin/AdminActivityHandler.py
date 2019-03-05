@@ -5,9 +5,8 @@ from tool.admin.admin_activity_tool import AdminActivityTool
 class AdminActivityHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         if self.get_cookie('current') == 'a':
-            # AdminActivityTool.data_2_excel(self.application.db)
             self.render('AdminActivity.html', current=True, results=AdminActivityTool.admin_activity_somedata(self.application.db),
-                        data=AdminActivityTool.admin_activity_all(self.application.db))
+                        data=AdminActivityTool.admin_activity_all(self.application.db), type=self.get_cookie('type'))
         else:
             self.render('AdminActivity.html', current=False)
 
@@ -26,3 +25,21 @@ class AdminActivityHandler(tornado.web.RequestHandler):
 
     async def put(self, *args, **kwargs):
         AdminActivityTool.data_2_excel(self.application.db)
+
+class AdminOrderHandler(tornado.web.RequestHandler):
+    async def get(self, *args, **kwargs):
+        if self.get_cookie('current') == 'a':
+            self.render('AdminOrder.html', current=True, data=AdminActivityTool.get_order(self.application.db), type=self.get_cookie('type'))
+        else:
+            self.render('AdminOrder.html', current=False)
+
+class AdminOverActivityHandler(tornado.web.RequestHandler):
+    async def get(self, *args, **kwargs):
+        if self.get_cookie('current') == 'a':
+            self.render('AdminOverActivity.html', current=True, data=AdminActivityTool.get_over_activity(self.application.db), type=self.get_cookie('type'),
+                        results=AdminActivityTool.admin_activity_somedata(self.application.db))
+        else:
+            self.render('AdminOverActivity.html', current=False)
+
+    async def delete(self, *args, **kwargs):
+        AdminActivityTool.delete_some_activity(self.application.db, self.get_arguments('item[]'))

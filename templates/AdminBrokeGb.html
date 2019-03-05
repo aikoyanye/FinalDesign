@@ -25,7 +25,7 @@
             <!--<span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="GbAddRow()"></span>-->
             <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_gb"></span>
             <a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('/gb')"></a>
-            <a id="download_a" download="data.xls" href="../static/data.xls"></a>
+            <a id="download_a" download="data.xls" href="../../static/data.xls"></a>
             团建编号
         </th>
         <th>团建人数</th>
@@ -51,7 +51,7 @@
         <td id="endtime{{ i }}" onclick="GbTdOnClickInput({{ data[i][0] }}, 'endtime{{ i }}', '{{ data[i][5] }}', 'endtime')">{{ data[i][5] }}</td>
         <td id="type{{ i }}" onclick="GbTdOnClickSelect({{ data[i][0] }}, 'type{{ i }}', '{{ data[i][7] }}', 'type')">{{ data[i][7] }}</td>
         <td id="cost{{ i }}" onclick="GbTdOnClickInput({{ data[i][0] }}, 'cost{{ i }}', '{{ data[i][8] }}', 'cost')">{{ data[i][8] }}</td>
-        <td id="reason{{ i }}" onclick="GbTdOnClickInput({{ data[i][0] }}, 'reason{{ i }}', '{{ data[i][9] }}', 'reason')">{{ data[i][9] }}</td>
+        <td id="reason{{ i }}" onclick="GbTdOnClickInput({{ data[i][0] }}, 'reason{{ i }}', '{{ data[i][9] }}', 'reason')"><font color="#FF0000">{{ data[i][9] }}</font></td>
         {% else %}
         <td>{{ data[i][2] }}</td>
         <td>{{ data[i][3] }}</td>
@@ -60,13 +60,36 @@
         <td>{{ data[i][5] }}</td>
         <td>{{ data[i][7] }}</td>
         <td>{{ data[i][8] }}</td>
-        <td>{{ data[i][9] }}</td>
+        <td><font color="#FF0000">{{ data[i][9] }}</font></td>
         {% end %}
-        <td><a href="#" onclick="OverGb({{ data[i][0] }})">结束</a></td>
+        <td>
+            <a href="#" data-toggle="modal" data-target="#change_gb" onclick="InitChangeGbModal({{ data[i][0] }}, '{{ data[i][2] }}', '{{ data[i][3] }}', '{{ data[i][8] }}', '{{ data[i][5] }}', '{{ data[i][4] }}')">修改</a>
+            <a href="#" onclick="OverGb({{ data[i][0] }})">过期</a>
+        </td>
     </tr>
     {% end %}
     </tbody>
 </table>
+<div class="modal fade" id="change_gb" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">修改团建信息</div>
+            <div class="modal-body">
+                <label for="regb_count">人数</label>
+                <input type="number" id="regb_count" class="form-control" oninput="value=value.replace(/[^\d]/g,'')" />
+                <label for="regb_gname">名称</label>
+                <input type="text" id="regb_gname" class="form-control" />
+                <label for="regb_cost">花费</label>
+                <input type="number" id="regb_cost" class="form-control" oninput="value=value.replace(/[^\d]/g,'')" />
+                <label for="regb_endtime">活动日期</label>
+                <input type="date" id="regb_endtime" name="endtime" class="form-control" />
+                <label for="regb_extra">追加要求</label>
+                <textarea id="regb_extra" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer" id="change_gb_footer"></div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="add_gb" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

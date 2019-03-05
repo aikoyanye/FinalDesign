@@ -1,6 +1,7 @@
 from tool.some_tool import SomeTool
 from tool.admin.admin_ship_tool import AdminShipTool
 from pyecharts import Grid, Line, Pie, Page
+from tool.member_tool import MemberTool
 import xlwt, os
 
 TITLES = ['活动编号', '状态', '开始时间', '结束时间', '花费', '会员编号', '船只编号', '会员名', '会员电话', '会员信誉', '注册时间', '游玩次数',
@@ -129,7 +130,22 @@ class AdminActivityTool:
         cursor.close()
         return results[0], result, results[1]
 
-    # 获取activity
+    # 获取全部activity
+    @staticmethod
+    def all_admin(db):
+        cursor = db.cursor()
+        sql = '''
+        SELECT a.id, a.status, a.created, a.endtime, a.cost, a.userId, a.shipId, 
+         m.username, m.phone, m.reputation, m.created, m.time, 
+         s.shipname, s.status, s.descroption, s.created, s.time, s.type FROM activity a, member m, ship s 
+         WHERE a.userId = m.id AND a.shipId = s.id ORDER BY a.id DESC
+        '''
+        cursor.execute(sql)
+        cursor.close()
+        results = cursor.fetchall()
+        return results
+
+    # 获取正在进行的activity
     @staticmethod
     def admin_activity_all(db):
         cursor = db.cursor()
@@ -137,7 +153,7 @@ class AdminActivityTool:
         SELECT a.id, a.status, a.created, a.endtime, a.cost, a.userId, a.shipId, 
          m.username, m.phone, m.reputation, m.created, m.time, 
          s.shipname, s.status, s.descroption, s.created, s.time, s.type FROM activity a, member m, ship s 
-         WHERE a.userId = m.id AND a.shipId = s.id ORDER BY a.id ASC
+         WHERE a.userId = m.id AND a.shipId = s.id AND a.status = "正在游玩" ORDER BY a.id DESC
         '''
         cursor.execute(sql)
         cursor.close()
@@ -189,7 +205,7 @@ class AdminActivityTool:
     # 生成excel
     @staticmethod
     def data_2_excel(db):
-        SomeTool.data_2_excel(AdminActivityTool.admin_activity_all(db), TITLES, 'activity数据')
+        SomeTool.data_2_excel(AdminActivityTool.all_admin(db), TITLES, 'activity数据')
 
     # 生成首页的各个图表的excel
     @staticmethod
@@ -241,3 +257,42 @@ class AdminActivityTool:
             sheet.write(24, i+1, y1[i])
             sheet.write(25, i+1, y2[i])
         excel.save('static\data.xls')
+
+    # 获取全部预约
+    @staticmethod
+    def get_order(db):
+        cursor = db.cursor()
+        sql = '''
+         SELECT a.id, a.status, a.created, a.endtime, a.cost, a.userId, a.shipId, 
+         m.username, m.phone, m.reputation, m.created, m.time, 
+         s.shipname, s.status, s.descroption, s.created, s.time, s.type FROM activity a, member m, ship s 
+         WHERE a.userId = m.id AND a.shipId = s.id AND a.status = "预约" ORDER BY a.id DESC
+         '''
+        cursor.execute(sql)
+        cursor.close()
+        results = cursor.fetchall()
+        return results
+
+    # 获取过期活动
+    @staticmethod
+    def get_over_activity(db):
+        cursor = db.cursor()
+        sql = '''
+        SELECT a.id, a.status, a.created, a.endtime, a.cost, a.userId, a.shipId, 
+        m.username, m.phone, m.reputation, m.created, m.time, 
+        s.shipname, s.status, s.descroption, s.created, s.time, s.type FROM activity a, member m, ship s 
+        WHERE a.userId = m.id AND a.shipId = s.id AND a.status != "预约" AND a.status != "正在游玩" ORDER BY a.id DESC
+        '''
+        cursor.execute(sql)
+        cursor.close()
+        results = cursor.fetchall()
+        return results
+
+    # 批量删除过期activity
+    @staticmethod
+    def delete_some_activity(db, ids):
+        cursor = db.cursor()
+        sql = 'DELETE FROM activity WHERE id IN {}'.format(SomeTool.delete_dot_last_2(str(tuple(ids))))
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()

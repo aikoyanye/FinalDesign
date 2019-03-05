@@ -152,12 +152,20 @@ class ActivityTool:
 
     # 预约2活动
     @staticmethod
-    def reservation2activity(db, id):
+    def reservation2activity(db, id, userId):
         cursor = db.cursor()
-        sql = 'UPDATE activity SET status = "正在游玩", created = "{}" WHERE id = "{}"'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), id)
+        sql = 'SELECT count(created) FROM activity WHERE id = "{}" AND created > "{}"'.format(id, (datetime.datetime.now()-datetime.timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S"))
+        cursor.execute(sql)
+        sql1 = ''
+        if cursor.fetchone()[0] == 0:
+            sql1 = 'UPDATE member SET reputation = "差" WHERE id = {}'.format(userId)
+        sql = 'UPDATE activity SET endtime = "正在计时", status = "正在游玩", created = "{}" WHERE id = "{}"'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), id)
         try:
             cursor.execute(sql)
             db.commit()
+            if sql1 != '':
+                cursor.execute(sql1)
+                db.commit()
         except:
             db.rollback()
             return False
@@ -165,11 +173,13 @@ class ActivityTool:
 
     # 销毁预约，超过30分钟就扣留押金
     @staticmethod
-    def destroy_reservation(db, id, shipId):
+    def destroy_reservation(db, id, shipId, userId):
         cursor = db.cursor()
         sql = 'SELECT count(created) FROM activity WHERE id = "{}" AND created > "{}"'.format(id, (datetime.datetime.now()-datetime.timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S"))
         cursor.execute(sql)
+        sql1 = ''
         if cursor.fetchone()[0] == 0:
+            sql1 = 'UPDATE member SET reputation = "差" WHERE id = {}'.format(userId)
             sql = 'UPDATE activity SET status = "销毁", endtime = "{}" WHERE id = "{}"'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), id)
         else:
             sql = 'UPDATE activity SET status = "销毁", cost = "0", endtime = "{}" WHERE id = "{}"'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), id)
@@ -177,6 +187,9 @@ class ActivityTool:
             cursor.execute(sql)
             ShipTool.change_ship_status(db, shipId, '空闲')
             db.commit()
+            if sql1 != '':
+                cursor.execute(sql1)
+                db.commit()
         except:
             db.rollback()
             return False

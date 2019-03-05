@@ -42,6 +42,16 @@ class SomeTool:
         cursor.close()
         return cursor.fetchone()[0]
 
+    # 登录用方法
+    @staticmethod
+    def login(db, account, key):
+        cursor = db.cursor()
+        sql = 'SELECT type FROM rootkey WHERE account = "{}" AND _key = "{}"'.format(account, SomeTool.key(key))
+        cursor.execute(sql)
+        cursor.close()
+        result = cursor.fetchone()
+        return result[0] if result else None
+
     # 输入年月返回[%Y-%m-%d %H:%M:%S]
     @staticmethod
     def get_date_by_ym(year, month):

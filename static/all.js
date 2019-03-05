@@ -218,7 +218,7 @@ function AddActivity(){
             type: "POST",
             data: {type: 1, phone: phone, cost: cost, t: t},
             success: function(arg){
-                MainActivityClick();
+                window.location.reload();
             }
         })
     }
@@ -674,6 +674,9 @@ function AddGroupBuilding(){
     var i4 = document.getElementById('gb_extra');
     var i5 = document.getElementById('gb_endtime');
     var i6 = document.getElementById('gb_cost');
+    if(i1.value=='' || i2.value=='' || i3.value=='' || i4.value=='' || i5.value=='' || i6.value==''){
+        alert('输入框组不能为空');
+    }
     if(i2.value > 70){
         alert('人数不可超过70人');
         return

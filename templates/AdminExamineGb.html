@@ -25,7 +25,7 @@
             <!--<span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="GbAddRow()"></span>-->
             <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_gb"></span>
             <a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('/gb')"></a>
-            <a id="download_a" download="data.xls" href="../static/data.xls"></a>
+            <a id="download_a" download="data.xls" href="../../static/data.xls"></a>
             团建编号
         </th>
         <th>团建人数</th>
@@ -62,7 +62,9 @@
         <td>{{ data[i][8] }}</td>
         <td>{{ data[i][9] }}</td>
         {% end %}
-        <td><a href="#" onclick="OverGb({{ data[i][0] }})">结束</a></td>
+        <td>
+            <a href="#" onclick="InitExamineGbModal({{ data[i][0] }})" data-toggle="modal" data-target="#examine_gb">审核</a>
+        </td>
     </tr>
     {% end %}
     </tbody>
@@ -90,6 +92,18 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 <button type="button" class="btn btn-primary" onclick="AddGroupBuilding()" data-dismiss="modal">提交</button>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="examine_gb" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">团建审核</div>
+            <div class="modal-body">
+                <label for="reason">审核不通过原因</label>
+                <textarea id="reason" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer" id="examine_modal_footer"></div>
         </div>
     </div>
 </div>

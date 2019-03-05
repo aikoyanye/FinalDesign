@@ -12,9 +12,11 @@ class AdminKeyTool:
 
     # 修改密钥
     @staticmethod
-    def put_key(db, id, key):
+    def put_key(db, id, key, value):
         cursor = db.cursor()
-        sql = 'UPDATE rootkey SET _key = "{}" WHERE id = {}'.format(SomeTool.key(key), id)
+        v = value if key!='_key' else SomeTool.key(value)
+        sql = 'UPDATE rootkey SET {} = "{}" WHERE id = {}'.format(key, v, id)
+        print(sql)
         try:
             cursor.execute(sql)
             db.commit()
@@ -22,3 +24,15 @@ class AdminKeyTool:
         except:
             db.rollback()
             return False
+
+    # 添加管理员
+    @staticmethod
+    def put_admin(db, account, key, type):
+        cursor = db.cursor()
+        sql = '''
+        INSERT INTO rootkey (account, _key, type) VALUES 
+        ("{}", "{}", "{}")
+        '''.format(account, SomeTool.key(key), type)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
