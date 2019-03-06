@@ -6,18 +6,67 @@ from tool.admin.admin_reship_tool import AdminReShipTool
 class AdminShipHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         if self.get_cookie('current') == 'a':
-            self.render('AdminStockShip.html', current=True, results=AdminReShipTool.return_status(self.application.db),type=self.get_cookie('type'),
-                        free=AdminReShipTool.status_stock_all(self.application.db, '空闲'),
-                        broke=AdminReShipTool.status_stock_all(self.application.db, '维护'),
-                        lease=AdminReShipTool.status_stock_all(self.application.db, '租借'))
+            self.render('AdminStockShip.html', current=True, results=AdminReShipTool.return_status(self.application.db),
+                        type=self.get_cookie('type'), data=AdminReShipTool.status_stock_all(self.application.db))
         else:
             self.render('AdminStockShip.html', current=False)
 
+    async def post(self, *args, **kwargs):
+        # 添加船只
+        AdminReShipTool.add_ship(self.application.db, self.get_argument('shipname'), self.get_argument('size'),
+                                 self.get_argument('color'), self.get_argument('model'), self.get_argument('cost'),
+                                 self.get_argument('typeId'), self.get_argument('spotId'))
+
+    async def put(self, *args, **kwargs):
+        # 维护游船
+        if self.get_argument('type') == '1':
+            AdminReShipTool.save_ship(self.application.db, self.get_argument('id'), self.get_argument('reason'))
+        # 修改船只信息
+        elif self.get_argument('type') == '2':
+            AdminReShipTool.change_ship(self.application.db, self.get_argument('id'), self.get_argument('shipname'),
+                                     self.get_argument('size'), self.get_argument('color'), self.get_argument('model'),
+                                     self.get_argument('cost'))
+
+    async def delete(self, *args, **kwargs):
+        # 库存界面景区select
+        if self.get_argument('type') == '1':
+            self.write(json.dumps(AdminReShipTool.all_spot_for_stock(self.application.db)))
+        # 库存界面船只类型select
+        elif self.get_argument('type') == '2':
+            self.write(json.dumps(AdminReShipTool.all_ship_type(self.application.db)))
+        # 库存页面景区和游船类型筛选
+        elif self.get_argument('type') == '3':
+            self.write(json.dumps(AdminReShipTool.status_stock(self.application.db, self.get_argument('typeId'),
+                                  self.get_argument('spotId'), self.get_argument('status'))))
+        # 删除船只
+        elif self.get_argument('type') == '4':
+            AdminReShipTool.delete_ship(self.application.db, self.get_argument('id'))
+
+
+# 船只入库审核
 class AdminFreeShipHandler(tornado.web.RequestHandler):
-    pass
+    async def get(self, *args, **kwargs):
+        if self.get_cookie('current') == 'a':
+            self.render('AdminShipExamine.html', current=True, results=AdminReShipTool.return_status(self.application.db),
+                        type=self.get_cookie('type'), data=AdminReShipTool.examine_ship_all(self.application.db))
+        else:
+            self.render('AdminShipExamine.html', current=False)
+
+    async def put(self, *args, **kwargs):
+        # 审核通过入库
+        AdminReShipTool.change_ship_status(self.application.db, self.get_argument('id'), '空闲')
 
 class AdminBrokingShipHandler(tornado.web.RequestHandler):
-    pass
+    async def get(self, *args, **kwargs):
+        if self.get_cookie('current') == 'a':
+            self.render('AdminBrokeReShip.html', current=True, data=AdminReShipTool.all_broke_ship(self.application.db),
+                        results=AdminReShipTool.return_status(self.application.db), type=self.get_cookie('type'))
+        else:
+            self.render('AdminBrokeReShip.html', current=False)
+
+    async def delete(self, *args, **kwargs):
+        # 船只维护完毕
+        AdminReShipTool.saved_ship(self.application.db, self.get_argument('id'))
 
 # 游船类型
 class AdminFinishShipHandler(tornado.web.RequestHandler):

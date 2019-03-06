@@ -28,4 +28,9 @@ class AdminMemberHandler(tornado.web.RequestHandler):
         AdminMemberTool.delete_row_by_id(self.application.db, self.get_argument('id'))
 
     async def put(self, *args, **kwargs):
-        AdminMemberTool.data_2_excel(self.application.db)
+        # 修改会员信息
+        AdminMemberTool.change_member(self.application.db, self.get_argument('id'), self.get_argument('name'),
+                        self.get_argument('phone'), self.get_argument('discount'), self.get_argument('reputation'))
+
+    # async def put(self, *args, **kwargs):
+    #     AdminMemberTool.data_2_excel(self.application.db)

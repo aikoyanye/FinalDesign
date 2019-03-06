@@ -1,22 +1,25 @@
+from tool.some_tool import SomeTool
+
 class AdminReShipTool:
-    # 根据状态获取船只，以及类型和景区
+    # 库存页面景区和游船类型筛选
     @staticmethod
-    def status_stock(db, status, typeId, spotId):
+    def status_stock(db, typeId, spotId, status):
         cursor = db.cursor()
-        sql = 'SELECT id, shipname, color, size, model, cost, status, created FROM ship WHERE status = "{}"'
+        sql = 'SELECT id, shipname, color, size, model, cost, status, created FROM ship WHERE status != "审核"'
         if typeId: sql = sql + ' AND typeId = {}'.format(typeId)
         if spotId: sql = sql + ' AND spotId = {}'.format(spotId)
-        sql = sql + ' ORDER BY status DESC'.format(status)
+        if status: sql = sql + ' AND status = "{}"'.format(status)
+        sql = sql + ' ORDER BY status DESC'
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
 
-    # 根据状态获取船只
+    # 获取全部船只
     @staticmethod
-    def status_stock_all(db, status):
+    def status_stock_all(db):
         cursor = db.cursor()
-        sql = 'SELECT id, shipname, color, size, model, cost, status, created FROM ship WHERE status = "{}"'
-        sql = sql + ' ORDER BY status DESC'.format(status)
+        sql = 'SELECT id, shipname, color, size, model, cost, status, created FROM ship ' \
+              'WHERE status != "审核" ORDER BY status DESC'
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
@@ -60,6 +63,90 @@ class AdminReShipTool:
         cursor = db.cursor()
         sql = 'SELECT * FROM ship_type'
         cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()
+
+    # 获取景区用于库存筛选
+    @staticmethod
+    def all_spot_for_stock(db):
+        cursor = db.cursor()
+        sql = 'SELECT id, name FROM spot'
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()
+
+    # 添加船只
+    @staticmethod
+    def add_ship(db, shipname, size, color, model, cost, typeId, spotId):
+        cursor = db.cursor()
+        sql = 'INSERT INTO ship (shipname, size, color, model, cost, typeId, spotId, created, status) VALUES' \
+              ' ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "审核")'.format(shipname, size, color, model,
+            cost, typeId, spotId, SomeTool.current_date())
+        cursor.execute(sql)
         db.commit()
+        cursor.close()
+
+    # 更改船只状态
+    @staticmethod
+    def change_ship_status(db, id, status):
+        cursor = db.cursor()
+        sql = 'UPDATE ship SET status = "{}" WHERE id = {}'.format(status, id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 修改船只信息
+    @staticmethod
+    def change_ship(db, id, shipname, size, color, model, cost):
+        cursor = db.cursor()
+        sql = 'UPDATE ship SET shipname = "{}", size = "{}", color = "{}", model = "{}", cost = "{}" ' \
+              'WHERE id = {}'.format(shipname, size, color, model, cost, id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 维护船只
+    @staticmethod
+    def save_ship(db, id, reason):
+        cursor = db.cursor()
+        sql = 'UPDATE ship SET status = "{}", descroption = "{}" WHERE id = {}'.format('维护', reason, id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 获取维修中的船只
+    @staticmethod
+    def all_broke_ship(db):
+        cursor = db.cursor()
+        sql = 'SELECT id, shipname, color, size, model, descroption FROM ship WHERE status = "维护"'
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()
+
+    # 船只维护完毕
+    @staticmethod
+    def saved_ship(db, id):
+        cursor = db.cursor()
+        sql = 'UPDATE ship SET status = "空闲", descroption = "" WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 删除船只
+    @staticmethod
+    def delete_ship(db, id):
+        cursor = db.cursor()
+        sql = 'DELETE FROM ship WHERE id = {}'.format(id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+     # 获取全部船只
+    @staticmethod
+    def examine_ship_all(db):
+        cursor = db.cursor()
+        sql = 'SELECT id, shipname, color, size, model, cost, status, created FROM ship ' \
+              'WHERE status = "审核" ORDER BY status DESC'
+        cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()

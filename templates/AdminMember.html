@@ -24,30 +24,55 @@
         <th>
             <!--<span class="glyphicon glyphicon-plus" aria-hidden="true" onclick="MemberAddRow()"></span>-->
             <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#mo"></span>
-            <a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('/member')"></a>
-            <a id="download_a" download="data.xls" href="../static/data.xls"></a>
+            <!--<a class="glyphicon glyphicon-download-alt" onclick="Data2Excel('/member')"></a>-->
+            <!--<a id="download_a" download="data.xls" href="../static/data.xls"></a>-->
             会员编号
         </th>
         <th>会员名称</th>
         <th>会员电话</th>
         <th>会员信誉</th>
         <th>注册时间</th>
-        <th>游玩次数</th>
+        <th>租船次数</th>
+        <th>折扣调整</th>
+        <th>操作</th>
     </tr>
     </thead>
     <tbody>
-    {% for index in range(len(data)) %}
+    {% for i in range(len(data)) %}
     <tr>
-        <td>{{ data[index][0] }}</td>
-        <td id="name{{ index }}" onclick="MemberTdOnClickInput({{ data[index][0] }}, 'name{{ index }}', '{{ data[index][1] }}', 'username')">{{ data[index][1] }}</td>
-        <td id="phone{{ index }}" onclick="MemberTdOnClickInput({{ data[index][0] }}, 'phone{{ index }}', '{{ data[index][2] }}', 'phone')">{{ data[index][2] }}</td>
-        <td id="reputation{{ index }}" onclick="MemberTdOnClickSelect({{ data[index][0] }}, 'reputation{{ index }}', '{{ data[index][3] }}', 'reputation')">{{ data[index][3] }}</td>
-        <td id="register{{ index }}" onclick="MemberTdOnClickInput({{ data[index][0] }}, 'register{{ index }}', '{{ data[index][4] }}', 'created')">{{ data[index][4] }}</td>
-        <td id="time{{ index }}" onclick="MemberTdOnClickInput({{ data[index][0] }}, 'time{{ index }}', '{{ data[index][5] }}', 'time')">{{ data[index][5] }}</td>
+        <td>{{ data[i][0] }}</td>
+        <td>{{ data[i][1] }}</td>
+        <td>{{ data[i][2] }}</td>
+        <td>{{ data[i][3] }}</td>
+        <td>{{ data[i][4] }}</td>
+        <td>{{ data[i][5] }}</td>
+        <td>{{ data[i][6] }}</td>
+        <td><a href="#" data-toggle="modal" data-target="#change_member"
+        onclick="ChangeMemberModel({{ data[i][0] }}, '{{ data[i][1] }}', '{{ data[i][2] }}', '{{ data[i][6] }}')">修改信息</a></td>
     </tr>
     {% end %}
     </tbody>
 </table>
+<div class="modal fade" id="change_member" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">修改会员信息</div>
+            <div class="modal-body">
+                <label for="remember_name">会员昵称</label>
+                <input type="text" id="remember_name" class="form-control" placeholder="会员昵称" />
+                <label for="remember_phone">会员电话</label>
+                <input type="text" id="remember_phone" class="form-control" placeholder="会员电话" />
+                <label for="remember_discount">折扣调整</label>
+                <input type="text" id="remember_discount" class="form-control" placeholder="会员电话" />
+                <label for="remember_reputation">信誉调整</label>
+                <select id="remember_reputation" class="form-control">
+                    <option value="良">良</option><option value="差">差</option>
+                </select>
+            </div>
+            <div class="modal-footer" id="change_member_footer"></div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="mo" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

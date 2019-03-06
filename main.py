@@ -16,11 +16,15 @@ from handler.admin.AdminGbHandler import AdminGbHandler, AdminBrokeGbHandler, Ad
 from handler.admin.AdminKeyHandler import AdminKeyHandler
 from handler.admin.AdminSearchHandler import AdminSearchHandler
 from handler.admin.AdminSpotHandler import AdminSpotHandler
+from handler.admin.AdminActivityFundHandler import AdminActivityFund
 
 # 数据库信息
-HOST = '120.77.153.248'
-USERNAME = 'aiko'
-PASSWORD = 'AikoYanye1234.'
+# HOST = '120.77.153.248'
+# USERNAME = 'aiko'
+# PASSWORD = 'AikoYanye1234.'
+HOST = '127.0.0.1'
+USERNAME = 'root'
+PASSWORD = 'projectDIVAF.'
 DATABASE = 'final_design'
 
 class Application(tornado.web.Application):
@@ -55,6 +59,7 @@ class Application(tornado.web.Application):
             tornado.web.url(r'/admin/gb/over', AdminOverGbHandler, name='admin_over_gb'),
             tornado.web.url(r'/admin/search', AdminSearchHandler, name='admin_search'),
             tornado.web.url(r'/admin/spot', AdminSpotHandler, name='admin_spot'),
+            tornado.web.url(r'/admin/fund', AdminActivityFund, name='admin_fund'),
         ]
         # 服务端设置，设定好网页和静态文件存放位置，以及安全设置
         settings = dict(

@@ -12,9 +12,11 @@
     <link href="../static/admin.css" rel="stylesheet">
     <script src="../static/admin.js" type="text/javascript"></script>
     <script src="../static/admin1.js" type="text/javascript"></script>
+    <script src="../static/echarts.simple.min.js" type="text/javascript"></script>
     <link href="../../static/admin.css" rel="stylesheet">
     <script src="../../static/admin.js" type="text/javascript"></script>
     <script src="../../static/admin1.js" type="text/javascript"></script>
+    <script src="../../static/echarts.simple.min.js" type="text/javascript"></script>
     <title>景区游船租赁管理系统</title>
 </head>
 
@@ -53,7 +55,7 @@
                 <div id="menu_data" class="collapse">
                     <ul class="nav nav-sidebar">
                         <li><a href="/admin/spot">景区管理</a></li>
-                        <li><a href="#">活动经费管理</a></li>
+                        <li><a href="/admin/fund">活动经费管理</a></li>
                     </ul>
                 </div>
             </div>
@@ -64,9 +66,10 @@
                 </ul>
                 <div id="menu_ship" class="collapse">
                     <ul class="nav nav-sidebar">
+                        <li><a href="/admin/ship/free">船只入库管理</a></li>
                         <li><a href="/admin/ship">库存管理</a></li>
                         <li><a href="/admin/ship/finish">船只类型管理</a></li>
-                        <li><a href="#">船只维修管理</a></li>
+                        <li><a href="/admin/ship/broking">船只维修管理</a></li>
                     </ul>
                 </div>
             </div>
@@ -77,43 +80,43 @@
                 </ul>
                 <div id="menu_activity" class="collapse">
                     <ul class="nav nav-sidebar">
-                        <li><a href="#">船只租借管理</a></li>
-                        <li><a href="#">船只租借管理</a></li>
-                        <li><a href="#">船只租借记录</a></li>
+                        <li><a href="/admin/activity">船只租借管理</a></li>
+                        <li><a href="/admin/activity/order">押金管理</a></li>
+                        <li><a href="/admin/activity/over">船只租借记录</a></li>
                     </ul>
                 </div>
             </div>
             <ul class="nav nav-sidebar">
-                <li><a href="#"><h4>会员管理</h4></a></li>
+                <li><a href="/admin/member"><h4>会员管理</h4></a></li>
             </ul>
-            <div>
-                <ul class="nav nav-sidebar">
-                    <li><a data-toggle="collapse" data-parent="#main_nav"
-                           href="#menu_ad"><h4>广告管理</h4></a></li>
-                </ul>
-                <div id="menu_ad" class="collapse">
-                    <ul class="nav nav-sidebar">
-                        <li><a href="#">正在投放</a></li>
-                        <li><a href="#">待审核</a></li>
-                        <li><a href="#">审核不通过</a></li>
-                        <li><a href="#">过期</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div>
-                <ul class="nav nav-sidebar">
-                    <li><a data-toggle="collapse" data-parent="#main_nav"
-                           href="#menu_gb"><h4>团建管理</h4></a></li>
-                </ul>
-                <div id="menu_gb" class="collapse">
-                    <ul class="nav nav-sidebar">
-                        <li><a href="#">正在进行</a></li>
-                        <li><a href="#">待审核</a></li>
-                        <li><a href="#">审核失败</a></li>
-                        <li><a href="#">过期</a></li>
-                    </ul>
-                </div>
-            </div>
+            <!--<div>-->
+                <!--<ul class="nav nav-sidebar">-->
+                    <!--<li><a data-toggle="collapse" data-parent="#main_nav"-->
+                           <!--href="#menu_ad"><h4>广告管理</h4></a></li>-->
+                <!--</ul>-->
+                <!--<div id="menu_ad" class="collapse">-->
+                    <!--<ul class="nav nav-sidebar">-->
+                        <!--<li><a href="#">正在投放</a></li>-->
+                        <!--<li><a href="#">待审核</a></li>-->
+                        <!--<li><a href="#">审核不通过</a></li>-->
+                        <!--<li><a href="#">过期</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div>-->
+                <!--<ul class="nav nav-sidebar">-->
+                    <!--<li><a data-toggle="collapse" data-parent="#main_nav"-->
+                           <!--href="#menu_gb"><h4>团建管理</h4></a></li>-->
+                <!--</ul>-->
+                <!--<div id="menu_gb" class="collapse">-->
+                    <!--<ul class="nav nav-sidebar">-->
+                        <!--<li><a href="#">正在进行</a></li>-->
+                        <!--<li><a href="#">待审核</a></li>-->
+                        <!--<li><a href="#">审核失败</a></li>-->
+                        <!--<li><a href="#">过期</a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
             {% else %}
             <div>
                 <ul class="nav nav-sidebar">
@@ -122,10 +125,9 @@
                 </ul>
                 <div id="menu_ships" class="collapse">
                     <ul class="nav nav-sidebar">
-                        <li><a href="#">船只租借管理</a></li>
-                        <li><a href="#">库存管理</a></li>
-                        <li><a href="#">船只类型管理</a></li>
-                        <li><a href="#">船只维修管理</a></li>
+                        <li><a href="/admin/ship">库存管理</a></li>
+                        <li><a href="/admin/ship/finish">船只类型管理</a></li>
+                        <li><a href="/admin/ship/broking">船只维修管理</a></li>
                     </ul>
                 </div>
             </div>

@@ -1,5 +1,8 @@
+import calendar
 import datetime, requests, hashlib, xlwt, os
 from pyecharts import Bar, Line, Overlap
+from dateutil.rrule import rrule, DAILY, MONTHLY
+from datetime import date
 
 WEATHER_API = 'https://api.seniverse.com/v3/weather/now.json?key=wj3xlpuivdrhutm1&location=ip&language=zh-Hans'
 
@@ -109,3 +112,19 @@ class SomeTool:
             for ii in range(len(results[i])):
                 sheet.write(i+1, ii, results[i][ii])
         excel.save('static\data.xls')
+
+    # 获取时间区间的天数
+    @staticmethod
+    def getBetweenDay(begin_date):
+        start = date(int(begin_date[:4]), int(begin_date[5:7]), int(begin_date[8:10]))
+        current = str(SomeTool.current_date())
+        end = date(int(current[:4]), int(current[5:7]), int(current[8:10]))
+        return rrule(DAILY, dtstart=start, until=end).count()
+
+    # 获取时间区间的月数
+    @staticmethod
+    def getBetweenMonth(begin_date):
+        start = date(int(begin_date[:4]), int(begin_date[5:7]), int(begin_date[8:10]))
+        current = str(SomeTool.current_date())
+        end = date(int(current[:4]), int(current[5:7]), int(current[8:10]))
+        return rrule(MONTHLY, dtstart=start, until=end).count()

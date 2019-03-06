@@ -70,3 +70,13 @@ class AdminMemberTool():
     @staticmethod
     def data_2_excel(db):
         SomeTool.data_2_excel(AdminMemberTool.get_member(db), TITLES, 'member数据')
+
+    # 修改用户信息
+    @staticmethod
+    def change_member(db, id, name, phone, discount, reputation):
+        cursor = db.cursor()
+        sql = 'UPDATE member SET username = "{}", phone = "{}", discount = "{}", reputation = "{}" WHERE ' \
+              'id = {}'.format(name, phone, discount, reputation, id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
