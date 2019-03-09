@@ -1,4 +1,5 @@
 from tool.some_tool import SomeTool
+import xlrd, os
 
 class AdminReShipTool:
     # 库存页面景区和游船类型筛选
@@ -182,3 +183,35 @@ class AdminReShipTool:
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
+
+    # 获取typeId根据typa name
+    @staticmethod
+    def typeId_by_typename(db, name):
+        cursor = db.cursor()
+        sql = 'SELECT id FROM ship_type WHERE name = "{}"'.format(name)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchone()[0]
+
+    # 获取spotId根据spot name
+    @staticmethod
+    def spotId_by_spotname(db, name):
+        cursor = db.cursor()
+        sql = 'SELECT id FROM spot WHERE name = "{}"'.format(name)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchone()[0]
+
+    # 上传excel添加船只
+    @staticmethod
+    def add_ship_by_excel(db, excel):
+        if (os.path.exists('static\ship.xlsx')):
+            os.remove('static\ship.xlsx')
+        with open('static/ship.xlsx', 'wb') as f:
+            f.write(excel)
+        file = xlrd.open_workbook('static/ship.xlsx')
+        sheet = file.sheet_by_index(0)
+        for i in range(1, sheet.nrows):
+            AdminReShipTool.add_ship(db, sheet.cell(i, 0).value, sheet.cell(i, 2).value, sheet.cell(i, 1).value, sheet.cell(i, 3).value,
+                                     sheet.cell(i, 4).value, AdminReShipTool.typeId_by_typename(db, sheet.cell(i, 5).value),
+                                     AdminReShipTool.spotId_by_spotname(db, sheet.cell(i, 6).value), sheet.cell(i, 7).value)

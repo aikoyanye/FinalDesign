@@ -12,10 +12,15 @@ class AdminShipHandler(tornado.web.RequestHandler):
             self.render('AdminStockShip.html', current=False)
 
     async def post(self, *args, **kwargs):
-        # 添加船只
-        AdminReShipTool.add_ship(self.application.db, self.get_argument('shipname'), self.get_argument('size'),
-                                 self.get_argument('color'), self.get_argument('model'), self.get_argument('cost'),
-                                 self.get_argument('typeId'), self.get_argument('spotId'), self.get_argument('number'))
+        if self.get_argument('type') == '1':
+            # 添加船只
+            AdminReShipTool.add_ship(self.application.db, self.get_argument('shipname'), self.get_argument('size'),
+                                     self.get_argument('color'), self.get_argument('model'), self.get_argument('cost'),
+                                     self.get_argument('typeId'), self.get_argument('spotId'),
+                                     self.get_argument('number'))
+        elif self.get_argument('type') == '2':
+            # 根据excel来添加船只
+            AdminReShipTool.add_ship_by_excel(self.application.db, self.request.files.get('excel')[0]['body'])
 
     async def put(self, *args, **kwargs):
         # 维护游船

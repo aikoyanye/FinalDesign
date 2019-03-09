@@ -75,6 +75,26 @@ function AddSpot(){
     })
 }
 
+// 上传excel添加船只
+function AddShipByExcel(){
+    var d = new FormData();
+    d.append('excel', document.getElementById('upload_excel').files[0]);
+    d.append('type', '2');
+    $.ajax({
+        url: "/admin/ship",
+        type: "post",
+        data: d,
+        processData: false,
+        contentType: false,
+        async: false,
+        cache: false,
+        success: function(arg){
+            alert('上传成功');
+            window.location.reload();
+        }
+    })
+}
+
 // 添加船只类型
 function AddShipType(){
     if(document.getElementById('type').value==''){
@@ -206,7 +226,8 @@ function AddReShip(){
             cost: document.getElementById('cost').value,
             typeId: document.getElementById('type').value,
             spotId: document.getElementById('spot').value,
-            number: document.getElementById('number').value},
+            number: document.getElementById('number').value,
+            type: '1'},
         success: function(arg){
             StockSpotShipType();
         }
@@ -386,7 +407,7 @@ function AddActivitySelect(value){
         success: function(arg){
             var data = jQuery.parseJSON(arg);
             document.getElementById('cost').value = (data[0]*60).toFixed(2);
-            document.getElementById('show_cost').innerHTML = '根据景区和会员计算出租金为'+data[0 ]+'元/每分，故押金为'+(data[0]*60).toFixed(2)+'元';
+            document.getElementById('show_cost').innerHTML = '根据景区和会员计算出租金为'+data[0]+'元/每分，故押金为'+(data[0]*60).toFixed(2)+'元';
             document.getElementById('shipId').value = data[1];
         }
     })
@@ -399,6 +420,20 @@ function InitAddActivityModel(color, size, model, typeId, spotId){
     document.getElementById('model').value = model;
     document.getElementById('typeId').value = typeId;
     document.getElementById('spotId').value = spotId;
+    $.ajax({
+        url: "/admin/activity",
+        type: "post",
+        data: {type: "3",
+                color: color,
+                size: size,
+                model: model,
+                typeId: typeId,
+                spotId: spotId},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            document.getElementById('shipId').value = data;
+        }
+    })
 }
 
 // 船只出租
@@ -407,7 +442,7 @@ function AddReActivity(){
         url: "/admin/activity",
         type: "post",
         data: {shipId: document.getElementById('shipId').value,
-            phone: document.getElementById('add_act_select').value,
+            phone: document.getElementById('add_act_phone').value,
                 cost: document.getElementById('cost').value, type: '2'},
         success: function(arg){
             LeaseSpotShipTypeSelect();
@@ -419,9 +454,9 @@ function AddReActivity(){
 function ReInitDepositShipModel(id, cost, rent){
     var fin = cost - rent;
     if(fin > 0){
-        document.getElementById('show_cost').innerHTML = '扣除押金，应向会员退还'+fin+'元';
+        document.getElementById('show_cost').innerHTML = '扣除押金，应向会员退还'+fin.toFixed(2)+'元';
     }else{
-        document.getElementById('show_cost').innerHTML = '扣除押金，会员仍需支付'+(fin-fin-fin)+'元';
+        document.getElementById('show_cost').innerHTML = '扣除押金，会员仍需支付'+(fin-fin-fin).toFixed(2)+'元';
     }
     var footer = document.getElementById('deposit_activity_footer');
     footer.innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>';

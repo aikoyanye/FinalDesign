@@ -69,6 +69,16 @@ class AdminReActivityTool:
         cursor.close()
         return (round(AdminReActivityTool.cost_by_shipId(db, shipId)*AdminReActivityTool.discount_by_member_phone(db, phone), 2), shipId)
 
+    # 获取船id
+    @staticmethod
+    def get_shipId(db, color, size, model, typeId, spotId):
+        cursor = db.cursor()
+        sql = 'SELECT id FROM ship WHERE color = "{}" AND size = "{}" AND model = "{}" AND typeId = "{}" ' \
+              'AND spotId = "{}" AND status = "空闲"'.format(color, size, model, typeId, spotId)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchone()[0]
+
     # 船只出租
     @staticmethod
     def lease_ship(db, shipId, phone, cost):
@@ -76,6 +86,7 @@ class AdminReActivityTool:
         sql = 'INSERT INTO activity (status, created, endtime, cost, userId, shipId) VALUES ' \
               '("正在游玩", "{}", "计时中", "{}", {}, {})'.format(SomeTool.current_date(), cost,
                                                            MemberTool.get_member_id_by_phone(db, phone), shipId)
+        print(sql)
         cursor.execute(sql)
         db.commit()
         sql = 'UPDATE ship SET status = "租借" WHERE id = {}'.format(shipId)

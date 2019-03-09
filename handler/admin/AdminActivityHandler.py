@@ -22,6 +22,11 @@ class AdminActivityHandler(tornado.web.RequestHandler):
             AdminReActivityTool.lease_ship(self.application.db, self.get_argument('shipId'), self.get_argument('phone'),
                                            self.get_argument('cost'))
 
+        elif self.get_argument('type') == '3':
+            self.write(json.dumps(AdminReActivityTool.get_shipId(self.application.db, self.get_argument('color'),
+                        self.get_argument('size'), self.get_argument('model'), self.get_argument('typeId'),
+                                                        self.get_argument('spotId'))))
+
     async def put(self, *args, **kwargs):
         # 船只租借管理页面筛选
         self.write(json.dumps(AdminReActivityTool.lease_select(self.application.db,

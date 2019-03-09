@@ -43,7 +43,9 @@ StockShipsShipType();
 <table id="stock_table" width="100%" class="table table-striped table-hover table-bordered">
     <tr>
         <th>
-            <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_ship"></span>船只主题色</th>
+            <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_ship"></span>
+            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" data-toggle="modal" data-target="#upload"></span>
+            船只主题色</th>
         <th>船只规模</th><th>船只型号</th><th>船只类型</th><th>所属景区</th><th>钱/分</th><th>库存数</th><th>操作</th>
     </tr>
     {% for i in range(len(data)) %}
@@ -55,6 +57,21 @@ StockShipsShipType();
     </tr>
     {% end %}
 </table>
+<div class="modal fade" id="upload" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">上传船只excel</div>
+            <div class="modal-body">
+                <input class="glyphicon glyphicon-upload" type="file" id="upload_excel"
+                       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onclick="">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="AddShipByExcel()">上传</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="change_ship" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
