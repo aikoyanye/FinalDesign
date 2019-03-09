@@ -12,11 +12,11 @@ class AdminSearchHandler(tornado.web.RequestHandler):
         if self.get_argument('type') == '1':
             # activity搜索
             self.write(json.dumps(AdminSearchTool.activity_search(self.application.db, self.get_argument('created'),
-                       self.get_argument('endtime'), self.get_argument('phone'), self.get_argument('ship'))))
+                       self.get_argument('endtime'), self.get_argument('phone'), self.get_argument('status'))))
         elif self.get_argument('type') == '2':
             # ship搜索
-            self.write(json.dumps(AdminSearchTool.ship_search(self.application.db, self.get_argument('created'),
-                        self.get_argument('endtime'), self.get_argument('t'), self.get_argument('status'))))
+            self.write(json.dumps(AdminSearchTool.ship_search(self.application.db, self.get_argument('spot'),
+                         self.get_argument('t'), self.get_argument('status'))))
         elif self.get_argument('type') == '3':
             # member搜索
             self.write(json.dumps(AdminSearchTool.member_search(self.application.db, self.get_argument('created'),

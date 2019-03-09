@@ -5,17 +5,17 @@
 <table width="100%" style="margin-top: 20px" id="table" class="table table-striped table-hover table-bordered">
     <thead>
     <tr>
-        <th><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_spot"></span>景区编号</th>
-        <th>景区名称</th><th>景区地址</th><th>联系电话</th><th>景区价格调整</th><th>操作</th>
+        <th><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_spot"></span>景区名称</th>
+        <th>景区地址</th><th>联系电话</th><th>景区负责人</th><th>景区星级</th><th>景区价格调整</th><th>操作</th>
     </tr>
     </thead>
     <tbody>
     {% for i in range(len(data)) %}
     <tr>
-        <td>{{ data[i][0] }}</td><td>{{ data[i][1] }}</td><td>{{ data[i][2] }}</td><td>{{ data[i][3] }}</td><td>{{ data[i][4] }}</td>
+        <td>{{ data[i][1] }}</td><td>{{ data[i][2] }}</td><td>{{ data[i][3] }}</td><td>{{ data[i][4] }}</td><td>{{ data[i][5] }}</td><td>{{ data[i][6] }}</td>
         <td>
             <a href="#" data-toggle="modal" data-target="#change_spot"
-               onclick="InitChangeSpot({{ data[i][0] }}, '{{ data[i][1] }}', '{{ data[i][2] }}', '{{ data[i][3] }}', '{{ data[i][4] }}')">修改信息</a>
+               onclick="InitChangeSpot({{ data[i][0] }}, '{{ data[i][1] }}', '{{ data[i][2] }}', '{{ data[i][3] }}', '{{ data[i][4] }}', '{{ data[i][5] }}', '{{ data[i][6] }}')">修改信息</a>
             <a href="#" onclick="DeleteSpot({{ data[i][0] }})">删除</a>
         </td>
     </tr>
@@ -33,6 +33,10 @@
                 <input type="text" id="readdress" class="form-control" placeholder="景区地址" />
                 <label for="rephone">联系电话</label>
                 <input type="text" id="rephone" class="form-control" placeholder="联系电话" />
+                <label for="recharge">景区负责人</label>
+                <input type="text" id="recharge" class="form-control" placeholder="景区负责人" />
+                <label for="relevel">景区星级</label>
+                <input type="text" id="relevel" class="form-control" placeholder="景区星级" />
                 <label for="rediscount">景区价格调整</label>
                 <input type="text" id="rediscount" class="form-control" placeholder="景区价格调整" />
             </div>
@@ -51,6 +55,10 @@
                 <input type="text" id="address" class="form-control" placeholder="景区地址" />
                 <label for="phone">联系电话</label>
                 <input type="text" id="phone" class="form-control" placeholder="联系电话" />
+                <label for="charge">景区负责人</label>
+                <input type="text" id="charge" class="form-control" placeholder="景区负责人" />
+                <label for="level">景区星级</label>
+                <input type="text" id="level" class="form-control" placeholder="景区星级" />
                 <label for="discount">景区价格调整</label>
                 <input type="text" id="discount" class="form-control" placeholder="景区价格调整" />
             </div>

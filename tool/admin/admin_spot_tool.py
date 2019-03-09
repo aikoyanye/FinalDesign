@@ -10,10 +10,10 @@ class AdminSpotTool:
 
     # 添加景区信息
     @staticmethod
-    def add_spot(db, name, address, phone, discount):
+    def add_spot(db, name, address, phone, charge, level, discount):
         cursor = db.cursor()
-        sql = 'INSERT INTO spot (name, address, phone, discount) VALUES ' \
-              '("{}", "{}", "{}", "{}")'.format(name, address, phone, discount)
+        sql = 'INSERT INTO spot (name, address, phone, discount, charge, level) VALUES ' \
+              '("{}", "{}", "{}", "{}", "{}", "{}")'.format(name, address, phone, discount, charge, level)
         cursor.execute(sql)
         db.commit()
         cursor.close()
@@ -29,10 +29,10 @@ class AdminSpotTool:
 
     # 修改景区信息
     @staticmethod
-    def put_spot(db, id, name, address, phone, discount):
+    def put_spot(db, id, name, address, phone, charge, level, discount):
         cursor = db.cursor()
-        sql = 'UPDATE spot SET name = "{}", address = "{}", phone = "{}", discount = "{}" ' \
-              'WHERE id = {}'.format(name, address, phone, discount, id)
+        sql = 'UPDATE spot SET name = "{}", address = "{}", phone = "{}", discount = "{}", charge = "{}", ' \
+              'level = "{}" WHERE id = {}'.format(name, address, phone, discount, charge, level, id)
         cursor.execute(sql)
         db.commit()
         cursor.close()

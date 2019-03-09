@@ -14,8 +14,9 @@ class AdminActivityHandler(tornado.web.RequestHandler):
     async def post(self, *args, **kwargs):
         if self.get_argument('type') == '1':
             # 根据船只id和会员电话计算每分钟租金
-            self.write(json.dumps(AdminReActivityTool.get_cost(self.application.db,
-                                self.get_argument('shipId'), self.get_argument('phone'))))
+            self.write(json.dumps(AdminReActivityTool.get_cost(self.application.db, self.get_argument('color'),
+                        self.get_argument('size'), self.get_argument('model'), self.get_argument('typeId'),
+                                                        self.get_argument('spotId'), self.get_argument('phone'))))
         elif self.get_argument('type') == '2':
             # 船只出租
             AdminReActivityTool.lease_ship(self.application.db, self.get_argument('shipId'), self.get_argument('phone'),
@@ -38,11 +39,11 @@ class AdminOrderHandler(tornado.web.RequestHandler):
 
     async def post(self, *args, **kwargs):
         if self.get_argument('type') == '1':
-            # 船只未损坏结算
+            # 船只未损坏归还
             AdminReActivityTool.nobroke_settlement(self.application.db, self.get_argument('id'),
-                                        self.get_argument('final_cost'), self.get_argument('shipId'))
+                        self.get_argument('final_cost'), self.get_argument('shipId'), self.get_argument('phone'))
         elif self.get_argument('type') == '2':
-            # 船只损坏结算
+            # 船只损坏归还
             AdminReActivityTool.broke_settlement(self.application.db, self.get_argument('id'),
                         self.get_argument('final_cost'), self.get_argument('shipId'), self.get_argument('phone'))
 
@@ -64,6 +65,20 @@ class AdminOverActivityHandler(tornado.web.RequestHandler):
 
     async def delete(self, *args, **kwargs):
         AdminReActivityTool.delete_activity(self.application.db, self.get_argument('id'))
+
+# 船只归还管理
+class AdminReturnActivityHandler(tornado.web.RequestHandler):
+    async def get(self, *args, **kwargs):
+        if self.get_cookie('current') == 'a':
+            self.render('AdminReturnShip.html', current=True, type=self.get_cookie('type'),
+                        data=AdminReActivityTool.all_return_ship(self.application.db),
+                        results=AdminReActivityTool.count_activity_cost(self.application.db))
+        else:
+            self.render('AdminReturnShip.html', current=False)
+
+    async def put(self, *args, **kwargs):
+        # 租金结算
+        AdminReActivityTool.settlement_rent(self.application.db, self.get_argument('id'))
 
 # class AdminActivityHandler(tornado.web.RequestHandler):
 #     async def get(self, *args, **kwargs):

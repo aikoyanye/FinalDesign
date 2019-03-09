@@ -23,7 +23,7 @@ class AdminActivityTool:
     @staticmethod
     def get_num_count_activity(db, n, type):
         if str(type) == '1':
-            sql = 'SELECT COUNT(id), SUM(cost) FROM activity'
+            sql = 'SELECT COUNT(id), SUM(rent) FROM activity WHERE status = "已结算"'
         elif str(type) == '2':
             sql = 'SELECT COUNT(id), SUM(cost) FROM group_building'
         x, y1, y2 = [], [], []
@@ -43,24 +43,15 @@ class AdminActivityTool:
         for i in range(n):
             year, month = SomeTool.get_year_month_by_padding(i)
             start, end = SomeTool.get_date_by_ym(str(year), str(month))
-            sql = 'SELECT SUM(cost) FROM activity WHERE created > "{}" AND created < "{}"'.format(start, end)
+            sql = 'SELECT SUM(cost), COUNT(id) FROM activity WHERE created > "{}" AND created < "{}"'.format(start, end)
             cursor.execute(sql)
-            result = cursor.fetchone()[0]
-            result = float(result) if result else float(0)
-            y1.append(result)
-            sql = 'SELECT SUM(cost) FROM ad_sponsor WHERE created > "{}" AND created < "{}"'.format(start, end)
-            cursor.execute(sql)
-            result = cursor.fetchone()[0]
-            result = float(result) if result else float(0)
-            y2.append(result)
-            sql = 'SELECT SUM(cost) FROM group_building WHERE created > "{}" AND created < "{}"'.format(start, end)
-            cursor.execute(sql)
-            result = cursor.fetchone()[0]
-            result = float(result) if result else float(0)
-            y3.append(result)
+            result = list(cursor.fetchone())
+            result[0] = float(result[0]) if result[0] else float(0)
+            y1.append(result[1])
+            y2.append(round(result[0], 2))
             x.append(year + '年' + month + '月')
         cursor.close()
-        return x[::-1], SomeTool.single_list(y1, y2, y3)[::-1]
+        return x[::-1], y1[::-1], y2[::-1]
 
     # 获取最近n天的活动数+收入
     @staticmethod
@@ -82,7 +73,7 @@ class AdminActivityTool:
     @staticmethod
     def get_man_activity(db):
         cursor = db.cursor()
-        sql = 'SELECT created FROM activity'
+        sql = 'SELECT created FROM activity WHERE status = "已结算"'
         cursor.execute(sql)
         cursor.close()
         results = {'早': 0, '中': 0, '晚': 0}
@@ -98,24 +89,20 @@ class AdminActivityTool:
     # 首页数据render
     @staticmethod
     def admin_activity_main(db):
-        g1, g2, g3 = Grid(width=1600), Grid(width=1600), Grid(width=1600)
+        g2, g3 = Grid(width=1600), Grid(width=1600)
         page = Page()
-        x, y1, y2 = AdminActivityTool.get_num_count_activity(db, 8, 1)
-        chart1 = SomeTool.get_overlap_by_bar_line(x, y1, y2, '各月活动详情', '各月活动总数', '各月活动总收入')
         x, y1, y2 = AdminActivityTool.get_num_count_activity(db, 8, 2)
-        chart2 = SomeTool.get_overlap_by_bar_line(x, y1, y2, '各月团建详情', '各月团建总数', '各月团建总收入')
-        x, y1, y2 = AdminActivityTool.get_last_activity_by_days(db, 7)
         chart3 = SomeTool.get_overlap_by_bar_line(x, y1, y2, '近7天活动详情', '近7天活动总数', '近7天活动总收入')
-        x, y1 = AdminActivityTool.get_total_by_year_month(db, 8)
-        chart4 = Line('各月总收入').add('月份', x, y1, legend_pos="20%", xaxis_interval=0, xaxis_rotate=30, is_smooth=True, is_label_show=True)
+        x, y1, y2 = AdminActivityTool.get_total_by_year_month(db, 4)
+        # chart4 = Line('各月总收入').add('月份', x, y1, legend_pos="20%", xaxis_interval=0, xaxis_rotate=30, is_smooth=True, is_label_show=True)
+        chart4 = SomeTool.get_overlap_by_bar_line(x, y1, y2, '近4个月活动详情', '近4个月活动总数', '近4个月活动总收入')
         x, y1 = AdminActivityTool.get_man_activity(db)
         chart5 = Pie('早中晚活动占比').add('', x, y1, legend_pos="20%", center=[25, 50], is_label_show=True)
         x, y1 = AdminShipTool.get_ship_type(db)
         chart6 = Pie('活动船占比').add('', x, y1, legend_pos="20%", center=[25, 50], is_label_show=True)
-        g1.add(chart1, grid_left="60%").add(chart5, grid_right="60%")
-        g2.add(chart2, grid_left="60%").add(chart6, grid_right="60%")
-        g3.add(chart3, grid_left="60%").add(chart4, grid_right="60%")
-        page.add(g1).add(g2).add(g3).render('static\\render.html')
+        g2.add(chart4, grid_left="60%").add(chart5, grid_right="60%")
+        g3.add(chart3, grid_left="60%").add(chart6, grid_right="60%")
+        page.add(g2).add(g3).render('static\\render.html')
 
     # 获取活动总数、有效活动数、活动总收入
     @staticmethod

@@ -22,7 +22,7 @@ class AdminMemberHandler(tornado.web.RequestHandler):
                                           self.get_argument('reputation'), self.get_argument('created'), self.get_argument('time'))))
         # 添加会员
         elif self.get_argument('type') == '3':
-            MemberTool.add(self.application.db, self.get_argument('username'), self.get_argument('phone'), '良')
+            MemberTool.add(self.application.db, self.get_argument('username'), self.get_argument('phone'), '良', self.get_argument('sex'))
 
     async def delete(self, *args, **kwargs):
         AdminMemberTool.delete_row_by_id(self.application.db, self.get_argument('id'))

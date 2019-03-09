@@ -8,7 +8,7 @@ from handler.ShipHandler import ShipHandler
 from handler.AdHandler import AdHandler
 from handler.GroupBuildingHandler import GroupBuildingHandler
 from handler.admin.AdminWelcomeHandler import AdminWelcomeHandler
-from handler.admin.AdminActivityHandler import AdminActivityHandler, AdminOrderHandler, AdminOverActivityHandler
+from handler.admin.AdminActivityHandler import AdminActivityHandler, AdminOrderHandler, AdminOverActivityHandler, AdminReturnActivityHandler
 from handler.admin.AdminMemberHandler import AdminMemberHandler
 from handler.admin.AdminShipHandler import AdminShipHandler, AdminBrokingShipHandler, AdminFreeShipHandler,AdminFinishShipHandler
 from handler.admin.AdminAdHandler import AdminAdHandler, AdminExamineAdHandler, AdminOverAdHandler, AdminBrokeAdHandler
@@ -60,6 +60,7 @@ class Application(tornado.web.Application):
             tornado.web.url(r'/admin/search', AdminSearchHandler, name='admin_search'),
             tornado.web.url(r'/admin/spot', AdminSpotHandler, name='admin_spot'),
             tornado.web.url(r'/admin/fund', AdminActivityFund, name='admin_fund'),
+            tornado.web.url(r'/admin/activity/return', AdminReturnActivityHandler, name='admin_return_ship'),
         ]
         # 服务端设置，设定好网页和静态文件存放位置，以及安全设置
         settings = dict(

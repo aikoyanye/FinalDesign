@@ -5,7 +5,7 @@ from tool.admin.admin_activity_tool import AdminActivityTool
 class AdminWelcomeHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         if self.get_cookie('current') == 'a':
-            # AdminActivityTool.admin_activity_main(self.application.db)
+            AdminActivityTool.admin_activity_main(self.application.db)
             self.render('AdminWelcome.html', current=True, type=self.get_cookie('type'))
         else:
             self.render('AdminWelcome.html', current=False)

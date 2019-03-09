@@ -11,8 +11,8 @@ InitActivitySearch();
                 <option value="activity" onclick="InitActivitySearch()">活动</option>
                 <option value="ship" onclick="InitShipSearch()">游船</option>
                 <option value="member" onclick="InitMemberSearch()">会员</option>
-                <option value="ad" onclick="InitAdSearch()">广告</option>
-                <option value="gb" onclick="InitGbSearch()">团建</option>
+                <!--<option value="ad" onclick="InitAdSearch()">广告</option>-->
+                <!--<option value="gb" onclick="InitGbSearch()">团建</option>-->
             </select>
         </td>
         <td style="padding-left: 5px" width="50%"><input type="text" class="form-control" aria-label="关键字" id="key_word"></td>
@@ -33,33 +33,38 @@ InitActivitySearch();
             <input oninput="value=value.replace(/[^\d]/g,'');SearchActivitySearchSelectOption(this.value)" style="width:183px;height:36px;position:relative;top:-36px;" class="form-control" id="activity_phone" type="text" />
         </td>
         <td width="15%">
-            <label for="activity_ship">游船类型</label><select onchange="ActivitySearch()" id="activity_ship" class="form-control"><option value="">请选择</option><option value="游船">游船</option><option value="步行球">步行球</option></select>
+            <label for="activity_status">会员电话</label>
+            <select onchange="ActivitySearch()" class="form-control" id="activity_status">
+                <option value="">请选择</option>
+                <option value="正在游玩">正在游玩</option>
+                <option value="已结算">已结算</option>
+                <option value="待结算">待结算</option>
+            </select>
         </td>
     </tr>
 </table>
 <table width="100%" style="margin-top: 20px;display: none;" id="ship_search_table">
     <tr>
         <td width="15%">
-            <label for="ship_created">引进时间区间从</label><input oninput="ShipSearch()" style="width:150px" type="date" class="form-control" id="ship_created">
-        </td>
-        <td width="15%">
-            <label for="ship_endtime">到</label><input oninput="ShipSearch()" style="width:150px" type="date" class="form-control" id="ship_endtime">
-        </td>
-        <td width="15%">
-            <label for="ship_type">游船类型</label>
-            <select onchange="ShipSearch()" style="width:150px" id="ship_type" class="form-control">
+            <label for="ship_type">景区</label>
+            <select onchange="ShipSearch()" style="width:150px" id="ship_spot" class="form-control">
                 <option value="">请选择</option>
-                <option value="游船">游船</option>
-                <option value="步行球">步行球</option>
             </select>
         </td>
         <td width="15%">
-            <label for="ship_status">游船状态</label>
+            <label for="ship_type">船只类型</label>
+            <select onchange="ShipSearch()" style="width:150px" id="ship_type" class="form-control">
+                <option value="">请选择</option>
+            </select>
+        </td>
+        <td width="15%">
+            <label for="ship_status">船只状态</label>
             <select onchange="ShipSearch()" style="width:150px" id="ship_status" class="form-control">
                 <option value="">请选择</option>
-                <option value="正在使用">正在使用</option>
+                <option value="租借">租借</option>
                 <option value="空闲">空闲</option>
                 <option value="维修">维修</option>
+                <option value="维修">审核</option>
             </select>
         </td>
     </tr>
@@ -137,7 +142,7 @@ InitActivitySearch();
         </td>
     </tr>
 </table>
-<hr>
+<h2 class="sub-header">搜索筛选</h2>
 <table width="100%" id="main_search_table" class="table table-striped table-hover table-bordered" style="margin-top: 20px">
 
 </table>

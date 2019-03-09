@@ -11,7 +11,7 @@ function DeleteSpot(id){
 }
 
 // 修改景区信息模态框
-function InitChangeSpot(id, name, address, phone, discount){
+function InitChangeSpot(id, name, address, phone, charge, level, discount){
     var footer = document.getElementById('change_spot_footer');
     footer.innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>';
     footer.innerHTML = footer.innerHTML + '<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ChangeSpot('+id+')">提交</button>';
@@ -19,6 +19,8 @@ function InitChangeSpot(id, name, address, phone, discount){
     document.getElementById('readdress').value = address;
     document.getElementById('rephone').value = phone;
     document.getElementById('rediscount').value = discount;
+    document.getElementById('recharge').value = charge;
+    document.getElementById('relevel').value = level;
 }
 
 // 修改景区信息
@@ -26,7 +28,9 @@ function ChangeSpot(id){
     if(document.getElementById('rename').value=='' ||
         document.getElementById('readdress').value=='' ||
         document.getElementById('rephone').value=='' ||
-        document.getElementById('rediscount').value==''){
+        document.getElementById('rediscount').value=='' ||
+        document.getElementById('recharge').value=='' ||
+        document.getElementById('relevel').value==''){
         alert('输入框组不能为空');
         return
     }
@@ -36,7 +40,9 @@ function ChangeSpot(id){
         data: {id: id, name: document.getElementById('rename').value,
             address: document.getElementById('readdress').value,
             phone: document.getElementById('rephone').value,
-            discount: document.getElementById('rediscount').value},
+            discount: document.getElementById('rediscount').value,
+            charge: document.getElementById('recharge').value,
+            level: document.getElementById('relevel').value},
         success: function(arg){
             window.location.reload();
         }
@@ -48,7 +54,9 @@ function AddSpot(){
     if(document.getElementById('name').value=='' ||
         document.getElementById('address').value=='' ||
         document.getElementById('phone').value=='' ||
-        document.getElementById('discount').value==''){
+        document.getElementById('discount').value=='' ||
+        document.getElementById('charge').value=='' ||
+        document.getElementById('level').value==''){
         alert('输入框组不能为空');
         return
     }
@@ -58,7 +66,9 @@ function AddSpot(){
         data: {name: document.getElementById('name').value,
             address: document.getElementById('address').value,
             phone: document.getElementById('phone').value,
-            discount: document.getElementById('discount').value},
+            discount: document.getElementById('discount').value,
+            charge: document.getElementById('charge').value,
+            level: document.getElementById('level').value},
         success: function(arg){
             window.location.reload();
         }
@@ -98,10 +108,10 @@ function ShowStockShip(data){
     var table = document.getElementById('stock_table');
     table.innerHTML = '';
     var th = table.insertRow(0);
-    th.innerHTML = '<th><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_ship"></span>船只编号</th><th>船只名称</th><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>钱/分</th><th>状态</th><th>引进时间</th><th>操作</th>';
+    th.innerHTML = '<tr><th><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_ship"></span>船只主题色</th><th>船只规模</th><th>船只型号</th><th>船只类型</th><th>所属景区</th><th>钱/分</th><th>库存数</th><th>操作</th></tr>';
     for (var i=0, l=data.length; i<l; i++){
         var tr = table.insertRow(i+1);
-        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][7]+'</td><td><a href="#" data-toggle="modal" data-target="#save_ship" onclick="SaveShipModel('+data[i][0]+')">维护</a>/<a href="#" data-toggle="modal" data-target="#change_ship" onclick="InitChangeShipModel('+data[i][0]+', \''+data[i][1]+'\', \''+data[i][2]+'\', \''+data[i][3]+'\', \''+data[i][4]+'\', \''+data[i][5]+'\')">修改信息</a>/<a href="#" onclick="DeleteShip('+data[i][0]+')">删除</a></td>';
+        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td><a href="#" data-toggle="modal" data-target="#change_ship" onclick="InitChangeShipModel(\''+data[i][0]+'\', \''+data[i][1]+'\', \''+data[i][2]+'\', \''+data[i][5]+'\', \''+data[i][8]+'\', \''+data[i][7]+'\')">修改信息</a>/<a href="#" onclick="DeleteShip(\''+data[i][0]+'\', \''+data[i][1]+'\', \''+data[i][2]+'\', \''+data[i][7]+'\', \''+data[i][8]+'\')">删除</a></td>';
     }
 }
 
@@ -114,10 +124,12 @@ function StockShipsSpot(){
         success: function(arg){
             var select = document.getElementById('spot_select');
             var select1 = document.getElementById('spot');
+            var select2 = document.getElementById('respot');
             var data = jQuery.parseJSON(arg);
             for (var i=0, l=data.length; i<l; i++){
                 select.innerHTML = select.innerHTML + '<option value="'+data[i][0]+'">'+data[i][1]+'</option>';
                 select1.innerHTML = select1.innerHTML + '<option value="'+data[i][0]+'">'+data[i][1]+'</option>';
+                select2.innerHTML = select2.innerHTML + '<option value="'+data[i][0]+'">'+data[i][1]+'</option>';
             }
         }
     })
@@ -179,7 +191,8 @@ function AddReShip(){
         document.getElementById('color').value=='' ||
         document.getElementById('size').value=='' ||
         document.getElementById('model').value=='' ||
-        document.getElementById('cost').value==''){
+        document.getElementById('cost').value=='' ||
+        document.getElementById('number').value==''){
         alert('输入框组不能为空');
         return
     }
@@ -192,7 +205,8 @@ function AddReShip(){
             model: document.getElementById('model').value,
             cost: document.getElementById('cost').value,
             typeId: document.getElementById('type').value,
-            spotId: document.getElementById('spot').value},
+            spotId: document.getElementById('spot').value,
+            number: document.getElementById('number').value},
         success: function(arg){
             StockSpotShipType();
         }
@@ -206,7 +220,6 @@ function StockSpotShipType(){
         type: "delete",
         data: {typeId: document.getElementById('type_select').value,
             spotId: document.getElementById('spot_select').value,
-            status: document.getElementById('status_select').value,
             type: '3'},
         success: function(arg){
             ShowStockShip(jQuery.parseJSON(arg));
@@ -238,21 +251,26 @@ function SaveShip(id){
 }
 
 // 修改船只信息模态框初始化
-function InitChangeShipModel(id, shipname, color, size, model, cost){
-    document.getElementById('reshipname').value = shipname;
+function InitChangeShipModel(color, size, model, cost, spotId, typeId){
     document.getElementById('recolor').value = color;
     document.getElementById('resize').value = size;
     document.getElementById('remodel').value = model;
     document.getElementById('recost').value = cost;
+    document.getElementById('respot').value = spotId;
+    document.getElementById('old_color').value = color;
+    document.getElementById('old_size').value = size;
+    document.getElementById('old_model').value = model;
+    document.getElementById('old_cost').value = cost;
+    document.getElementById('old_spot').value = spotId;
+    document.getElementById('old_type').value = typeId;
     var footer = document.getElementById('change_ship_footer');
     footer.innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>';
-    footer.innerHTML = footer.innerHTML + '<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ChangeShipModel('+id+')">提交</button>';
+    footer.innerHTML = footer.innerHTML + '<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ChangeShipModel()">提交</button>';
 }
 
 // 修改船只信息模
-function ChangeShipModel(id){
-    if(document.getElementById('reshipname').value=='' ||
-        document.getElementById('recolor').value=='' ||
+function ChangeShipModel(){
+    if(document.getElementById('recolor').value=='' ||
         document.getElementById('resize').value=='' ||
         document.getElementById('remodel').value=='' ||
         document.getElementById('recost').value==''){
@@ -262,12 +280,18 @@ function ChangeShipModel(id){
     $.ajax({
         url: "/admin/ship",
         type: "put",
-        data: {shipname: document.getElementById('reshipname').value,
+        data: {old_color: document.getElementById('old_color').value,
+            old_size: document.getElementById('old_size').value,
+            old_model: document.getElementById('old_model').value,
+            old_cost: document.getElementById('old_cost').value,
+            old_spotId: document.getElementById('old_spot').value,
+            old_typeId: document.getElementById('old_type').value,
             color: document.getElementById('recolor').value,
             size: document.getElementById('resize').value,
             model: document.getElementById('remodel').value,
             cost: document.getElementById('recost').value,
-            type: '2', id: id},
+            spotId: document.getElementById('respot').value,
+            type: '2'},
         success: function(arg){
             StockSpotShipType();
         }
@@ -287,23 +311,23 @@ function SavedShip(id){
 }
 
 // 删除船只
-function DeleteShip(id){
+function DeleteShip(color, size, model, typeId, spotId){
     $.ajax({
         url: "/admin/ship",
         type: "delete",
-        data: {id: id, type: '4'},
+        data: {color: color, size: size, model: model, typeId: typeId, spotId: spotId, status: '空闲', type: '4'},
         success: function(arg){
             StockSpotShipType();
         }
     })
 }
 
-// 删除船只
-function ReturnShip(id){
+// 退还船只
+function ReturnShip(color, size, model, typeId, spotId){
     $.ajax({
         url: "/admin/ship",
         type: "delete",
-        data: {id: id, type: '4'},
+        data: {color: color, size: size, model: model, typeId: typeId, spotId: spotId, status: '审核', type: '4'},
         success: function(arg){
             window.location.reload();
         }
@@ -311,11 +335,11 @@ function ReturnShip(id){
 }
 
 // 船只审核入库
-function ShipExaminePass(id){
+function ShipExaminePass(color, size, model, typeId, spotId){
     $.ajax({
         url: "/admin/ship/free",
         type: "put",
-        data: {id: id},
+        data: {color: color, size: size, model: model, typeId: typeId, spotId: spotId},
         success: function(arg){
             window.location.reload();
         }
@@ -327,10 +351,10 @@ function ShowLeaseShipData(data){
     var table = document.getElementById('lease_table');
     table.innerHTML = '';
     var th = table.insertRow(0);
-    th.innerHTML = '<th>船只编号</th><th>船只名称</th><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>租金(钱/每分)</th><th>操作</th>';
+    th.innerHTML = '<tr><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>船只类型</th><th>所属景区</th><th>钱/分</th><th>库存数</th><th>操作</th></tr>';
     for (var i=0, l=data.length; i<l; i++){
         var tr = table.insertRow(i+1);
-        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td><a href="#" onclick="InitAddActivityModel('+data[i][0]+')" data-toggle="modal" data-target="#add_activity">出租</a></td>';
+        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td><a href="#" onclick="InitAddActivityModel(\''+data[i][0]+'\', \''+data[i][1]+'\', \''+data[i][2]+'\', \''+data[i][7]+'\', \''+data[i][8]+'\')" data-toggle="modal" data-target="#add_activity">出租</a></td>';
     }
 }
 
@@ -354,21 +378,27 @@ function AddActivitySelect(value){
         url: "/admin/activity",
         type: "post",
         data: {type: "1", phone: value,
-                shipId: document.getElementById('shipId').value},
+                color: document.getElementById('color').value,
+                size: document.getElementById('size').value,
+                model: document.getElementById('model').value,
+                typeId: document.getElementById('typeId').value,
+                spotId: document.getElementById('spotId').value},
         success: function(arg){
             var data = jQuery.parseJSON(arg);
-            document.getElementById('cost').value = (data*60).toFixed(2);
-            document.getElementById('show_cost').innerHTML = '根据景区和会员计算出租金为'+data+'元/每分，故押金为'+(data*60).toFixed(2)+'元';
+            document.getElementById('cost').value = (data[0]*60).toFixed(2);
+            document.getElementById('show_cost').innerHTML = '根据景区和会员计算出租金为'+data[0 ]+'元/每分，故押金为'+(data[0]*60).toFixed(2)+'元';
+            document.getElementById('shipId').value = data[1];
         }
     })
 }
 
 // 船只出租页面模态框
-function InitAddActivityModel(shipId){
-    document.getElementById('shipId').value = shipId;
-    var footer = document.getElementById('add_activity_footer');
-    footer.innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>';
-    footer.innerHTML = footer.innerHTML + '<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="AddReActivity()">提交</button>';
+function InitAddActivityModel(color, size, model, typeId, spotId){
+    document.getElementById('color').value = color;
+    document.getElementById('size').value = size;
+    document.getElementById('model').value = model;
+    document.getElementById('typeId').value = typeId;
+    document.getElementById('spotId').value = spotId;
 }
 
 // 船只出租
@@ -385,6 +415,31 @@ function AddReActivity(){
     })
 }
 
+// 租金结算模态框初始化
+function ReInitDepositShipModel(id, cost, rent){
+    var fin = cost - rent;
+    if(fin > 0){
+        document.getElementById('show_cost').innerHTML = '扣除押金，应向会员退还'+fin+'元';
+    }else{
+        document.getElementById('show_cost').innerHTML = '扣除押金，会员仍需支付'+(fin-fin-fin)+'元';
+    }
+    var footer = document.getElementById('deposit_activity_footer');
+    footer.innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>';
+    footer.innerHTML = footer.innerHTML + '<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="SettlementRent('+id+')">提交</button>';
+}
+
+// 租金结算
+function SettlementRent(id){
+    $.ajax({
+        url: "/admin/activity/return",
+        type: "put",
+        data: {id: id},
+        success: function(arg){
+            window.location.reload();
+        }
+    })
+}
+
 // 押金结算模态框初始化
 function InitDepositShipModel(id, created, shipId, phone, cost){
     var endtime = Date.parse(new Date());
@@ -397,13 +452,8 @@ function InitDepositShipModel(id, created, shipId, phone, cost){
         success: function(arg){
             var data = jQuery.parseJSON(arg);
             var final_cost;
-            if(cost > data){
-                document.getElementById('show_cost').innerHTML = '此次租借船只的租金为'+data+'元，从押金中扣除，剩余的'+(cost-data).toFixed(2)+'元退还给用户';
-                final_cost = data;
-            }else{
-                document.getElementById('show_cost').innerHTML = '此次租借船只的租金为'+data+'元，从押金中扣除，还需缴纳'+(data-cost).toFixed(2)+'元租金';
-                final_cost = data + (data - cost);
-            }
+            document.getElementById('show_cost').innerHTML = '此次租借船只的租金为'+data+'元';
+            var final_cost = data;
             var footer = document.getElementById('deposit_activity_footer');
             footer.innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>';
             footer.innerHTML = footer.innerHTML + '<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="SettlementDeposit('+id+', \''+final_cost.toFixed(2)+'\', '+shipId+', \''+phone+'\')">提交</button>';
@@ -426,7 +476,7 @@ function SettlementDeposit(id, final_cost, shipId, phone){
         $.ajax({
             url: "/admin/activity/order",
             type: "post",
-            data: {shipId: shipId, type: '1', id: id, final_cost: final_cost},
+            data: {shipId: shipId, type: '1', id: id, final_cost: final_cost, phone: phone},
             success: function(arg){
                 window.location.reload();
             }
@@ -435,7 +485,7 @@ function SettlementDeposit(id, final_cost, shipId, phone){
         $.ajax({
             url: "/admin/activity/order",
             type: "post",
-            data: {shipId: shipId, type: '2', id: id, final_cost: final_cost, phone},
+            data: {shipId: shipId, type: '2', id: id, final_cost: final_cost, phone: phone},
             success: function(arg){
                 window.location.reload();
             }

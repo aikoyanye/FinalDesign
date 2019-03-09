@@ -44,12 +44,12 @@
             <td id="time{{ i }}" onclick="ShipTdOnClickInput({{ data[i][0] }}, this.id, '{{ data[i][5] }}', 'time')">{{ data[i][5] }}</td>
             <td id="type{{ i }}" onclick="ShipTdOnClickSelect({{ data[i][0] }}, this.id, '{{ data[i][6] }}', 'type', SHIP_TYPE)">{{ data[i][6] }}</td>
             {% else %}
-            <td id="name{{ i }}">{{ data[i][1] }}</td>
-            <td id="status{{ i }}">{{ data[i][2] }}</td>
-            <td id="desc{{ i }}">{{ data[i][3] }}</td>
-            <td id="created{{ i }}">{{ data[i][4] }}</td>
-            <td id="time{{ i }}">{{ data[i][5] }}</td>
-            <td id="type{{ i }}">{{ data[i][6] }}</td>
+            <td>{{ data[i][1] }}</td>
+            <td>{{ data[i][2] }}</td>
+            <td>{{ data[i][3] }}</td>
+            <td>{{ data[i][4] }}</td>
+            <td>{{ data[i][5] }}</td>
+            <td>{{ data[i][6] }}</td>
             {% end %}
         </tr>
     {% end %}

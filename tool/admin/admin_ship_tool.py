@@ -8,7 +8,12 @@ class AdminShipTool:
     @staticmethod
     def get_ship_type(db):
         cursor = db.cursor()
-        sql = 'SELECT type, COUNT(shipId) FROM activity, ship WHERE activity.shipId = ship.id GROUP BY type'
+        sql = '''
+        SELECT st.name, COUNT(a.id) 
+        FROM activity a, ship s, ship_type st 
+        WHERE st.id = s.typeId AND a.shipId = s.id 
+        GROUP BY st.name
+        '''
         cursor.execute(sql)
         cursor.close()
         x, y = [], []

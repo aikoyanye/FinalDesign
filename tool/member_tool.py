@@ -19,13 +19,13 @@ class MemberTool:
 
     # 添加
     @staticmethod
-    def add(db, username, phone, reputation):
+    def add(db, username, phone, reputation, sex):
         cursor = db.cursor()
         created = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         sql = """
-            INSERT INTO member (username, phone, reputation, created) VALUES
-            ('{}', '{}', '{}', '{}')
-            """.format(username, phone, reputation, created)
+            INSERT INTO member (username, phone, reputation, created, sex) VALUES
+            ('{}', '{}', '{}', '{}', '{}')
+            """.format(username, phone, reputation, created, sex)
         try:
             cursor.execute(sql)
             db.commit()
@@ -173,7 +173,7 @@ class MemberTool:
         if result:
             cursor.close()
             return result[0]
-        MemberTool.add(db, '游客', str(phone), '良')
+        MemberTool.add(db, '游客', str(phone), '良', '男')
         sql = 'SELECT id FROM member WHERE phone = "{}"'.format(str(phone))
         cursor.execute(sql)
         cursor.close()

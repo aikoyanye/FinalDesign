@@ -15,8 +15,10 @@ class AdminSpotHandler(tornado.web.RequestHandler):
 
     async def post(self, *args, **kwargs):
         AdminSpotTool.add_spot(self.application.db, self.get_argument('name'), self.get_argument('address'),
-                               self.get_argument('phone'), self.get_argument('discount'))
+                               self.get_argument('phone'), self.get_argument('charge'), self.get_argument('level'),
+                               self.get_argument('discount'))
 
     async def put(self, *args, **kwargs):
         AdminSpotTool.put_spot(self.application.db, self.get_argument('id'), self.get_argument('name'), self.get_argument('address'),
-                               self.get_argument('phone'), self.get_argument('discount'))
+                               self.get_argument('phone'), self.get_argument('charge'), self.get_argument('level'),
+                               self.get_argument('discount'))

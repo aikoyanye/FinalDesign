@@ -12,8 +12,8 @@ class AdminFundTool:
         for i in range(created-endtime):
             start, end = SomeTool.get_last_7_and_now(endtime+i)
             x.append(start[:10])
-            sql = 'SELECT SUM(cost) FROM activity WHERE ' \
-                  'created > "{}" AND created < "{}"'.format(start, end)
+            sql = 'SELECT SUM(rent) FROM activity WHERE ' \
+                  'status = "已结算" AND created > "{}" AND created < "{}"'.format(start, end)
             cursor.execute(sql)
             result = cursor.fetchone()[0]
             y.append(round(result if result else 0, 2))
@@ -41,7 +41,7 @@ class AdminFundTool:
             start, end = SomeTool.get_date_by_ym(year, month)
             x.append(start[:7])
             sql = 'SELECT SUM(cost) FROM activity ' \
-                  'WHERE created > "{}" AND created < "{}"'.format(start, end)
+                  'WHERE status = "已结算" AND created > "{}" AND created < "{}"'.format(start, end)
             cursor.execute(sql)
             result = cursor.fetchone()[0]
             y.append(round(result if result else 0, 2))

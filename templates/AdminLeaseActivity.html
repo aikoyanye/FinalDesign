@@ -26,19 +26,17 @@ ActivityStockShipsShipType();
 </div>
 <h2 class="sub-header">船只租借管理</h2>
 <table id="lease_table" width="100%" class="table table-striped table-hover table-bordered">
-    <thead>
-    <tr>
-        <th>船只编号</th><th>船只名称</th><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>租金(钱/每分)</th><th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
+    <tr><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>船只类型</th><th>所属景区</th><th>钱/分</th><th>库存数</th><th>操作</th></tr>
     {% for i in range(len(data)) %}
     <tr>
-        <td>{{ data[i][0] }}</td><td>{{ data[i][1] }}</td><td>{{ data[i][2] }}</td><td>{{ data[i][3] }}</td><td>{{ data[i][4] }}</td>
-        <td>{{ data[i][5] }}</td><td><a href="#" onclick="InitAddActivityModel({{ data[i][0] }})" data-toggle="modal" data-target="#add_activity">出租</a></td>
+        <td>{{ data[i][0] }}</td><td>{{ data[i][1] }}</td><td>{{ data[i][2] }}</td><td>{{ data[i][3] }}</td>
+        <td>{{ data[i][4] }}</td><td>{{ data[i][5] }}</td><td>{{ data[i][6] }}</td>
+        <td>
+            <a href="#" data-toggle="modal" data-target="#add_activity"
+               onclick="InitAddActivityModel('{{ data[i][0] }}', '{{ data[i][1] }}', '{{ data[i][2] }}', '{{ data[i][7] }}', '{{ data[i][8] }}')">出租</a>
+        </td>
     </tr>
     {% end %}
-    </tbody>
 </table>
 <div class="modal fade" id="add_activity" aria-hidden="true">
     <div class="modal-dialog">
@@ -48,10 +46,19 @@ ActivityStockShipsShipType();
                 <label for="add_act_phone">会员电话</label>
                 <select onchange="AddActivitySelect(this.value)" style="width:100%;height:36px;" class="form-control" id="add_act_select"></select>
                 <input oninput="value=value.replace(/[^\d]/g,'');AddActivitySelectOption(this.value)" class="form-control" placeholder="请输入用户电话" name="add_act_phone" id="add_act_phone" type="text" style="width:97%;height:36px;position: relative;top: -36px" />
-                <input type="hidden" id="cost"><input type="hidden" id="shipId">
+                <input type="hidden" id="color">
+                <input type="hidden" id="size">
+                <input type="hidden" id="model">
+                <input type="hidden" id="typeId">
+                <input type="hidden" id="spotId">
+                <input type="hidden" id="shipId">
+                <input type="hidden" id="cost">
                 <div class="alert alert-info" role="alert" id="show_cost"></div>
             </div>
-            <div class="modal-footer" id="add_activity_footer"></div>
+            <div class="modal-footer" id="add_activity_footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="AddReActivity()">提交</button>
+            </div>
         </div>
     </div>
 </div>

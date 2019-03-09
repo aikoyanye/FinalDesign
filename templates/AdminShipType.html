@@ -7,15 +7,15 @@
     <tr>
         <th>
             <span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_type"></span>
-            船只类型编号
+            船只类型
         </th>
-        <th>船只类型</th><th>操作</th>
+        <th>操作</th>
     </tr>
     </thead>
     <tbody>
     {% for i in range(len(data)) %}
     <tr>
-        <td>{{ data[i][0] }}</td><td>{{ data[i][1] }}</td>
+        <td>{{ data[i][1] }}</td>
         <td><a href="#" onclick="DeleteShipType({{ data[i][0] }})">删除</a></td>
     </tr>
     {% end %}

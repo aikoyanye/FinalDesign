@@ -1,4 +1,5 @@
 from tool.some_tool import SomeTool
+from tool.member_tool import MemberTool
 
 TITLES = ['会员编号', '会员名称', '会员电话', '会员信誉', '注册时间', '游玩次数']
 
@@ -80,3 +81,23 @@ class AdminMemberTool():
         cursor.execute(sql)
         db.commit()
         cursor.close()
+
+    # 计算用户的折扣，根据信誉和游玩次数
+    @staticmethod
+    def count_member_discount(db, phone):
+        cursor = db.cursor()
+        userId = MemberTool.get_member_id_by_phone(db, phone)
+        sql = 'SELECT time FROM member WHERE id = {} AND reputation = "良"'.format(userId)
+        cursor.execute(sql)
+        try:
+            time = round(float((500 - int(cursor.fetchone()[0])) / 500), 2)
+            time = time if time > 0.8 else 0.8
+            sql = 'UPDATE member SET discount = "{}" WHERE id = {} AND reputation = "良"'.format(str(time), userId)
+            cursor.execute(sql)
+            db.commit()
+            cursor.close()
+        except:
+            sql = 'UPDATE member SET discount = "1.0", reputation = "差" WHERE id = {}'.format(userId)
+            cursor.execute(sql)
+            db.commit()
+            cursor.close()

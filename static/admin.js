@@ -200,10 +200,15 @@ function ActivityDisplayTr(id, tid){
 function AddMember(){
     var username = document.getElementById('member_name').value;
     var phone = document.getElementById('member_phone').value;
+    var sex = document.getElementById('member_sex').value;
+    if(username=='' || phone==''){
+        alert('输入框组不能为空');
+        return
+    }
     $.ajax({
         url: "/admin/member",
         type: "POST",
-        data: {username: username, phone: phone, type: '3'},
+        data: {username: username, phone: phone, sex: sex, type: '3'},
         success: function(arg){
             window.location.reload();
         }
@@ -1279,7 +1284,7 @@ function ActivitySearch(){
         data: {created: document.getElementById('activity_created').value,
             endtime: document.getElementById('activity_endtime').value,
             phone: document.getElementById('activity_phone').value,
-            ship: document.getElementById('activity_ship').value,
+            status: document.getElementById('activity_status').value,
             type: '1'},
         success: function(arg){
             ShowActivitySearch(jQuery.parseJSON(arg));
@@ -1309,10 +1314,10 @@ function ShowActivitySearch(data){
     var table = document.getElementById('main_search_table');
     table.innerHTML = '';
     var th = table.insertRow(0);
-    th.innerHTML = '<th>活动编号</th><th>状态</th><th>开始时间</th><th>结束时间</th><th>花费</th><th>用户编号</th><th>船只编号</th>';
+    th.innerHTML = '<th>活动编号</th><th>活动状态</th><th>租船起始时间</th><th>船只归还时间</th><th>押金</th><th>租金</th><th>会员名称</th><th>会员电话</th><th>船只名称</th>';
     for (var i=0, l=data.length; i<l; i++){
         var tr = table.insertRow(i+1);
-        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td>';
+        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][7]+'</td><td>'+data[i][8]+'</td>';
     }
 }
 
@@ -1331,6 +1336,32 @@ function InitShipSearch(){
             ShowShipSearch(jQuery.parseJSON(arg));
         }
     })
+    $.ajax({
+        url: "/admin/ship",
+        type: "delete",
+        data: {type: '1'},
+        success: function(arg){
+            var select = document.getElementById('ship_spot');
+            var data = jQuery.parseJSON(arg);
+            select.innerHTML = '<option value="">请选择</option>';
+            for (var i=0, l=data.length; i<l; i++){
+                select.innerHTML = select.innerHTML + '<option value="'+data[i][0]+'">'+data[i][1]+'</option>';
+            }
+        }
+    })
+    $.ajax({
+        url: "/admin/ship",
+        type: "delete",
+        data: {type: '2'},
+        success: function(arg){
+            var select = document.getElementById('ship_type');
+            var data = jQuery.parseJSON(arg);
+            select.innerHTML = '<option value="">请选择</option>';
+            for (var i=0, l=data.length; i<l; i++){
+                select.innerHTML = select.innerHTML + '<option value="'+data[i][0]+'">'+data[i][1]+'</option>';
+            }
+        }
+    })
 }
 
 // ship搜索筛选
@@ -1338,8 +1369,7 @@ function ShipSearch(){
     $.ajax({
         url: "/admin/search",
         type: "put",
-        data: {created: document.getElementById('ship_created').value,
-            endtime: document.getElementById('ship_endtime').value,
+        data: {spot: document.getElementById('ship_spot').value,
             t: document.getElementById('ship_type').value,
             status: document.getElementById('ship_status').value,
             type: '2'},
@@ -1354,10 +1384,10 @@ function ShowShipSearch(data){
     var table = document.getElementById('main_search_table');
     table.innerHTML = '';
     var th = table.insertRow(0);
-    th.innerHTML = '<th>游船编号</th><th>游船名</th><th>游船状态</th><th>描述</th><th>引进时间</th><th>出行次数</th><th>游船类型</th>';
+    th.innerHTML = '<th>船只编号</th><th>船只名称</th><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>钱/分</th><th>状态</th><th>引进时间</th>';
     for (var i=0, l=data.length; i<l; i++){
         var tr = table.insertRow(i+1);
-        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td>';
+        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][7]+'</td>';
     }
 }
 
@@ -1405,10 +1435,10 @@ function ShowMemberSearch(data){
     var table = document.getElementById('main_search_table');
     table.innerHTML = '';
     var th = table.insertRow(0);
-    th.innerHTML = '<th>会员编号</th><th>会员昵称</th><th>会员电话</th><th>信誉</th><th>注册时间</th><th>游玩次数</th>';
+    th.innerHTML = '<th>会员编号</th><th>会员昵称</th><th>会员电话</th><th>信誉</th><th>注册时间</th><th>游玩次数</th><th>折扣</th><th>性别</th>';
     for (var i=0, l=data.length; i<l; i++){
         var tr = table.insertRow(i+1);
-        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td>';
+        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][6]+'</td>';
     }
 }
 

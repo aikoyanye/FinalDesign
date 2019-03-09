@@ -15,7 +15,7 @@ class AdminShipHandler(tornado.web.RequestHandler):
         # 添加船只
         AdminReShipTool.add_ship(self.application.db, self.get_argument('shipname'), self.get_argument('size'),
                                  self.get_argument('color'), self.get_argument('model'), self.get_argument('cost'),
-                                 self.get_argument('typeId'), self.get_argument('spotId'))
+                                 self.get_argument('typeId'), self.get_argument('spotId'), self.get_argument('number'))
 
     async def put(self, *args, **kwargs):
         # 维护游船
@@ -23,9 +23,10 @@ class AdminShipHandler(tornado.web.RequestHandler):
             AdminReShipTool.save_ship(self.application.db, self.get_argument('id'), self.get_argument('reason'))
         # 修改船只信息
         elif self.get_argument('type') == '2':
-            AdminReShipTool.change_ship(self.application.db, self.get_argument('id'), self.get_argument('shipname'),
-                                     self.get_argument('size'), self.get_argument('color'), self.get_argument('model'),
-                                     self.get_argument('cost'))
+            AdminReShipTool.change_ship(self.application.db, self.get_argument('old_color'), self.get_argument('old_size'),
+                                     self.get_argument('old_model'), self.get_argument('old_cost'), self.get_argument('old_typeId'),
+                                     self.get_argument('old_spotId'), self.get_argument('color'), self.get_argument('size'),
+                                     self.get_argument('model'), self.get_argument('cost'), self.get_argument('spotId'))
 
     async def delete(self, *args, **kwargs):
         # 库存界面景区select
@@ -37,10 +38,11 @@ class AdminShipHandler(tornado.web.RequestHandler):
         # 库存页面景区和游船类型筛选
         elif self.get_argument('type') == '3':
             self.write(json.dumps(AdminReShipTool.status_stock(self.application.db, self.get_argument('typeId'),
-                                  self.get_argument('spotId'), self.get_argument('status'))))
+                                  self.get_argument('spotId'))))
         # 删除船只
         elif self.get_argument('type') == '4':
-            AdminReShipTool.delete_ship(self.application.db, self.get_argument('id'))
+            AdminReShipTool.delete_ship(self.application.db, self.get_argument('color'), self.get_argument('size'),
+                self.get_argument('model'), self.get_argument('typeId'), self.get_argument('spotId'), self.get_argument('status'))
 
 
 # 船只入库审核
@@ -54,7 +56,8 @@ class AdminFreeShipHandler(tornado.web.RequestHandler):
 
     async def put(self, *args, **kwargs):
         # 审核通过入库
-        AdminReShipTool.change_ship_status(self.application.db, self.get_argument('id'), '空闲')
+        AdminReShipTool.ship_in_stock(self.application.db, self.get_argument('color'), self.get_argument('size'),
+                                      self.get_argument('model'), self.get_argument('typeId'), self.get_argument('spotId'))
 
 class AdminBrokingShipHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):

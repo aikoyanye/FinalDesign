@@ -3,13 +3,18 @@ from tool.some_tool import SomeTool
 class AdminReShipTool:
     # 库存页面景区和游船类型筛选
     @staticmethod
-    def status_stock(db, typeId, spotId, status):
+    def status_stock(db, typeId, spotId):
         cursor = db.cursor()
-        sql = 'SELECT id, shipname, color, size, model, cost, status, created FROM ship WHERE status != "审核"'
-        if typeId: sql = sql + ' AND typeId = {}'.format(typeId)
-        if spotId: sql = sql + ' AND spotId = {}'.format(spotId)
-        if status: sql = sql + ' AND status = "{}"'.format(status)
-        sql = sql + ' ORDER BY status DESC'
+        sql = '''
+        SELECT s.color, s.size, s.model, st.name, sp.name, s.cost, COUNT(s.color) as count , s.typeId, s.spotId
+        FROM ship s, ship_type st, spot sp
+        WHERE s.status = "空闲" AND s.typeId = st.id AND s.spotId = sp.id
+        '''
+        if typeId: sql = sql + ' AND s.typeId = {}'.format(typeId)
+        if spotId: sql = sql + ' AND s.spotId = {}'.format(spotId)
+        sql = sql + ' GROUP BY color, size, model, typeId, spotId '
+        sql = sql + ' HAVING count > 0'
+        sql = sql + ' ORDER BY spotId DESC'
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
@@ -18,8 +23,14 @@ class AdminReShipTool:
     @staticmethod
     def status_stock_all(db):
         cursor = db.cursor()
-        sql = 'SELECT id, shipname, color, size, model, cost, status, created FROM ship ' \
-              'WHERE status != "审核" ORDER BY status DESC'
+        sql = '''
+        SELECT s.color, s.size, s.model, st.name, sp.name, s.cost, COUNT(s.color) as count , s.typeId, s.spotId
+        FROM ship s, ship_type st, spot sp
+        WHERE s.status = "空闲" AND s.typeId = st.id AND s.spotId = sp.id
+        GROUP BY color, size, model, typeId, spotId 
+        HAVING count > 0
+        ORDER BY spotId DESC
+        '''
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
@@ -77,13 +88,14 @@ class AdminReShipTool:
 
     # 添加船只
     @staticmethod
-    def add_ship(db, shipname, size, color, model, cost, typeId, spotId):
+    def add_ship(db, shipname, size, color, model, cost, typeId, spotId, number):
         cursor = db.cursor()
         sql = 'INSERT INTO ship (shipname, size, color, model, cost, typeId, spotId, created, status) VALUES' \
               ' ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "审核")'.format(shipname, size, color, model,
-            cost, typeId, spotId, SomeTool.current_date())
-        cursor.execute(sql)
-        db.commit()
+                                                                               cost, typeId, spotId, SomeTool.current_date())
+        for i in range(int(number)):
+            cursor.execute(sql)
+            db.commit()
         cursor.close()
 
     # 更改船只状态
@@ -95,12 +107,25 @@ class AdminReShipTool:
         db.commit()
         cursor.close()
 
+    # 船只入库
+    @staticmethod
+    def ship_in_stock(db, color, size, model, typeId, spotId):
+        cursor = db.cursor()
+        sql = 'UPDATE ship SET status = "空闲" ' \
+              'WHERE status = "审核" AND color = "{}" AND size = "{}" AND model = "{}" AND typeId = "{}" AND spotId = "{}"' \
+              ''.format(color, size, model, typeId, spotId)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
     # 修改船只信息
     @staticmethod
-    def change_ship(db, id, shipname, size, color, model, cost):
+    def change_ship(db, old_color, old_size, old_model, old_cost, old_typeId, old_spotId,
+                    color, size, model, cost, spotId):
         cursor = db.cursor()
-        sql = 'UPDATE ship SET shipname = "{}", size = "{}", color = "{}", model = "{}", cost = "{}" ' \
-              'WHERE id = {}'.format(shipname, size, color, model, cost, id)
+        sql = 'UPDATE ship SET color = "{}", size = "{}", model = "{}", cost = "{}", spotId = {} WHERE' \
+              ' color = "{}" AND size = "{}" AND model = "{}" AND cost = "{}" AND typeId = {} AND spotId = {}' \
+              ''.format(color, size, model, cost, spotId, old_color, old_size, old_model, old_cost, old_typeId, old_spotId)
         cursor.execute(sql)
         db.commit()
         cursor.close()
@@ -132,21 +157,28 @@ class AdminReShipTool:
         db.commit()
         cursor.close()
 
-    # 删除船只
+    # 删除指定状态的船只们
     @staticmethod
-    def delete_ship(db, id):
+    def delete_ship(db, color, size, model, typeId, spotId, status):
         cursor = db.cursor()
-        sql = 'DELETE FROM ship WHERE id = {}'.format(id)
+        sql = 'DELETE FROM ship WHERE color = "{}" AND size = "{}" AND model = "{}" AND typeId = {} ' \
+              'AND spotId = {} AND status = "{}"'.format(color, size, model, typeId, spotId, status)
         cursor.execute(sql)
         db.commit()
         cursor.close()
 
-     # 获取全部船只
+    # 获取审核游船
     @staticmethod
     def examine_ship_all(db):
         cursor = db.cursor()
-        sql = 'SELECT id, shipname, color, size, model, cost, status, created FROM ship ' \
-              'WHERE status = "审核" ORDER BY status DESC'
+        sql = '''
+        SELECT s.color, s.size, s.model, st.name, sp.name, s.cost, COUNT(s.color) as count , s.typeId, s.spotId
+        FROM ship s, ship_type st, spot sp
+        WHERE s.status = "审核" AND s.typeId = st.id AND s.spotId = sp.id
+        GROUP BY color, size, model, typeId, spotId 
+        HAVING count > 0
+        ORDER BY spotId DESC
+        '''
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchall()
