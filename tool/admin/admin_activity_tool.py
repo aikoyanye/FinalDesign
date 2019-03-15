@@ -13,7 +13,7 @@ class AdminActivityTool:
     def get_echarts_data_by_year_month_sql(db, year, month, sql):
         cursor = db.cursor()
         start, end = SomeTool.get_date_by_ym(str(year), str(month))
-        sql = sql + ' WHERE created > "{}" AND created < "{}"'.format(start, end)
+        sql = sql + ' AND created > "{}" AND created < "{}"'.format(start, end)
         cursor.execute(sql)
         cursor.close()
         return cursor.fetchone()
@@ -22,17 +22,17 @@ class AdminActivityTool:
     # y1：活动数or团建数，y2：总收入
     @staticmethod
     def get_num_count_activity(db, n, type):
-        if str(type) == '1':
-            sql = 'SELECT COUNT(id), SUM(rent) FROM activity WHERE status = "已结算"'
-        elif str(type) == '2':
-            sql = 'SELECT COUNT(id), SUM(cost) FROM group_building'
+        cursor = db.cursor()
         x, y1, y2 = [], [], []
         for i in range(int(n)):
-            year, month = SomeTool.get_year_month_by_padding(i)
-            result = AdminActivityTool.get_echarts_data_by_year_month_sql(db, year, month, sql)
+            start, end = SomeTool.get_last_7_and_now(i)
+            sql = 'SELECT COUNT(id), SUM(rent) FROM activity WHERE status = "已结算"'
+            sql = sql + ' AND created > "{}" AND created < "{}"'.format(start, end)
+            cursor.execute(sql)
+            result = cursor.fetchone()
             y1.append(result[0])
-            y2.append(result[1])
-            x.append(year + '年' + month + '月')
+            y2.append(str(round(float(result[1] if result[1] else 0), 2)))
+            x.append(start[:10])
         return x[::-1], y1[::-1], y2[::-1]
 
     # 获取最近n月的总收入
@@ -43,7 +43,7 @@ class AdminActivityTool:
         for i in range(n):
             year, month = SomeTool.get_year_month_by_padding(i)
             start, end = SomeTool.get_date_by_ym(str(year), str(month))
-            sql = 'SELECT SUM(cost), COUNT(id) FROM activity WHERE created > "{}" AND created < "{}"'.format(start, end)
+            sql = 'SELECT SUM(rent), COUNT(id) FROM activity WHERE created > "{}" AND created < "{}"'.format(start, end)
             cursor.execute(sql)
             result = list(cursor.fetchone())
             result[0] = float(result[0]) if result[0] else float(0)
@@ -91,7 +91,7 @@ class AdminActivityTool:
     def admin_activity_main(db):
         g2, g3 = Grid(width=1600), Grid(width=1600)
         page = Page()
-        x, y1, y2 = AdminActivityTool.get_num_count_activity(db, 8, 2)
+        x, y1, y2 = AdminActivityTool.get_num_count_activity(db, 8, 1)
         chart3 = SomeTool.get_overlap_by_bar_line(x, y1, y2, '近7天活动详情', '近7天活动总数', '近7天活动总收入')
         x, y1, y2 = AdminActivityTool.get_total_by_year_month(db, 4)
         # chart4 = Line('各月总收入').add('月份', x, y1, legend_pos="20%", xaxis_interval=0, xaxis_rotate=30, is_smooth=True, is_label_show=True)

@@ -1,5 +1,4 @@
-import calendar
-import datetime, requests, hashlib, xlwt, os
+import datetime, requests, hashlib, xlwt, os, random
 from pyecharts import Bar, Line, Overlap
 from dateutil.rrule import rrule, DAILY, MONTHLY
 from datetime import date
@@ -128,3 +127,10 @@ class SomeTool:
         current = str(SomeTool.current_date())
         end = date(int(current[:4]), int(current[5:7]), int(current[8:10]))
         return rrule(MONTHLY, dtstart=start, until=end).count()
+
+    # 随机数生成船只唯一编号
+    @staticmethod
+    def ship_id():
+        n = str(random.randint(1000000000, 9999999999))
+        m = str(''.join(random.sample('QWERTYUIOPASDFGHJKLZXCVBNM', 4)))
+        return m + '-' + n

@@ -10,13 +10,15 @@ from handler.GroupBuildingHandler import GroupBuildingHandler
 from handler.admin.AdminWelcomeHandler import AdminWelcomeHandler
 from handler.admin.AdminActivityHandler import AdminActivityHandler, AdminOrderHandler, AdminOverActivityHandler, AdminReturnActivityHandler
 from handler.admin.AdminMemberHandler import AdminMemberHandler
-from handler.admin.AdminShipHandler import AdminShipHandler, AdminBrokingShipHandler, AdminFreeShipHandler,AdminFinishShipHandler
+from handler.admin.AdminShipHandler import AdminShipHandler, AdminBrokingShipHandler, AdminFreeShipHandler,AdminFinishShipHandler, AdminNormalShipHandler
 from handler.admin.AdminAdHandler import AdminAdHandler, AdminExamineAdHandler, AdminOverAdHandler, AdminBrokeAdHandler
 from handler.admin.AdminGbHandler import AdminGbHandler, AdminBrokeGbHandler, AdminExamineGbHandler, AdminOverGbHandler
 from handler.admin.AdminKeyHandler import AdminKeyHandler
 from handler.admin.AdminSearchHandler import AdminSearchHandler
 from handler.admin.AdminSpotHandler import AdminSpotHandler
 from handler.admin.AdminActivityFundHandler import AdminActivityFund
+
+# 使用了pyecharts、rrule、tornado、pymysql库
 
 # 数据库信息
 # HOST = '120.77.153.248'
@@ -54,6 +56,7 @@ class Application(tornado.web.Application):
             tornado.web.url(r'/admin/ship/broking', AdminBrokingShipHandler, name='admin_broking_ship'),
             tornado.web.url(r'/admin/ship/free', AdminFreeShipHandler, name='admin_free_ship'),
             tornado.web.url(r'/admin/ship/finish', AdminFinishShipHandler, name='admin_finish_ship'),
+            tornado.web.url(r'/admin/ship/normal', AdminNormalShipHandler, name='admin_normal_ship'),
             tornado.web.url(r'/admin/gb/examine', AdminExamineGbHandler, name='admin_examine_gb'),
             tornado.web.url(r'/admin/gb/broke', AdminBrokeGbHandler, name='admin_broke_gb'),
             tornado.web.url(r'/admin/gb/over', AdminOverGbHandler, name='admin_over_gb'),

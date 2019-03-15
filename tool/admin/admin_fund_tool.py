@@ -4,7 +4,7 @@ from tool.some_tool import SomeTool
 class AdminFundTool:
     # 返回近7天的活动经费是，图表用
     @staticmethod
-    def fund_by_day(db, s, e):
+    def fund_by_day(db, s, e, spotId):
         cursor = db.cursor()
         x, y = [], []
         created = SomeTool.getBetweenDay(s) if s else 14
@@ -12,8 +12,9 @@ class AdminFundTool:
         for i in range(created-endtime):
             start, end = SomeTool.get_last_7_and_now(endtime+i)
             x.append(start[:10])
-            sql = 'SELECT SUM(rent) FROM activity WHERE ' \
-                  'status = "已结算" AND created > "{}" AND created < "{}"'.format(start, end)
+            sql = 'SELECT SUM(a.rent) FROM activity a, ship s WHERE ' \
+                  'a.status = "已结算" AND a.created > "{}" AND a.created < "{}"'.format(start, end)
+            if spotId: sql = sql + ' AND s.spotId = {}'.format(spotId)
             cursor.execute(sql)
             result = cursor.fetchone()[0]
             y.append(round(result if result else 0, 2))
@@ -22,7 +23,7 @@ class AdminFundTool:
 
     # 返回近7天的活动经费是，表格用
     @staticmethod
-    def fund_by_day_table(db, start, end):
+    def fund_by_day_table(db, start, end, spotId):
         x, y = AdminFundTool.fund_by_day(db, start, end)
         result = []
         for i in range(len(x)):
@@ -31,7 +32,7 @@ class AdminFundTool:
 
     # 返回近7个月的活动经费
     @staticmethod
-    def fund_by_month(db, s, e):
+    def fund_by_month(db, s, e, spotId):
         cursor = db.cursor()
         x, y = [], []
         created = SomeTool.getBetweenMonth(s)-1 if s else 6
@@ -40,8 +41,9 @@ class AdminFundTool:
             year, month = SomeTool.get_year_month_by_padding(i+endtime)
             start, end = SomeTool.get_date_by_ym(year, month)
             x.append(start[:7])
-            sql = 'SELECT SUM(cost) FROM activity ' \
-                  'WHERE status = "已结算" AND created > "{}" AND created < "{}"'.format(start, end)
+            sql = 'SELECT SUM(a.cost) FROM activity a, ship s ' \
+                  'WHERE a.status = "已结算" AND a.created > "{}" AND a.created < "{}"'.format(start, end)
+            if spotId: sql = sql + ' AND s.spotId = {}'.format(spotId)
             cursor.execute(sql)
             result = cursor.fetchone()[0]
             y.append(round(result if result else 0, 2))
@@ -50,17 +52,17 @@ class AdminFundTool:
 
     # 生成excel
     @staticmethod
-    def data_2_excel(db, start, end):
+    def data_2_excel(db, start, end, spotId):
         if (os.path.exists('static\data.xls')):
             os.remove('static\data.xls')
         excel = xlwt.Workbook()
         sheet = excel.add_sheet('日')
-        x, y = AdminFundTool.fund_by_day(db, start, end)
+        x, y = AdminFundTool.fund_by_day(db, start, end, spotId)
         for i in range(len(x)):
             sheet.write(i, 0, x[i])
             sheet.write(i, 1, y[i])
         sheet1 = excel.add_sheet('月')
-        x, y = AdminFundTool.fund_by_month(db, start, end)
+        x, y = AdminFundTool.fund_by_month(db, start, end, spotId)
         for i in range(len(x)):
             sheet1.write(i, 0, x[i])
             sheet1.write(i, 1, y[i])

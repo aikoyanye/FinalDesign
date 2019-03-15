@@ -123,12 +123,24 @@ function DeleteShipType(id){
     })
 }
 
+// 船只报废
+function DeleteOneShip(id){
+    $.ajax({
+        url: "/admin/ship/broking",
+        type: "put",
+        data: {id: id},
+        success: function(arg){
+            window.location.reload();
+        }
+    })
+}
+
 // 填充库存船只
 function ShowStockShip(data){
     var table = document.getElementById('stock_table');
     table.innerHTML = '';
     var th = table.insertRow(0);
-    th.innerHTML = '<tr><th><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_ship"></span>船只主题色</th><th>船只规模</th><th>船只型号</th><th>船只类型</th><th>所属景区</th><th>钱/分</th><th>库存数</th><th>操作</th></tr>';
+    th.innerHTML = '<tr><th><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="modal" data-target="#add_ship"></span><span class="glyphicon glyphicon-arrow-down" aria-hidden="true" data-toggle="modal" data-target="#upload"></span>船只主题色</th><th>船只规模</th><th>船只型号</th><th>船只类型</th><th>所属景区</th><th>钱/分</th><th>库存数</th><th>操作</th></tr>';
     for (var i=0, l=data.length; i<l; i++){
         var tr = table.insertRow(i+1);
         tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td><a href="#" data-toggle="modal" data-target="#change_ship" onclick="InitChangeShipModel(\''+data[i][0]+'\', \''+data[i][1]+'\', \''+data[i][2]+'\', \''+data[i][5]+'\', \''+data[i][8]+'\', \''+data[i][7]+'\')">修改信息</a>/<a href="#" onclick="DeleteShip(\''+data[i][0]+'\', \''+data[i][1]+'\', \''+data[i][2]+'\', \''+data[i][7]+'\', \''+data[i][8]+'\')">删除</a></td>';
@@ -207,8 +219,7 @@ function StockShipsShipType(){
 
 // 添加船只
 function AddReShip(){
-    if(document.getElementById('shipname').value=='' ||
-        document.getElementById('color').value=='' ||
+    if(document.getElementById('color').value=='' ||
         document.getElementById('size').value=='' ||
         document.getElementById('model').value=='' ||
         document.getElementById('cost').value=='' ||
@@ -219,8 +230,7 @@ function AddReShip(){
     $.ajax({
         url: "/admin/ship",
         type: "post",
-        data: {shipname: document.getElementById('shipname').value,
-            color: document.getElementById('color').value,
+        data: {color: document.getElementById('color').value,
             size: document.getElementById('size').value,
             model: document.getElementById('model').value,
             cost: document.getElementById('cost').value,
@@ -331,7 +341,7 @@ function SavedShip(id){
     })
 }
 
-// 删除船只
+// 库存删除船只
 function DeleteShip(color, size, model, typeId, spotId){
     $.ajax({
         url: "/admin/ship",
@@ -589,7 +599,8 @@ function Data2ExcelFund(){
         url: "/admin/fund",
         type: "put",
         data: {start: document.getElementById('fund_start').value,
-            end: document.getElementById('fund_end').value},
+            end: document.getElementById('fund_end').value,
+            spotId: document.getElementById('spot_select').value},
         success: function(arg){
             document.getElementById('download_a').click();
         }
@@ -603,7 +614,8 @@ function FundDayChart(){
         type: "post",
         data: {type: document.getElementById('fund_type').value,
             start: document.getElementById('fund_start').value,
-            end: document.getElementById('fund_end').value},
+            end: document.getElementById('fund_end').value,
+            spotId: document.getElementById('spot_select').value},
         success: function(arg){
             var data = jQuery.parseJSON(arg);
             Echarts(data[0], data[1]);
@@ -634,4 +646,86 @@ function Echarts(x, y){
             }]
         };
         myChart.setOption(option);
+}
+
+// 修改船只信息模态框
+function InitChangeOneShip(id, color, size, model, cost){
+    $.ajax({
+        url: "/admin/ship",
+        type: "delete",
+        data: {type: '1'},
+        success: function(arg){
+            var data = jQuery.parseJSON(arg);
+            var select = document.getElementById('spot');
+            select.innerHTML = '';
+            for(var i=0; i<data.length; i++){
+                select.innerHTML = select.innerHTML + '<option value="'+data[i][0]+'">'+data[i][1]+'</option>';
+            }
+        }
+    })
+    document.getElementById('cost').value = cost;
+    document.getElementById('color').value = color;
+    document.getElementById('size').value = size;
+    document.getElementById('model').value = model;
+    var footer = document.getElementById('change_ship_footer');
+    footer.innerHTML = '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>';
+    footer.innerHTML = footer.innerHTML + '<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ChangeOneShip('+id+')">提交</button>';
+}
+
+// 修改船只信息
+function ChangeOneShip(id){
+    $.ajax({
+        url: "/admin/ship/normal",
+        type: "post",
+        data: {id: id, color: document.getElementById('color').value,
+                cost: document.getElementById('cost').value,
+                size: document.getElementById('size').value,
+                model: document.getElementById('model').value,
+                spotId: document.getElementById('spot').value},
+        success: function(arg){
+            FreeSpotShipType();
+        }
+    })
+}
+
+// 船只管理界面景区select
+function FreeShipsSpot(){
+    $.ajax({
+        url: "/admin/ship",
+        type: "delete",
+        data: {type: '1'},
+        success: function(arg){
+            var select = document.getElementById('spot_select');
+            var data = jQuery.parseJSON(arg);
+            for (var i=0, l=data.length; i<l; i++){
+                select.innerHTML = select.innerHTML + '<option value="'+data[i][0]+'">'+data[i][1]+'</option>';
+            }
+        }
+    })
+}
+
+// 船只管理页面景区和游船类型筛选
+function FreeSpotShipType(){
+    $.ajax({
+        url: "/admin/ship/normal",
+        type: "put",
+        data: {typeId: document.getElementById('type_select').value,
+            spotId: document.getElementById('spot_select').value,
+            type: '2'},
+        success: function(arg){
+            ShowFreeShip(jQuery.parseJSON(arg));
+        }
+    })
+}
+
+// 船只管理数据展示
+function ShowFreeShip(data){
+    var table = document.getElementById('table');
+    table.innerHTML = '';
+    var tr = table.insertRow(0);
+    tr.innerHTML = '<th><a class="glyphicon glyphicon-download-alt" onclick="Data2Excel(\'/ship\')"></a>游船编号</th><th>船只颜色</th><th>船只规模</th><th>船只型号</th><th>租金</th><th>引进时间</th><th>船只类型</th><th>所属景区</th><th>操作/<a href="#" onclick="ReDeleteShip()">批量删除</a><input type="checkbox" onclick="CheckAll()"></th>';
+    for (var i=0, l=data.length; i<l; i++){
+        var tr = table.insertRow(i+1);
+        tr.innerHTML = '<td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][7]+'</td><td>'+data[i][8]+'</td><td><a href="#" onclick="InitBrokeShip('+data[i][0]+')" data-toggle="modal" data-target="#broke_ship">维护</a>/<a href="#" data-toggle="modal" data-target="#change_ship" onclick="InitChangeOneShip('+data[i][0]+', \''+data[i][2]+'\', \''+data[i][3]+'\', \''+data[i][4]+'\', \''+data[i][5]+'\')">修改</a>/<input type="checkbox" name="ship_check" value="'+data[i][0]+'"></td>';
+    }
 }

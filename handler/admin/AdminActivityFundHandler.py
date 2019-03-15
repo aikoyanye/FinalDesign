@@ -12,11 +12,11 @@ class AdminActivityFund(tornado.web.RequestHandler):
         if self.get_argument('type') == '1':
             # 天图表
             self.write(json.dumps(AdminFundTool.fund_by_day(self.application.db
-                                        , self.get_argument('start'), self.get_argument('end'))))
+                                        , self.get_argument('start'), self.get_argument('end'), self.get_argument('spotId'))))
         elif self.get_argument('type') == '2':
             # 月图表
             self.write(json.dumps(AdminFundTool.fund_by_month(self.application.db,
-                                        self.get_argument('start'), self.get_argument('end'))))
+                                        self.get_argument('start'), self.get_argument('end'), self.get_argument('spotId'))))
 
     async def put(self, *args, **kwargs):
-        AdminFundTool.data_2_excel(self.application.db, self.get_argument('start'), self.get_argument('end'))
+        AdminFundTool.data_2_excel(self.application.db, self.get_argument('start'), self.get_argument('end'), self.get_argument('spotId'))

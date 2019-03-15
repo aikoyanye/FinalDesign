@@ -1,6 +1,8 @@
 from tool.some_tool import SomeTool
 import xlrd, os
 
+TITLES = ['id', '船只编号', '船只颜色', '船只规模', '船只型号', '租金', '引进时间', '船只类型', '所属景区']
+
 class AdminReShipTool:
     # 库存页面景区和游船类型筛选
     @staticmethod
@@ -20,7 +22,7 @@ class AdminReShipTool:
         cursor.close()
         return cursor.fetchall()
 
-    # 获取全部船只
+    # 获取全部库存
     @staticmethod
     def status_stock_all(db):
         cursor = db.cursor()
@@ -89,10 +91,10 @@ class AdminReShipTool:
 
     # 添加船只
     @staticmethod
-    def add_ship(db, shipname, size, color, model, cost, typeId, spotId, number):
+    def add_ship(db, size, color, model, cost, typeId, spotId, number):
         cursor = db.cursor()
         sql = 'INSERT INTO ship (shipname, size, color, model, cost, typeId, spotId, created, status) VALUES' \
-              ' ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "审核")'.format(shipname, size, color, model,
+              ' ("{}", "{}", "{}", "{}", "{}", "{}", "{}", "{}", "审核")'.format(SomeTool.ship_id(), size, color, model,
                                                                                cost, typeId, spotId, SomeTool.current_date())
         for i in range(int(number)):
             cursor.execute(sql)
@@ -119,7 +121,7 @@ class AdminReShipTool:
         db.commit()
         cursor.close()
 
-    # 修改船只信息
+    # 库存修改船只信息
     @staticmethod
     def change_ship(db, old_color, old_size, old_model, old_cost, old_typeId, old_spotId,
                     color, size, model, cost, spotId):
@@ -215,3 +217,40 @@ class AdminReShipTool:
             AdminReShipTool.add_ship(db, sheet.cell(i, 0).value, sheet.cell(i, 2).value, sheet.cell(i, 1).value, sheet.cell(i, 3).value,
                                      sheet.cell(i, 4).value, AdminReShipTool.typeId_by_typename(db, sheet.cell(i, 5).value),
                                      AdminReShipTool.spotId_by_spotname(db, sheet.cell(i, 6).value), sheet.cell(i, 7).value)
+
+    # 获取所有船只
+    @staticmethod
+    def all_ship(db):
+        cursor = db.cursor()
+        sql = 'SELECT s.id, s.shipname, s.color, s.size, s.model, s.cost, s.created, st.name, sp.name, sp.id FROM ' \
+              'ship s, ship_type st, spot sp WHERE s.typeId = st.id AND sp.id = spotId AND status != "审核"'
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()
+
+    # 修改单只船只信息
+    @staticmethod
+    def change_one_ship(db, id, color, size, model, cost, spotId):
+        cursor = db.cursor()
+        sql = 'UPDATE ship SET color = "{}", size = "{}", model = "{}", cost = "{}", spotId = {} WHERE ' \
+              'id = {}'.format(color, size, model, cost, spotId, id)
+        cursor.execute(sql)
+        db.commit()
+        cursor.close()
+
+    # 船只页面景区和船只类型筛选结果
+    @staticmethod
+    def free_spot_type_ship(db, typeId, spotId):
+        cursor = db.cursor()
+        sql = 'SELECT s.id, s.shipname, s.color, s.size, s.model, s.cost, s.created, st.name, sp.name, sp.id FROM ' \
+              'ship s, ship_type st, spot sp WHERE s.typeId = st.id AND sp.id = spotId AND status != "审核"'
+        if typeId: sql = sql + ' AND typeId = {}'.format(typeId)
+        if spotId: sql = sql + ' AND spotId = {}'.format(spotId)
+        cursor.execute(sql)
+        cursor.close()
+        return cursor.fetchall()
+
+    # 导出船只数据
+    @staticmethod
+    def data_2_excel(db):
+        SomeTool.data_2_excel(AdminReShipTool.all_ship(db), TITLES, '船只')

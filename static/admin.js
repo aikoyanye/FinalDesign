@@ -297,9 +297,9 @@ function InitBrokeShip(id){
 // 维护游船
 function BrokeShip(id){
     $.ajax({
-        url: '/admin/ship/broking',
-        type: 'post',
-        data: {reason: document.getElementById('broke').value, id: id},
+        url: '/admin/ship/normal',
+        type: 'put',
+        data: {reason: document.getElementById('broke').value, id: id, type: '1'},
         success: function(arg){
             window.location.reload();
         }
@@ -313,11 +313,11 @@ function ReDeleteShip(){
         items2['item'].push(n.value);
     });
     $.ajax({
-        url: '/admin/ship/free',
+        url: '/admin/ship/normal',
         type: 'delete',
         data: items2,
         success: function(arg){
-            window.location.reload();
+            FreeSpotShipType();
         }
     });
 }
@@ -1268,7 +1268,7 @@ function KeyPutData(value, td_id, id, input_id, key){
 function Data2Excel(uri, type){
     $.ajax({
         url: "/admin"+uri,
-        type: "PUT",
+        type: "put",
         data: {type: type},
         success: function(arg){
             document.getElementById('download_a').click();
@@ -1384,10 +1384,10 @@ function ShowShipSearch(data){
     var table = document.getElementById('main_search_table');
     table.innerHTML = '';
     var th = table.insertRow(0);
-    th.innerHTML = '<th>船只编号</th><th>船只名称</th><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>钱/分</th><th>状态</th><th>引进时间</th>';
+    th.innerHTML = '<th>船只编号</th><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>钱/分</th><th>状态</th><th>引进时间</th>';
     for (var i=0, l=data.length; i<l; i++){
         var tr = table.insertRow(i+1);
-        tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][7]+'</td>';
+        tr.innerHTML = '<td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][7]+'</td>';
     }
 }
 

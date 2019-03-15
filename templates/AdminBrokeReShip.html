@@ -25,14 +25,20 @@
 <table id="stock_table" width="100%" class="table table-striped table-hover table-bordered">
     <thead>
     <tr>
-        <th>船只编号</th><th>船只名称</th><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>维护内容</th><th>操作</th>
+        <th>船只编号</th><th>船只主题色</th><th>船只规模</th><th>船只型号</th><th>维护内容</th><th>操作</th>
     </tr>
     </thead>
     <tbody>
     {% for i in range(len(data)) %}
     <tr>
-        <td>{{ data[i][0] }}</td><td>{{ data[i][1] }}</td><td>{{ data[i][2] }}</td><td>{{ data[i][3] }}</td><td>{{ data[i][4] }}</td>
-        <td>{{ data[i][5] }}</td><td>{% if type == 'ship' %}<a href="#" onclick="SavedShip({{ data[i][0] }})">维护完成</a>{% end %}</td>
+        <td>{{ data[i][1] }}</td><td>{{ data[i][2] }}</td><td>{{ data[i][3] }}</td><td>{{ data[i][4] }}</td>
+        <td>{{ data[i][5] }}</td>
+        <td>
+            {% if type == 'ship' %}
+            <a href="#" onclick="SavedShip({{ data[i][0] }})">维护完成</a>
+            /<a href="#" onclick="DeleteOneShip({{ data[i][0] }})">报废</a>
+            {% end %}
+        </td>
     </tr>
     {% end %}
     </tbody>

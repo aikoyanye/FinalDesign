@@ -14,7 +14,7 @@ class AdminShipHandler(tornado.web.RequestHandler):
     async def post(self, *args, **kwargs):
         if self.get_argument('type') == '1':
             # 添加船只
-            AdminReShipTool.add_ship(self.application.db, self.get_argument('shipname'), self.get_argument('size'),
+            AdminReShipTool.add_ship(self.application.db, self.get_argument('size'),
                                      self.get_argument('color'), self.get_argument('model'), self.get_argument('cost'),
                                      self.get_argument('typeId'), self.get_argument('spotId'),
                                      self.get_argument('number'))
@@ -64,6 +64,7 @@ class AdminFreeShipHandler(tornado.web.RequestHandler):
         AdminReShipTool.ship_in_stock(self.application.db, self.get_argument('color'), self.get_argument('size'),
                                       self.get_argument('model'), self.get_argument('typeId'), self.get_argument('spotId'))
 
+# 船只维护
 class AdminBrokingShipHandler(tornado.web.RequestHandler):
     async def get(self, *args, **kwargs):
         if self.get_cookie('current') == 'a':
@@ -75,6 +76,10 @@ class AdminBrokingShipHandler(tornado.web.RequestHandler):
     async def delete(self, *args, **kwargs):
         # 船只维护完毕
         AdminReShipTool.saved_ship(self.application.db, self.get_argument('id'))
+
+    async def put(self, *args, **kwargs):
+        # 船只报废
+        AdminShipTool.delete(self.application.db, self.get_argument('id'))
 
 # 游船类型
 class AdminFinishShipHandler(tornado.web.RequestHandler):
@@ -92,6 +97,36 @@ class AdminFinishShipHandler(tornado.web.RequestHandler):
     async def delete(self, *args, **kwargs):
         # 删除船只类型
         AdminReShipTool.delete_ship_type(self.application.db, self.get_argument('id'))
+
+# 船只管理
+class AdminNormalShipHandler(tornado.web.RequestHandler):
+    async def get(self, *args, **kwargs):
+        if self.get_cookie('current') == 'a':
+            self.render('AdminFreeShip.html', current=True, data=AdminReShipTool.all_ship(self.application.db),
+                        type=self.get_cookie('type'))
+        else:
+            self.render('AdminFreeShip.html', current=False)
+
+    async def put(self, *args, **kwargs):
+        # 维修船只
+        if self.get_argument('type') == '1':
+            AdminReShipTool.save_ship(self.application.db, self.get_argument('id'), self.get_argument('reason'))
+        # 船只景区和类型筛选
+        elif self.get_argument('type') == '2':
+            self.write(json.dumps(AdminReShipTool.free_spot_type_ship(self.application.db, self.get_argument('typeId'),
+                                                                      self.get_argument('spotId'))))
+        # 导出船只数据
+        elif self.get_argument('type') == '3':
+            AdminReShipTool.data_2_excel(self.application.db)
+
+    async def delete(self, *args, **kwargs):
+        # 批量删除船只
+        AdminShipTool.delete_some_ship(self.application.db, self.get_arguments('item[]'))
+
+    async def post(self, *args, **kwargs):
+        # 修改船只信息
+        AdminReShipTool.change_one_ship(self.application.db, self.get_argument('id'), self.get_argument('color'),
+            self.get_argument('size'), self.get_argument('model'), self.get_argument('cost'), self.get_argument('spotId'))
 
 # class AdminShipHandler(tornado.web.RequestHandler):
 #     async def get(self, *args, **kwargs):

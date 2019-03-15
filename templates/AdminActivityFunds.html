@@ -3,6 +3,7 @@
 {% block activity %}
 <script type="text/babel">
 FundDayChart();
+FreeShipsSpot();
 </script>
 <div class="container">
     <div id="chart" style="width: 1200px;height:400px;"></div>
@@ -21,6 +22,12 @@ FundDayChart();
         <div class="list-group col-lg-3">
             <label for="fund_end">到</label>
             <input id="fund_end" type="date" class="form-control" oninput="FundDayChart()">
+        </div>
+        <div class="list-group col-lg-3">
+            <label for="spot_select">景区</label>
+            <select id="spot_select" class="form-control" onchange="FundDayChart()">
+                <option value="">请选择</option>
+            </select>
         </div>
     </div>
 </div>
