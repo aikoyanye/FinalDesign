@@ -18,12 +18,7 @@ from handler.admin.AdminSearchHandler import AdminSearchHandler
 from handler.admin.AdminSpotHandler import AdminSpotHandler
 from handler.admin.AdminActivityFundHandler import AdminActivityFund
 
-# 使用了pyecharts、rrule、tornado、pymysql库
-
 # 数据库信息
-# HOST = '120.77.153.248'
-# USERNAME = 'aiko'
-# PASSWORD = 'AikoYanye1234.'
 HOST = '127.0.0.1'
 USERNAME = 'root'
 PASSWORD = 'projectDIVAF.'

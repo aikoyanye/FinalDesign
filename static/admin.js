@@ -1314,7 +1314,7 @@ function ShowActivitySearch(data){
     var table = document.getElementById('main_search_table');
     table.innerHTML = '';
     var th = table.insertRow(0);
-    th.innerHTML = '<th>活动编号</th><th>活动状态</th><th>租船起始时间</th><th>船只归还时间</th><th>押金</th><th>租金</th><th>会员名称</th><th>会员电话</th><th>船只名称</th>';
+    th.innerHTML = '<th>活动编号</th><th>活动状态</th><th>租船起始时间</th><th>船只归还时间</th><th>押金</th><th>租金</th><th>会员名称</th><th>会员电话</th><th>船只编号</th>';
     for (var i=0, l=data.length; i<l; i++){
         var tr = table.insertRow(i+1);
         tr.innerHTML = '<td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td><td>'+data[i][5]+'</td><td>'+data[i][6]+'</td><td>'+data[i][7]+'</td><td>'+data[i][8]+'</td>';
